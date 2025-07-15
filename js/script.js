@@ -178,6 +178,60 @@ document.addEventListener('DOMContentLoaded', function() {
         heroTitle.textContent = '';
         typeWriter(heroTitle, originalText, 50);
     }
+
+    // Carousel Functionality
+    function initCarousel() {
+        const images = document.querySelectorAll('.carousel-image');
+        const dots = document.querySelectorAll('.carousel-dot');
+        let current = 0;
+        let interval;
+
+        function showImage(index) {
+            images.forEach((img, i) => {
+                img.style.display = i === index ? 'block' : 'none';
+                img.style.opacity = i === index ? '1' : '0';
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            current = index;
+        }
+
+        function nextImage() {
+            let next = (current + 1) % images.length;
+            showImage(next);
+        }
+
+        function startCarousel() {
+            interval = setInterval(nextImage, 3000);
+        }
+
+        function stopCarousel() {
+            clearInterval(interval);
+        }
+
+        dots.forEach((dot, i) => {
+            dot.addEventListener('click', () => {
+                showImage(i);
+                stopCarousel();
+                startCarousel();
+            });
+        });
+
+        showImage(0);
+        startCarousel();
+
+        // Pause on hover
+        const carousel = document.querySelector('.carousel');
+        if (carousel) {
+            carousel.addEventListener('mouseenter', stopCarousel);
+            carousel.addEventListener('mouseleave', startCarousel);
+        }
+    }
+
+    if (document.querySelector('.carousel')) {
+        initCarousel();
+    }
 });
 
 // Helper Functions
