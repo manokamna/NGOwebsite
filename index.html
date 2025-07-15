@@ -13,7 +13,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <h2 style="font-family: 'Playfair Display', serif; font-size: 1.1rem; letter-spacing: 0.5px; font-weight: 700; color: #2c3e50; text-shadow: 1px 1px 2px #e0e0e0; white-space: nowrap; margin: 0;">SAROJ VANDANA WOMEN AND CHILDREN EMPOWERMENT SOCIETY</h2>
+                <h2 class="org-name">SAROJ VANDANA WOMEN AND CHILDREN EMPOWERMENT SOCIETY</h2>
             </div>
             <ul class="nav-menu">
                 <li class="nav-item">
@@ -42,11 +42,25 @@
 
     <main>
         <section class="hero">
+            <div class="hero-circle-carousel">
+                <div class="circle-carousel">
+                    <img class="circle-carousel-image" src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=facearea&w=400&h=400&q=80" alt="Student 1" style="display:block;">
+                    <img class="circle-carousel-image" src="https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=facearea&w=400&h=400&q=80" alt="Student 2" style="display:none;">
+                    <img class="circle-carousel-image" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=facearea&w=400&h=400&q=80" alt="Woman 1" style="display:none;">
+                    <img class="circle-carousel-image" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=facearea&w=400&h=400&q=80" alt="Woman 2" style="display:none;">
+                    <div class="circle-carousel-dots">
+                        <span class="circle-carousel-dot active"></span>
+                        <span class="circle-carousel-dot"></span>
+                        <span class="circle-carousel-dot"></span>
+                        <span class="circle-carousel-dot"></span>
+                    </div>
+                </div>
+            </div>
             <div class="hero-content">
                 <h1 data-en="Empowering Women and Children, Transforming Communities" data-hi="महिलाओं और बच्चों को सशक्त बनाना, समुदायों का रूपांतरण">Empowering Women and Children, Transforming Communities</h1>
                 <p data-en="Join us in our mission to empower women and children through education, healthcare, skill development, and advocacy programs." data-hi="महिलाओं और बच्चों को शिक्षा, स्वास्थ्य सेवा, कौशल विकास और वकालत कार्यक्रमों के माध्यम से सशक्त बनाने के हमारे मिशन में शामिल हों।">Join us in our mission to empower women and children through education, healthcare, skill development, and advocacy programs.</p>
                 <div class="hero-buttons">
-                    <a href="#donate" class="btn btn-primary" data-en="Donate Now" data-hi="अभी दान करें">Donate Now</a>
+                    <a href="#donate" class="btn btn-primary donate-modal-trigger" data-en="Donate Now" data-hi="अभी दान करें">Donate Now</a>
                     <a href="about.html" class="btn btn-secondary" data-en="Learn More" data-hi="और जानें">Learn More</a>
                 </div>
             </div>
@@ -141,8 +155,8 @@
                 <h2 data-en="Get Involved" data-hi="शामिल हों">Get Involved</h2>
                 <p data-en="Your support helps us continue our vital work in communities around the world." data-hi="आपका समर्थन दुनिया भर के समुदायों में हमारे महत्वपूर्ण कार्य को जारी रखने में मदद करता है।">Your support helps us continue our vital work in communities around the world.</p>
                 <div class="cta-buttons">
-                    <a href="#donate" class="btn btn-primary" data-en="Make a Donation" data-hi="दान करें">Make a Donation</a>
-                    <a href="#volunteer" class="btn btn-outline" data-en="Volunteer" data-hi="स्वयंसेवक बनें">Volunteer</a>
+                    <a href="javascript:void(0)" class="btn btn-primary donate-modal-trigger" data-en="Make a Donation" data-hi="दान करें">Make a Donation</a>
+                    <a href="contact.html" class="btn btn-outline" data-en="Volunteer" data-hi="स्वयंसेवक बनें">Volunteer</a>
                 </div>
             </div>
         </section>
@@ -152,7 +166,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>SAROJ VANDANA WOMEN &amp; CHILDREN EMPOWERMENT SOCIETY</h3>
+                    <h3 class="org-name-footer">SAROJ VANDANA WOMEN &amp; CHILDREN EMPOWERMENT SOCIETY</h3>
                     <p>Empowering women and children through education, healthcare, and advocacy for a more equitable society.</p>
                 </div>
                 <div class="footer-section">
@@ -170,11 +184,20 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 SAROJ VANDANA WOMEN &amp; CHILDREN EMPOWERMENT SOCIETY. All rights reserved.</p>
+                <p class="org-name-copyright">&copy; 2024 SAROJ VANDANA WOMEN &amp; CHILDREN EMPOWERMENT SOCIETY. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="js/script.js"></script>
+    <div id="donationModal" class="donation-modal" style="display:none;">
+        <div class="donation-modal-content">
+            <span class="donation-modal-close" id="donationModalClose">&times;</span>
+            <h2>Donate via QR Code</h2>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=9999999999@upi&pn=SarojVandanaNGO" alt="Donation QR Code" style="width:200px;height:200px;margin:1rem auto;display:block;border-radius:1rem;box-shadow:0 2px 8px rgba(44,62,80,0.10);">
+            <p style="text-align:center;font-size:1.1rem;margin:1rem 0 0 0;">Mobile/UPI: <strong>+91 99999 99999</strong></p>
+            <p style="text-align:center;color:#6c757d;font-size:0.95rem;">Scan the QR code or use the mobile number above to donate via UPI, Paytm, PhonePe, etc.</p>
+        </div>
+    </div>
 </body>
 </html>

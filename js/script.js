@@ -1,6 +1,73 @@
 // Language Translation System
 let currentLanguage = 'en';
 
+// Organization name animation system
+function initOrgNameAnimations() {
+    const orgNames = document.querySelectorAll('.org-name, .org-name-footer, .org-name-copyright');
+    
+    orgNames.forEach((element, index) => {
+        // Alternate between left-to-right and right-to-left animations
+        if (index % 2 === 0) {
+            element.style.animation = 'slideLeftRight 8s ease-in-out infinite';
+        } else {
+            element.style.animation = 'slideRightLeft 8s ease-in-out infinite';
+        }
+        
+        // Add slight delay for staggered effect
+        element.style.animationDelay = `${index * 0.5}s`;
+    });
+}
+
+// Circular Hero Carousel
+function initCircleCarousel() {
+    const images = document.querySelectorAll('.circle-carousel-image');
+    const dots = document.querySelectorAll('.circle-carousel-dot');
+    let current = 0;
+    let interval;
+
+    function showImage(index) {
+        images.forEach((img, i) => {
+            img.style.display = i === index ? 'block' : 'none';
+            img.style.opacity = i === index ? '1' : '0';
+        });
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+        current = index;
+    }
+
+    function nextImage() {
+        let next = (current + 1) % images.length;
+        showImage(next);
+    }
+
+    function startCarousel() {
+        interval = setInterval(nextImage, 3000);
+    }
+
+    function stopCarousel() {
+        clearInterval(interval);
+    }
+
+    dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+            showImage(i);
+            stopCarousel();
+            startCarousel();
+        });
+    });
+
+    showImage(0);
+    startCarousel();
+
+    // Pause on hover
+    const carousel = document.querySelector('.circle-carousel');
+    if (carousel) {
+        carousel.addEventListener('mouseenter', stopCarousel);
+        carousel.addEventListener('mouseleave', startCarousel);
+    }
+}
+
 // Translation functionality
 function translatePage(language) {
     currentLanguage = language;
@@ -29,6 +96,13 @@ function translatePage(language) {
 
 // Mobile Navigation Toggle
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize organization name animations
+    initOrgNameAnimations();
+    // Initialize circular hero carousel
+    if (document.querySelector('.circle-carousel')) {
+        initCircleCarousel();
+    }
+    
     // Language Toggle Setup
     const langToggle = document.getElementById('langToggle');
     if (langToggle) {
@@ -232,6 +306,32 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.querySelector('.carousel')) {
         initCarousel();
     }
+
+    // Donation Modal Logic
+    const donationModal = document.getElementById('donationModal');
+    const donationModalClose = document.getElementById('donationModalClose');
+    // Find all donate modal trigger buttons
+    const donateButtons = document.querySelectorAll('.donate-modal-trigger');
+    donateButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            // Only open modal for visible donate buttons
+            if (btn.offsetParent !== null) {
+                e.preventDefault();
+                donationModal.style.display = 'flex';
+            }
+        });
+    });
+    if (donationModalClose) {
+        donationModalClose.addEventListener('click', function() {
+            donationModal.style.display = 'none';
+        });
+    }
+    // Close modal when clicking outside content
+    donationModal.addEventListener('click', function(e) {
+        if (e.target === donationModal) {
+            donationModal.style.display = 'none';
+        }
+    });
 });
 
 // Helper Functions
