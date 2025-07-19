@@ -253,12 +253,155 @@ document.addEventListener('DOMContentLoaded', function() {
         typeWriter(heroTitle, originalText, 50);
     }
 
+    // S3 Image Integration
+    async function loadS3Images() {
+        try {
+            const response = await fetch('/api/images');
+            const data = await response.json();
+            
+            if (data.success && data.images.length > 0) {
+                // Update hero carousel with S3 images
+                updateHeroCarousel(data.images.filter(img => img.category === 'hero'));
+                
+                // Update circle carousel with S3 images
+                updateCircleCarousel(data.images.filter(img => img.category === 'circle'));
+                
+                // Update gallery with S3 images
+                updateGalleryImages(data.images.filter(img => img.category === 'gallery'));
+                
+                // Update team images
+                updateTeamImages(data.images.filter(img => img.category === 'team'));
+                
+                // Update program images
+                updateProgramImages(data.images.filter(img => img.category === 'programs'));
+            }
+        } catch (error) {
+            console.log('S3 images not available, using static images');
+        }
+    }
+
+    function updateHeroCarousel(heroImages) {
+        if (heroImages.length === 0) return;
+        
+        const carouselContainer = document.querySelector('.carousel-container');
+        if (!carouselContainer) return;
+        
+        // Clear existing images
+        carouselContainer.innerHTML = '';
+        
+        // Add S3 images
+        heroImages.forEach((image, index) => {
+            const imgElement = document.createElement('img');
+            imgElement.src = image.url;
+            imgElement.alt = image.description || `Hero image ${index + 1}`;
+            imgElement.className = 'carousel-image';
+            imgElement.style.display = index === 0 ? 'block' : 'none';
+            carouselContainer.appendChild(imgElement);
+        });
+        
+        // Update dots
+        const dotsContainer = document.querySelector('.carousel-dots');
+        if (dotsContainer) {
+            dotsContainer.innerHTML = '';
+            heroImages.forEach((_, index) => {
+                const dot = document.createElement('button');
+                dot.className = `carousel-dot ${index === 0 ? 'active' : ''}`;
+                dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+                dotsContainer.appendChild(dot);
+            });
+        }
+        
+        // Reinitialize carousel
+        initCarousel();
+    }
+
+    function updateCircleCarousel(circleImages) {
+        if (circleImages.length === 0) return;
+        
+        const circleContainer = document.querySelector('.circle-carousel-container');
+        if (!circleContainer) return;
+        
+        // Clear existing images
+        circleContainer.innerHTML = '';
+        
+        // Add S3 images
+        circleImages.forEach((image, index) => {
+            const imgElement = document.createElement('img');
+            imgElement.src = image.url;
+            imgElement.alt = image.description || `Circle image ${index + 1}`;
+            imgElement.className = 'circle-carousel-image';
+            imgElement.style.display = index === 0 ? 'block' : 'none';
+            circleContainer.appendChild(imgElement);
+        });
+        
+        // Update dots
+        const circleDotsContainer = document.querySelector('.circle-carousel-dots');
+        if (circleDotsContainer) {
+            circleDotsContainer.innerHTML = '';
+            circleImages.forEach((_, index) => {
+                const dot = document.createElement('button');
+                dot.className = `circle-carousel-dot ${index === 0 ? 'active' : ''}`;
+                dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+                circleDotsContainer.appendChild(dot);
+            });
+        }
+    }
+
+    function updateGalleryImages(galleryImages) {
+        if (galleryImages.length === 0) return;
+        
+        const galleryContainer = document.querySelector('.image-gallery');
+        if (!galleryContainer) return;
+        
+        // Clear existing images
+        galleryContainer.innerHTML = '';
+        
+        // Add S3 images
+        galleryImages.forEach(image => {
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item';
+            galleryItem.innerHTML = `
+                <img src="${image.url}" alt="${image.description || 'Gallery image'}" loading="lazy">
+                <div class="gallery-overlay">
+                    <h4>${image.description || 'Gallery Image'}</h4>
+                </div>
+            `;
+            galleryContainer.appendChild(galleryItem);
+        });
+    }
+
+    function updateTeamImages(teamImages) {
+        if (teamImages.length === 0) return;
+        
+        const teamMembers = document.querySelectorAll('.team-member img');
+        teamImages.forEach((image, index) => {
+            if (teamMembers[index]) {
+                teamMembers[index].src = image.url;
+                teamMembers[index].alt = image.description || `Team member ${index + 1}`;
+            }
+        });
+    }
+
+    function updateProgramImages(programImages) {
+        if (programImages.length === 0) return;
+        
+        const programCards = document.querySelectorAll('.program-card img');
+        programImages.forEach((image, index) => {
+            if (programCards[index]) {
+                programCards[index].src = image.url;
+                programCards[index].alt = image.description || `Program ${index + 1}`;
+            }
+        });
+    }
+
     // Carousel Functionality
     function initCarousel() {
         const images = document.querySelectorAll('.carousel-image');
         const dots = document.querySelectorAll('.carousel-dot');
         let current = 0;
         let interval;
+
+        if (images.length === 0) return;
 
         function showImage(index) {
             images.forEach((img, i) => {
@@ -303,9 +446,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    if (document.querySelector('.carousel')) {
-        initCarousel();
-    }
+    // Load S3 images on page load
+    loadS3Images().then(() => {
+        // Initialize carousels after S3 images are loaded
+        if (document.querySelector('.carousel')) {
+            initCarousel();
+        }
+    });
 
     // Donation Modal Logic
     const donationModal = document.getElementById('donationModal');
