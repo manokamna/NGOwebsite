@@ -41,125 +41,92 @@
     </nav>
 
     <main>
-        <section class="hero">
-            <div class="hero-circle-carousel">
-                <div class="circle-carousel">
-                    <img class="circle-carousel-image" src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=facearea&w=400&h=400&q=80" alt="Student 1" style="display:block;">
-                    <img class="circle-carousel-image" src="https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=facearea&w=400&h=400&q=80" alt="Student 2" style="display:none;">
-                    <img class="circle-carousel-image" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=facearea&w=400&h=400&q=80" alt="Woman 1" style="display:none;">
-                    <img class="circle-carousel-image" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=facearea&w=400&h=400&q=80" alt="Woman 2" style="display:none;">
-                    <div class="circle-carousel-dots">
-                        <span class="circle-carousel-dot active"></span>
-                        <span class="circle-carousel-dot"></span>
-                        <span class="circle-carousel-dot"></span>
-                        <span class="circle-carousel-dot"></span>
+        <!-- Flashy Hero Section with Animated Background -->
+        <section class="hero-flashy" style="position: relative; min-height: 75vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); overflow: hidden; display: flex; align-items: center;">
+            <!-- Animated Background Elements -->
+            <div class="animated-bg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
+                <div class="floating-shape shape-1" style="position: absolute; top: 20%; left: 10%; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: floatUpDown 6s ease-in-out infinite;"></div>
+                <div class="floating-shape shape-2" style="position: absolute; top: 60%; right: 15%; width: 150px; height: 150px; background: rgba(255,255,255,0.08); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; animation: floatUpDown 8s ease-in-out infinite reverse;"></div>
+                <div class="floating-shape shape-3" style="position: absolute; bottom: 20%; left: 20%; width: 80px; height: 80px; background: rgba(255,255,255,0.12); border-radius: 20px; animation: rotate360 15s linear infinite;"></div>
+                <div class="particle-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
+            </div>
+            
+            <!-- Glassmorphism Content Container -->
+            <div class="container" style="position: relative; z-index: 2; display: flex; align-items: center; gap: 1.5rem; padding: 0 1rem; max-width: 100%; margin: 0; width: 100%;">
+                <div class="hero-content-flashy" style="flex: 1; max-width: 800px; background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); padding: 4rem; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: center; min-height: 550px;">
+                    <div class="hero-badge" style="display: inline-block; background: rgba(255,255,255,0.2); color: white; padding: 0.6rem 2rem; border-radius: 50px; font-size: 1rem; font-weight: 600; letter-spacing: 1px; margin-bottom: 2.5rem; backdrop-filter: blur(10px);" data-en="✨ EMPOWERMENT THROUGH ACTION" data-hi="✨ कार्य के माध्यम से सशक्तिकरण">✨ EMPOWERMENT THROUGH ACTION</div>
+                    
+                    <h1 class="hero-title-animated" style="font-size: 3.4rem; line-height: 1.1; font-weight: 800; margin-bottom: 2.5rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                        <span class="word-reveal" style="display: block; opacity: 0; transform: translateY(50px); animation: wordReveal 1s ease-out 0.5s forwards;" data-en="Empowering Women and Children" data-hi="महिलाओं और बच्चों को सशक्त बनाना">Empowering Women and Children</span>
+                        <span class="word-reveal" style="display: block; opacity: 0; transform: translateY(50px); animation: wordReveal 1s ease-out 1s forwards; background: linear-gradient(45deg, #ffd700, #ffed4e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;" data-en="Building Stronger Communities" data-hi="मजबूत समुदाय का निर्माण">Building Stronger Communities</span>
+                    </h1>
+                    
+                    <p class="hero-description" style="font-size: 1.4rem; line-height: 1.7; color: rgba(255,255,255,0.9); margin-bottom: 3rem; opacity: 0; animation: fadeInUp 1s ease-out 1.5s forwards;" data-en="Creating lasting change through comprehensive skill development, education, healthcare, and empowerment programs that foster independence, dignity, and sustainable growth for rural communities." data-hi="व्यापक कौशल विकास, शिक्षा, स्वास्थ्य देखभाल और सशक्तिकरण कार्यक्रमों के माध्यम से स्थायी परिवर्तन लाना जो ग्रामीण समुदायों के लिए स्वतंत्रता, गरिमा और टिकाऊ विकास को बढ़ावा देता है।">Creating lasting change through comprehensive skill development, education, healthcare, and empowerment programs that foster independence, dignity, and sustainable growth for rural communities.</p>
+                    
+                    <div class="hero-buttons-flashy" style="display: flex; gap: 1.5rem; opacity: 0; animation: fadeInUp 1s ease-out 2s forwards;">
+                        <a href="#donate" class="btn-flashy btn-primary-flashy donate-modal-trigger" style="background: linear-gradient(45deg, #ff6b6b, #ee5a24); color: white; padding: 1.3rem 3.5rem; border: none; border-radius: 50px; font-weight: 600; text-decoration: none; position: relative; overflow: hidden; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(238, 90, 36, 0.3); font-size: 1.2rem;" data-en="🚀 Donate Now" data-hi="🚀 अभी दान करें">🚀 Donate Now</a>
+                        <a href="about.html" class="btn-flashy btn-secondary-flashy" style="background: rgba(255,255,255,0.2); color: white; padding: 1.3rem 3.5rem; border: 2px solid rgba(255,255,255,0.3); border-radius: 50px; font-weight: 600; text-decoration: none; backdrop-filter: blur(10px); transition: all 0.3s ease; font-size: 1.2rem;" data-en="✨ Learn More" data-hi="✨ और जानें">✨ Learn More</a>
                     </div>
                 </div>
-            </div>
-            <div class="hero-content">
-                <h1 data-en="Empowering Women and Children, Transforming Communities" data-hi="महिलाओं और बच्चों को सशक्त बनाना, समुदायों का रूपांतरण">Empowering Women and Children, Transforming Communities</h1>
-                <p data-en="Join us in our mission to empower women and children through education, healthcare, skill development, and advocacy programs." data-hi="महिलाओं और बच्चों को शिक्षा, स्वास्थ्य सेवा, कौशल विकास और वकालत कार्यक्रमों के माध्यम से सशक्त बनाने के हमारे मिशन में शामिल हों।">Join us in our mission to empower women and children through education, healthcare, skill development, and advocacy programs.</p>
-                <div class="hero-buttons">
-                    <a href="#donate" class="btn btn-primary donate-modal-trigger" data-en="Donate Now" data-hi="अभी दान करें">Donate Now</a>
-                    <a href="about.html" class="btn btn-secondary" data-en="Learn More" data-hi="और जानें">Learn More</a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <!-- Image Carousel: Example images, replace URLs with your own later -->
-                <div class="carousel">
-                    <img class="carousel-image" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Community helping hands 1" style="display:block;">
-                    <img class="carousel-image" src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80" alt="Community helping hands 2" style="display:none;">
-                    <img class="carousel-image" src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80" alt="Community helping hands 3" style="display:none;">
-                    <!-- Kids studying -->
-                    <img class="carousel-image" src="https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=800&q=80" alt="Kids studying" style="display:none;">
-                    <!-- Women doing art/handicraft work -->
-                    <img class="carousel-image" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80" alt="Women doing art work" style="display:none;">
-                    <div class="carousel-dots">
-                        <span class="carousel-dot active"></span>
-                        <span class="carousel-dot"></span>
-                        <span class="carousel-dot"></span>
-                        <span class="carousel-dot"></span>
-                        <span class="carousel-dot"></span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="mission">
-            <div class="container">
-                <h2 data-en="Our Mission" data-hi="हमारा मिशन">Our Mission</h2>
-                <p data-en="To empower women and children through comprehensive programs that promote education, health, skill development, and gender equality for sustainable community transformation." data-hi="महिलाओं और बच्चों को व्यापक कार्यक्रमों के माध्यम से सशक्त बनाना जो शिक्षा, स्वास्थ्य, कौशल विकास और लैंगिक समानता को बढ़ावा देते हैं और स्थायी सामुदायिक रूपांतरण के लिए काम करते हैं।">To empower women and children through comprehensive programs that promote education, health, skill development, and gender equality for sustainable community transformation.</p>
-                <p>Saroj Vandana Children and Women Development is dedicated to empowering rural women and girls through skill-based training, health awareness, and livelihood opportunities. We strive to uplift communities by providing access to education, vocational skills, healthcare, and sustainable employment—fostering dignity, independence, and self-reliance among women and children.</p>
-            </div>
-        </section>
-
-        <section class="programs-preview">
-            <div class="container">
-                <h2 data-en="Our Programs" data-hi="हमारे कार्यक्रम">Our Programs</h2>
-                <div class="programs-grid">
-                    <div class="program-card">
-                        <div class="program-icon">👗</div>
-                        <h3>Clothing Distribution</h3>
-                        <p>Providing clothes to women and girls (Donated by villagers through collection).</p>
-                    </div>
-                    <div class="program-card">
-                        <div class="program-icon">👜</div>
-                        <h3>Handicraft Training</h3>
-                        <p>Training women and girls in handicrafts like bags, shoes, etc. through skilled instructors.</p>
-                    </div>
-                    <div class="program-card">
-                        <div class="program-icon">🐄</div>
-                        <h3>Dairy, Poultry & Goat Farming</h3>
-                        <p>Providing training in dairy, poultry, and goat farming to women and girls by skilled experts.</p>
-                    </div>
-                    <div class="program-card">
-                        <div class="program-icon">🩺</div>
-                        <h3>Awareness & Medical Camps</h3>
-                        <p>Organizing awareness programs and free medical camps for rural women through skilled doctors.</p>
-                    </div>
-                    <div class="program-card">
-                        <div class="program-icon">💻</div>
-                        <h3>Technical Knowledge</h3>
-                        <p>Providing technical knowledge to rural women through trained teachers.</p>
-                    </div>
-                    <div class="program-card">
-                        <div class="program-icon">👩‍⚕️</div>
-                        <h3>Health Counseling</h3>
-                        <p>Arranging health counseling and information for rural women through trained doctors.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="pink-city-jaipur" style="background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%); border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(44,62,80,0.08); margin: 2rem 0; padding: 3rem 2rem;">
-            <div class="container">
-                <div style="display: flex; align-items: center; gap: 3rem; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 300px;">
-                        <h2 style="font-family: 'Playfair Display', serif; color: #2c3e50; font-size: 2.2rem; margin-bottom: 1rem;" data-en="Pink City Jaipur" data-hi="गुलाबी शहर जयपुर">Pink City Jaipur</h2>
-                        <p style="color: #6c757d; font-size: 1.1rem; line-height: 1.7; margin-bottom: 1.5rem;" data-en="Welcome to the enchanting Pink City of Jaipur, the capital of Rajasthan. Known for its stunning pink-hued buildings, rich cultural heritage, and magnificent palaces, Jaipur is a city that beautifully blends tradition with modernity. From the iconic Hawa Mahal to the majestic Amber Fort, every corner of this historic city tells a story of royal grandeur and architectural brilliance." data-hi="राजस्थान की राजधानी जयपुर के मनमोहक गुलाबी शहर में आपका स्वागत है। अपने आकर्षक गुलाबी रंग की इमारतों, समृद्ध सांस्कृतिक विरासत और भव्य महलों के लिए प्रसिद्ध, जयपुर एक ऐसा शहर है जो परंपरा को आधुनिकता के साथ सुंदर तरीके से जोड़ता है। प्रतिष्ठित हवा महल से लेकर भव्य आमेर किले तक, इस ऐतिहासिक शहर का हर कोना राजसी भव्यता और वास्तुकला की चमक की कहानी कहता है।">Welcome to the enchanting Pink City of Jaipur, the capital of Rajasthan. Known for its stunning pink-hued buildings, rich cultural heritage, and magnificent palaces, Jaipur is a city that beautifully blends tradition with modernity. From the iconic Hawa Mahal to the majestic Amber Fort, every corner of this historic city tells a story of royal grandeur and architectural brilliance.</p>
-                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                            <span style="background: #e8f4fd; color: #2c3e50; padding: 0.5rem 1rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 500;">🏰 Historical Heritage</span>
-                            <span style="background: #e8f4fd; color: #2c3e50; padding: 0.5rem 1rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 500;">🎨 Cultural Richness</span>
-                            <span style="background: #e8f4fd; color: #2c3e50; padding: 0.5rem 1rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 500;">🏛️ Architectural Marvels</span>
+                
+                <div class="hero-visual-flashy" style="flex: 1; max-width: none; width: 100%; position: relative;">
+                    <!-- Interactive 3D Card Effect -->
+                    <div class="image-card-3d" style="position: relative; perspective: 1000px; width: 100%;">
+                        <div class="carousel-flashy" style="transform-style: preserve-3d; transition: transform 0.6s ease; border-radius: 25px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.2); position: relative; width: 100%; height: 550px; background: linear-gradient(45deg, rgba(255,255,255,0.05), rgba(255,255,255,0.1));">
+                            <div class="carousel-loading-flashy" style="display: flex; align-items: center; justify-content: center; height: 550px; background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2)); backdrop-filter: blur(20px); color: white; font-size: 1.1rem; border-radius: 25px; position: absolute; top: 0; left: 0; width: 100%; z-index: 2;">
+                                <div class="loading-spinner" style="width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 1rem;"></div>
+                                Loading amazing content...
+                            </div>
+                            <div class="carousel-dots-flashy" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10;"></div>
                         </div>
                     </div>
-                    <div style="flex: 0 0 400px; min-width: 300px;">
-                        <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80" alt="Pink City Jaipur - Hawa Mahal" style="width: 100%; height: 280px; object-fit: cover; border-radius: 0.75rem; box-shadow: 0 4px 16px rgba(44,62,80,0.15);">
+                </div>
+            </div>
+        </section>
+
+        <section class="mission" style="padding: 5rem 0; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); position: relative; overflow: hidden;">
+            <!-- Decorative elements -->
+            <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+            <div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+            
+            <div class="container" style="position: relative; z-index: 2;">
+                <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+                    <h2 style="font-size: 2.8rem; font-weight: 700; color: #2d3748; margin-bottom: 2rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);" data-en="Our Mission" data-hi="हमारा मिशन">Our Mission</h2>
+                    <div style="background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                        <p style="font-size: 1.3rem; color: #4a5568; line-height: 1.8; margin-bottom: 1.5rem; font-weight: 500;" data-en="To empower women and children through comprehensive programs that promote education, health, skill development, and gender equality for sustainable community transformation." data-hi="महिलाओं और बच्चों को व्यापक कार्यक्रमों के माध्यम से सशक्त बनाना जो शिक्षा, स्वास्थ्य, कौशल विकास और लैंगिक समानता को बढ़ावा देते हैं और स्थायी सामुदायिक रूपांतरण के लिए काम करते हैं।">To empower women and children through comprehensive programs that promote education, health, skill development, and gender equality for sustainable community transformation.</p>
+                        <p style="font-size: 1.1rem; color: #5a6c7d; line-height: 1.7; margin: 0;" data-en="Saroj Vandana Children and Women Development is dedicated to empowering rural women and girls through skill-based training, health awareness, and livelihood opportunities. We strive to uplift communities by providing access to education, vocational skills, healthcare, and sustainable employment—fostering dignity, independence, and self-reliance among women and children." data-hi="सरोज वंदना चिल्ड्रन एंड वुमन डेवलपमेंट कौशल-आधारित प्रशिक्षण, स्वास्थ्य जागरूकता और आजीविका के अवसरों के माध्यम से ग्रामीण महिलाओं और लड़कियों को सशक्त बनाने के लिए समर्पित है। हम शिक्षा, व्यावसायिक कौशल, स्वास्थ्य सेवा और टिकाऊ रोजगार तक पहुंच प्रदान करके समुदायों को उत्थान करने का प्रयास करते हैं—महिलाओं और बच्चों के बीच गरिमा, स्वतंत्रता और आत्मनिर्भरता को बढ़ावा देते हैं।">Saroj Vandana Children and Women Development is dedicated to empowering rural women and girls through skill-based training, health awareness, and livelihood opportunities. We strive to uplift communities by providing access to education, vocational skills, healthcare, and sustainable employment—fostering dignity, independence, and self-reliance among women and children.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="cta">
-            <div class="container">
-                <h2 data-en="Get Involved" data-hi="शामिल हों">Get Involved</h2>
-                <p data-en="Your support helps us continue our vital work in communities around the world." data-hi="आपका समर्थन दुनिया भर के समुदायों में हमारे महत्वपूर्ण कार्य को जारी रखने में मदद करता है।">Your support helps us continue our vital work in communities around the world.</p>
-                <div class="cta-buttons">
-                    <a href="javascript:void(0)" class="btn btn-primary donate-modal-trigger" data-en="Make a Donation" data-hi="दान करें">Make a Donation</a>
-                    <a href="contact.html" class="btn btn-outline" data-en="Volunteer" data-hi="स्वयंसेवक बनें">Volunteer</a>
+        <section class="programs-showcase" style="padding: 6rem 0; background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%); color: white; position: relative; overflow: hidden;">
+            <!-- Professional decorative elements -->
+            <div style="position: absolute; top: -80px; right: -80px; width: 200px; height: 200px; background: rgba(255,255,255,0.03); border-radius: 50%; backdrop-filter: blur(2px);"></div>
+            <div style="position: absolute; bottom: -120px; left: -120px; width: 280px; height: 280px; background: rgba(255,255,255,0.02); border-radius: 50%;"></div>
+            <div style="position: absolute; top: 50%; left: 10%; width: 1px; height: 60%; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent);"></div>
+            <div style="position: absolute; top: 30%; right: 8%; width: 1px; height: 40%; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.08), transparent);"></div>
+            
+            <div class="container" style="position: relative; z-index: 2;">
+                <div style="text-align: center; margin-bottom: 5rem;">
+                    <div style="display: inline-block; padding: 0.8rem 2.5rem; background: rgba(255,255,255,0.1); border-radius: 50px; margin-bottom: 2.5rem; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+                        <span style="font-size: 1.1rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.9);" data-en="Skills & Training" data-hi="कौशल और प्रशिक्षण">Skills & Training</span>
+                    </div>
+                    <p style="font-size: 1.2rem; color: rgba(255,255,255,0.8); max-width: 650px; margin: 0 auto; line-height: 1.7; font-weight: 300;" data-en="Comprehensive skill development initiatives designed to empower women and children through education, arts, technology, and wellness programs" data-hi="महिलाओं और बच्चों को शिक्षा, कला, प्रौद्योगिकी और कल्याण कार्यक्रमों के माध्यम से सशक्त बनाने के लिए डिज़ाइन की गई व्यापक कौशल विकास पहल">Comprehensive skill development initiatives designed to empower women and children through education, arts, technology, and wellness programs</p>
+                </div>
+                
+                <!-- Word Cloud Container -->
+                <div id="programs-word-cloud" style="min-height: 500px; width: 100%; max-width: 1000px; margin: 0 auto 3rem auto; display: flex; align-items: center; justify-content: center; position: relative;">
+                    <!-- Words will be dynamically positioned here -->
+                </div>
+                
+                <!-- Professional Call to Action -->
+                <div style="text-align: center;">
+                    <a href="programs.html" class="btn" style="background: rgba(255,255,255,0.95); color: #2c3e50; padding: 1.2rem 3rem; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.2); letter-spacing: 0.5px; text-transform: uppercase; box-shadow: 0 8px 25px rgba(0,0,0,0.1);" data-en="Explore All Programs" data-hi="सभी कार्यक्रम देखें">Explore All Programs</a>
                 </div>
             </div>
         </section>
+
     </main>
 
     <footer class="footer">
@@ -190,6 +157,756 @@
     </footer>
 
     <script src="js/script.js"></script>
+    
+    <!-- Enhanced animations and interactions -->
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(102, 126, 234, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+        
+        .hero-buttons .btn {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-buttons .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .hero-buttons .btn-primary:hover {
+            animation: pulse 2s infinite;
+        }
+        
+        .hero-image .carousel {
+            transition: transform 0.3s ease;
+        }
+        
+        .hero-image .carousel:hover {
+            transform: scale(1.02);
+        }
+        
+        
+        .mission:hover {
+            transform: translateY(-2px);
+            transition: transform 0.3s ease;
+        }
+        
+        /* Flashy Animations and Effects */
+        @keyframes floatUpDown {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(5deg); }
+            50% { transform: translateY(-10px) rotate(0deg); }
+            75% { transform: translateY(-15px) rotate(-5deg); }
+        }
+        
+        @keyframes rotate360 {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes wordReveal {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Interactive Button Effects */
+        .btn-flashy {
+            position: relative;
+            overflow: hidden;
+            transform: translateY(0);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .btn-flashy::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .btn-flashy:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary-flashy:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(238, 90, 36, 0.4);
+            background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+        }
+        
+        .btn-secondary-flashy:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.6);
+            box-shadow: 0 15px 30px rgba(255,255,255,0.2);
+        }
+        
+        /* 3D Card Hover Effect */
+        .image-card-3d:hover .carousel-flashy {
+            transform: rotateY(5deg) rotateX(5deg);
+        }
+        
+        /* Glassmorphism hover effects */
+        .hero-content-flashy:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-5px);
+        }
+        
+        /* Particle Animation */
+        .particle {
+            position: absolute;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 8s linear infinite;
+        }
+        
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero-flashy {
+                min-height: 100vh;
+                padding: 1rem;
+            }
+            
+            .hero-flashy .container {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .hero-content-flashy {
+                padding: 2rem !important;
+            }
+            
+            .hero-visual-flashy {
+                flex: none !important;
+                width: 100% !important;
+                max-width: 400px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem !important;
+                margin-bottom: 1rem !important;
+                line-height: 1.15 !important;
+                white-space: normal !important;
+                word-wrap: break-word !important;
+            }
+            
+            .hero p {
+                font-size: 1.1rem !important;
+                padding: 0 1rem !important;
+                white-space: normal !important;
+                word-wrap: break-word !important;
+            }
+            
+            .hero-buttons {
+                flex-direction: column !important;
+                gap: 1rem !important;
+                align-items: center !important;
+            }
+            
+            .hero-buttons .btn {
+                width: 200px !important;
+                text-align: center !important;
+            }
+            
+            .mission {
+                padding: 3rem 0 !important;
+            }
+            
+            .mission h2 {
+                font-size: 2.2rem !important;
+            }
+            
+            .mission p {
+                font-size: 1rem !important;
+                padding: 0 1rem !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem !important;
+                line-height: 1.15 !important;
+                white-space: normal !important;
+                word-wrap: break-word !important;
+                overflow-wrap: break-word !important;
+            }
+            
+            .hero p {
+                font-size: 1rem !important;
+                white-space: normal !important;
+                word-wrap: break-word !important;
+                overflow-wrap: break-word !important;
+            }
+            
+            .mission h2 {
+                font-size: 1.8rem !important;
+            }
+            
+            .mission div[style*="backdrop-filter"] {
+                padding: 2rem !important;
+                border-radius: 15px !important;
+            }
+        }
+    </style>
+    
+    <script>
+        // Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe elements for animation
+            document.querySelectorAll('.hero, .mission').forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px)';
+                element.style.transition = 'all 0.8s ease-out';
+                observer.observe(element);
+            });
+            
+            // Add smooth scrolling
+            document.documentElement.style.scrollBehavior = 'smooth';
+            
+            // Enhanced button interactions
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Add ripple effect to buttons
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${size}px;
+                        height: ${size}px;
+                        left: ${x}px;
+                        top: ${y}px;
+                        background: rgba(255,255,255,0.4);
+                        border-radius: 50%;
+                        transform: scale(0);
+                        animation: ripple 0.6s ease-out;
+                        pointer-events: none;
+                    `;
+                    
+                    this.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+            
+            // Add typing animation to hero text
+            const heroTitle = document.querySelector('.hero h1');
+            if (heroTitle) {
+                heroTitle.style.overflow = 'hidden';
+                heroTitle.style.whiteSpace = 'nowrap';
+                heroTitle.style.borderRight = '3px solid rgba(255,255,255,0.8)';
+                heroTitle.style.animation = 'typing 3s steps(40, end), blink-caret 0.75s step-end infinite';
+            }
+            
+            // Initialize word cloud
+            initProgramsWordCloud();
+            
+            // Initialize flashy interactions
+            initFlashyEffects();
+        });
+        
+        // Programs Word Cloud Functionality
+        function initProgramsWordCloud() {
+            const wordCloudContainer = document.getElementById('programs-word-cloud');
+            if (!wordCloudContainer) return;
+            
+            // Professional word cloud data with sophisticated color scheme
+            const programWords = [
+                // Classical Dance - Elegant purples and golds
+                { en: 'Classical Dance', hi: 'शास्त्रीय नृत्य', category: 'dance', size: 3.2, color: '#8B5A3C', weight: 'bold' },
+                { en: 'Bharatanatyam', hi: 'भरतनाट्यम्', category: 'dance', size: 1.8, color: '#A0522D', weight: '600' },
+                { en: 'Kathak', hi: 'कथक', category: 'dance', size: 1.6, color: '#CD853F', weight: '500' },
+                { en: 'Cultural Heritage', hi: 'सांस्कृतिक विरासत', category: 'dance', size: 1.4, color: '#DEB887', weight: '500' },
+                
+                // Classical Music - Professional blues
+                { en: 'Classical Music', hi: 'शास्त्रीय संगीत', category: 'music', size: 3.0, color: '#2E5266', weight: 'bold' },
+                { en: 'Ragas', hi: 'राग', category: 'music', size: 1.7, color: '#4682B4', weight: '600' },
+                { en: 'Vocals', hi: 'गायन', category: 'music', size: 1.5, color: '#5F9EA0', weight: '500' },
+                { en: 'Instruments', hi: 'वाद्य यंत्र', category: 'music', size: 1.3, color: '#708090', weight: '500' },
+                
+                // Yoga - Calm greens
+                { en: 'Yoga', hi: 'योग', category: 'yoga', size: 3.4, color: '#2E8B57', weight: 'bold' },
+                { en: 'Meditation', hi: 'ध्यान', category: 'yoga', size: 2.0, color: '#3CB371', weight: '600' },
+                { en: 'Asanas', hi: 'आसन', category: 'yoga', size: 1.6, color: '#66CDAA', weight: '500' },
+                { en: 'Wellness', hi: 'कल्याण', category: 'yoga', size: 1.4, color: '#8FBC8F', weight: '500' },
+                
+                // Robotics - Tech grays and blues
+                { en: 'Robotics', hi: 'रोबोटिक्स', category: 'robotics', size: 2.8, color: '#36454F', weight: 'bold' },
+                { en: 'Programming', hi: 'प्रोग्रामिंग', category: 'robotics', size: 1.8, color: '#4F4F4F', weight: '600' },
+                { en: 'STEM', hi: 'विज्ञान तकनीक', category: 'robotics', size: 1.5, color: '#696969', weight: '500' },
+                { en: 'Innovation', hi: 'नवाचार', category: 'robotics', size: 1.3, color: '#778899', weight: '500' },
+                
+                // Hand Embroidery - Elegant magentas
+                { en: 'Hand Embroidery', hi: 'हस्त कढ़ाई', category: 'embroidery', size: 2.6, color: '#8B4789', weight: 'bold' },
+                { en: 'Handicrafts', hi: 'हस्तशिल्प', category: 'embroidery', size: 1.7, color: '#9370DB', weight: '600' },
+                { en: 'Traditional Art', hi: 'पारंपरिक कला', category: 'embroidery', size: 1.4, color: '#BA55D3', weight: '500' },
+                { en: 'Skills Development', hi: 'कौशल विकास', category: 'embroidery', size: 1.2, color: '#DDA0DD', weight: '500' },
+                
+                // Aerobics - Energetic oranges and reds
+                { en: 'Aerobics', hi: 'एरोबिक्स', category: 'aerobics', size: 2.8, color: '#B22222', weight: 'bold' },
+                { en: 'Fitness', hi: 'फिटनेस', category: 'aerobics', size: 1.8, color: '#CD5C5C', weight: '600' },
+                { en: 'Health', hi: 'स्वास्थ्य', category: 'aerobics', size: 1.6, color: '#D2691E', weight: '500' },
+                { en: 'Wellness Training', hi: 'स्वास्थ्य प्रशिक्षण', category: 'aerobics', size: 1.3, color: '#F4A460', weight: '500' }
+            ];
+            
+            // Clear container
+            wordCloudContainer.innerHTML = '';
+            
+            // Keep track of positioned elements to avoid overlaps
+            const positionedElements = [];
+            
+            // Create word elements
+            programWords.forEach((word, index) => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word-cloud-item';
+                
+                // Get current language preference
+                const currentLang = localStorage.getItem('preferredLanguage') || 'en';
+                const displayText = currentLang === 'hi' ? word.hi : word.en;
+                
+                wordElement.textContent = displayText;
+                wordElement.style.cssText = `
+                    position: absolute;
+                    font-size: ${word.size}rem;
+                    font-weight: ${word.weight};
+                    font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+                    color: ${word.color};
+                    cursor: pointer;
+                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                    white-space: nowrap;
+                    user-select: none;
+                    text-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                    letter-spacing: 0.5px;
+                    opacity: 0.9;
+                    animation: fadeInScale 1.2s ease-out ${index * 0.08}s both;
+                    backdrop-filter: blur(0px);
+                    text-rendering: optimizeLegibility;
+                `;
+                
+                // Position words in a wider spiral pattern with better spacing
+                let attempts = 0;
+                let x, y, validPosition = false;
+                
+                do {
+                    const angle = (index * 137.5 + attempts * 25) * (Math.PI / 180);
+                    const baseRadius = 50 + (index * 15) + (attempts * 10);
+                    const maxRadius = 280;
+                    const radius = Math.min(maxRadius, baseRadius);
+                    
+                    // Add some randomness for natural distribution
+                    const randomOffset = (Math.random() - 0.5) * 30;
+                    x = Math.cos(angle) * radius + randomOffset;
+                    y = Math.sin(angle) * radius + randomOffset;
+                    
+                    // Check for overlaps with existing elements
+                    validPosition = true;
+                    const minDistance = word.size * 40; // Minimum distance based on font size
+                    
+                    for (const positioned of positionedElements) {
+                        const distance = Math.sqrt((x - positioned.x) ** 2 + (y - positioned.y) ** 2);
+                        if (distance < minDistance) {
+                            validPosition = false;
+                            break;
+                        }
+                    }
+                    
+                    attempts++;
+                } while (!validPosition && attempts < 20);
+                
+                // Store position for future collision checks
+                positionedElements.push({ x, y, size: word.size });
+                
+                wordElement.style.left = `calc(50% + ${x}px)`;
+                wordElement.style.top = `calc(50% + ${y}px)`;
+                wordElement.style.transform = 'translate(-50%, -50%)';
+                
+                // Add professional hover effects
+                wordElement.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translate(-50%, -50%) scale(1.15)';
+                    this.style.textShadow = '0 4px 15px rgba(0,0,0,0.2)';
+                    this.style.opacity = '1';
+                    this.style.zIndex = '10';
+                    this.style.letterSpacing = '1px';
+                    // Add subtle glow effect
+                    this.style.filter = 'brightness(1.1)';
+                });
+                
+                wordElement.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translate(-50%, -50%) scale(1)';
+                    this.style.textShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                    this.style.opacity = '0.9';
+                    this.style.zIndex = '1';
+                    this.style.letterSpacing = '0.5px';
+                    this.style.filter = 'brightness(1)';
+                });
+                
+                // Add click to navigate to programs page
+                wordElement.addEventListener('click', function() {
+                    window.location.href = 'programs.html';
+                });
+                
+                wordCloudContainer.appendChild(wordElement);
+            });
+            
+            // Add subtle floating animation to word cloud items
+            setTimeout(() => {
+                const wordItems = document.querySelectorAll('.word-cloud-item');
+                wordItems.forEach((item, index) => {
+                    const delay = (index * 0.3) + Math.random() * 2;
+                    const duration = 6 + Math.random() * 3; // Random duration between 6-9 seconds
+                    item.style.animation += `, wordFloat ${duration}s ease-in-out infinite ${delay}s`;
+                });
+            }, 2500);
+        }
+        
+        // Update word cloud when language changes
+        const originalTranslatePage = window.translatePage || function() {};
+        window.translatePage = function(language) {
+            if (typeof originalTranslatePage === 'function') {
+                originalTranslatePage(language);
+            }
+            // Reinitialize word cloud with new language
+            setTimeout(() => {
+                initProgramsWordCloud();
+            }, 100);
+        };
+        
+        // Flashy Interactive Effects
+        function initFlashyEffects() {
+            // Create floating particles
+            createFloatingParticles();
+            
+            // Add mouse movement parallax
+            addMouseParallax();
+            
+            // Add 3D tilt effect to cards
+            add3DTiltEffect();
+            
+            // Add interactive cursor
+            addInteractiveCursor();
+        }
+        
+        function createFloatingParticles() {
+            const particleContainer = document.querySelector('.particle-container');
+            if (!particleContainer) return;
+            
+            function createParticle() {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size and position
+                const size = Math.random() * 4 + 2;
+                const startX = Math.random() * window.innerWidth;
+                const delay = Math.random() * 8;
+                
+                particle.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${startX}px;
+                    animation-delay: ${delay}s;
+                `;
+                
+                particleContainer.appendChild(particle);
+                
+                // Remove particle after animation
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 8000 + delay * 1000);
+            }
+            
+            // Create particles periodically
+            setInterval(createParticle, 300);
+        }
+        
+        function addMouseParallax() {
+            const shapes = document.querySelectorAll('.floating-shape');
+            
+            document.addEventListener('mousemove', (e) => {
+                const mouseX = (e.clientX / window.innerWidth) - 0.5;
+                const mouseY = (e.clientY / window.innerHeight) - 0.5;
+                
+                shapes.forEach((shape, index) => {
+                    const speed = (index + 1) * 0.5;
+                    const x = mouseX * speed * 10;
+                    const y = mouseY * speed * 10;
+                    
+                    shape.style.transform = `translate(${x}px, ${y}px)`;
+                });
+            });
+        }
+        
+        function add3DTiltEffect() {
+            const cards = document.querySelectorAll('.image-card-3d');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = (y - centerY) / 10;
+                    const rotateY = (centerX - x) / 10;
+                    
+                    const carousel = card.querySelector('.carousel-flashy');
+                    carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    const carousel = card.querySelector('.carousel-flashy');
+                    carousel.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                });
+            });
+        }
+        
+        function addInteractiveCursor() {
+            // Create custom cursor
+            const cursor = document.createElement('div');
+            cursor.className = 'custom-cursor';
+            cursor.style.cssText = `
+                position: fixed;
+                width: 20px;
+                height: 20px;
+                background: rgba(255,255,255,0.8);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 9999;
+                mix-blend-mode: difference;
+                transition: transform 0.1s ease;
+            `;
+            document.body.appendChild(cursor);
+            
+            // Update cursor position
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX - 10 + 'px';
+                cursor.style.top = e.clientY - 10 + 'px';
+            });
+            
+            // Scale cursor on interactive elements
+            const interactiveElements = document.querySelectorAll('.btn-flashy, .carousel-flashy');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.style.transform = 'scale(2)';
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursor.style.transform = 'scale(1)';
+                });
+            });
+        }
+        
+        // Add CSS for ripple animation and word cloud
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+            
+            @keyframes typing {
+                from { width: 0; }
+                to { width: 100%; }
+            }
+            
+            @keyframes blink-caret {
+                from, to { border-color: transparent; }
+                50% { border-color: rgba(255,255,255,0.8); }
+            }
+            
+            @keyframes fadeInScale {
+                from {
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(0.8) translateY(20px);
+                }
+                to {
+                    opacity: 0.9;
+                    transform: translate(-50%, -50%) scale(1) translateY(0px);
+                }
+            }
+            
+            @keyframes wordFloat {
+                0%, 100% {
+                    transform: translate(-50%, -50%) translateY(0px);
+                }
+                50% {
+                    transform: translate(-50%, -50%) translateY(-6px);
+                }
+            }
+            
+            .programs-showcase .btn:hover {
+                background: white !important;
+                color: #2c3e50 !important;
+                transform: translateY(-4px) scale(1.02);
+                box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+                letter-spacing: 1px;
+            }
+            
+            .programs-showcase .btn:active {
+                transform: translateY(-2px) scale(0.98);
+                transition: all 0.1s ease;
+            }
+            
+            /* Responsive word cloud */
+            @media (max-width: 768px) {
+                #programs-word-cloud {
+                    min-height: 400px !important;
+                    max-width: 90% !important;
+                    margin-bottom: 2rem !important;
+                }
+                
+                .programs-showcase {
+                    padding: 4rem 0 !important;
+                }
+            }
+            
+            @media (max-width: 480px) {
+                #programs-word-cloud {
+                    min-height: 350px !important;
+                    max-width: 95% !important;
+                }
+                
+                .programs-showcase {
+                    padding: 3rem 0 !important;
+                }
+                
+                .programs-showcase h2 {
+                    font-size: 2.2rem !important;
+                }
+                
+                .programs-showcase p {
+                    font-size: 1rem !important;
+                    padding: 0 1rem !important;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+    
     <div id="donationModal" class="donation-modal" style="display:none;">
         <div class="donation-modal-content">
             <span class="donation-modal-close" id="donationModalClose">&times;</span>
