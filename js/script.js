@@ -18,55 +18,6 @@ function initOrgNameAnimations() {
     });
 }
 
-// Circular Hero Carousel
-function initCircleCarousel() {
-    const images = document.querySelectorAll('.circle-carousel-image');
-    const dots = document.querySelectorAll('.circle-carousel-dot');
-    let current = 0;
-    let interval;
-
-    function showImage(index) {
-        images.forEach((img, i) => {
-            img.style.display = i === index ? 'block' : 'none';
-            img.style.opacity = i === index ? '1' : '0';
-        });
-        dots.forEach((dot, i) => {
-            dot.classList.toggle('active', i === index);
-        });
-        current = index;
-    }
-
-    function nextImage() {
-        let next = (current + 1) % images.length;
-        showImage(next);
-    }
-
-    function startCarousel() {
-        interval = setInterval(nextImage, 3000);
-    }
-
-    function stopCarousel() {
-        clearInterval(interval);
-    }
-
-    dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => {
-            showImage(i);
-            stopCarousel();
-            startCarousel();
-        });
-    });
-
-    showImage(0);
-    startCarousel();
-
-    // Pause on hover
-    const carousel = document.querySelector('.circle-carousel');
-    if (carousel) {
-        carousel.addEventListener('mouseenter', stopCarousel);
-        carousel.addEventListener('mouseleave', startCarousel);
-    }
-}
 
 // Translation functionality
 function translatePage(language) {
@@ -75,9 +26,9 @@ function translatePage(language) {
     
     elementsToTranslate.forEach(element => {
         if (language === 'hi') {
-            element.textContent = element.getAttribute('data-hi');
+            element.innerHTML = element.getAttribute('data-hi');
         } else {
-            element.textContent = element.getAttribute('data-en');
+            element.innerHTML = element.getAttribute('data-en');
         }
     });
     
@@ -98,10 +49,6 @@ function translatePage(language) {
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize organization name animations
     initOrgNameAnimations();
-    // Initialize circular hero carousel
-    if (document.querySelector('.circle-carousel')) {
-        initCircleCarousel();
-    }
     
     // Language Toggle Setup
     const langToggle = document.getElementById('langToggle');
@@ -260,11 +207,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
             
             if (data.success && data.images.length > 0) {
-                // Update hero carousel with S3 images
-                updateHeroCarousel(data.images.filter(img => img.category === 'hero'));
-                
-                // Update circle carousel with S3 images
-                updateCircleCarousel(data.images.filter(img => img.category === 'circle'));
+                // Update hero carousel with random images from all folders
+                updateHeroCarouselWithRandomImages(data.images);
                 
                 // Update gallery with S3 images
                 updateGalleryImages(data.images.filter(img => img.category === 'gallery'));
@@ -274,78 +218,131 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Update program images
                 updateProgramImages(data.images.filter(img => img.category === 'programs'));
+                
+                // Update program-specific galleries
+                loadProgramGalleries(data.images);
+                
+                // Update about page image
+                updateAboutImage(data.images.filter(img => img.category === 'about'));
             }
         } catch (error) {
             console.log('S3 images not available, using static images');
+            // Load fallback images for flashy carousel
+            loadFallbackImages();
         }
     }
 
-    function updateHeroCarousel(heroImages) {
-        if (heroImages.length === 0) return;
+    function updateHeroCarouselWithRandomImages(allImages) {
+        if (allImages.length === 0) return;
         
-        const carouselContainer = document.querySelector('.carousel-container');
-        if (!carouselContainer) return;
+        const carousel = document.querySelector('.carousel-flashy') || document.querySelector('.carousel');
+        if (!carousel) return;
         
-        // Clear existing images
-        carouselContainer.innerHTML = '';
-        
-        // Add S3 images
-        heroImages.forEach((image, index) => {
-            const imgElement = document.createElement('img');
-            imgElement.src = image.url;
-            imgElement.alt = image.description || `Hero image ${index + 1}`;
-            imgElement.className = 'carousel-image';
-            imgElement.style.display = index === 0 ? 'block' : 'none';
-            carouselContainer.appendChild(imgElement);
-        });
-        
-        // Update dots
-        const dotsContainer = document.querySelector('.carousel-dots');
-        if (dotsContainer) {
-            dotsContainer.innerHTML = '';
-            heroImages.forEach((_, index) => {
-                const dot = document.createElement('button');
-                dot.className = `carousel-dot ${index === 0 ? 'active' : ''}`;
-                dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
-                dotsContainer.appendChild(dot);
-            });
+        // Remove loading message
+        const loadingElement = carousel.querySelector('.carousel-loading-flashy') || carousel.querySelector('.carousel-loading');
+        if (loadingElement) {
+            loadingElement.remove();
         }
         
-        // Reinitialize carousel
+        // Shuffle all images randomly
+        const shuffledImages = [...allImages].sort(() => Math.random() - 0.5);
+        
+        // Take first 8-12 random images for variety
+        const numberOfImages = Math.min(Math.max(8, Math.floor(Math.random() * 5) + 8), shuffledImages.length);
+        const selectedImages = shuffledImages.slice(0, numberOfImages);
+        
+        // Clear existing carousel content
+        carousel.innerHTML = '';
+        
+        // Add selected random images
+        selectedImages.forEach((image, index) => {
+            const imgElement = document.createElement('img');
+            imgElement.src = image.url;
+            imgElement.alt = image.description || `NGO Activity ${index + 1}`;
+            imgElement.className = 'carousel-image';
+            imgElement.style.cssText = `
+                display: ${index === 0 ? 'block' : 'none'};
+                width: 100%;
+                height: 450px;
+                object-fit: cover;
+                border-radius: 25px;
+                transition: opacity 0.5s ease;
+                position: absolute;
+                top: 0;
+                left: 0;
+            `;
+            imgElement.loading = 'lazy';
+            
+            // Add error handling
+            imgElement.onerror = function() {
+                this.src = 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=800&q=80';
+            };
+            
+            carousel.appendChild(imgElement);
+        });
+        
+        // Create dots for navigation
+        const dotsContainer = document.querySelector('.carousel-dots-flashy') || document.createElement('div');
+        if (!document.querySelector('.carousel-dots-flashy')) {
+            dotsContainer.className = 'carousel-dots';
+            dotsContainer.style.cssText = `
+                display: flex;
+                justify-content: center;
+                gap: 0.5rem;
+                margin-top: 1rem;
+            `;
+            carousel.appendChild(dotsContainer);
+        }
+        
+        dotsContainer.innerHTML = '';
+        selectedImages.forEach((_, index) => {
+            const dot = document.createElement('button');
+            dot.className = `carousel-dot ${index === 0 ? 'active' : ''}`;
+            dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+            dot.style.cssText = `
+                width: 15px;
+                height: 15px;
+                border-radius: 50%;
+                border: 2px solid rgba(255,255,255,0.6);
+                background: ${index === 0 ? 'rgba(255,255,255,0.9)' : 'transparent'};
+                cursor: pointer;
+                transition: all 0.3s ease;
+                backdrop-filter: blur(10px);
+            `;
+            dotsContainer.appendChild(dot);
+        });
+        
+        // Initialize carousel functionality
         initCarousel();
     }
-
-    function updateCircleCarousel(circleImages) {
-        if (circleImages.length === 0) return;
+    
+    function loadFallbackImages() {
+        const fallbackImages = [
+            {
+                url: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=800&q=80',
+                description: 'Women empowerment program'
+            },
+            {
+                url: 'https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=800&q=80',
+                description: 'Children education program'
+            },
+            {
+                url: 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=800&q=80',
+                description: 'Skill development training'
+            },
+            {
+                url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80',
+                description: 'Community activities'
+            },
+            {
+                url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80',
+                description: 'Health and wellness'
+            }
+        ];
         
-        const circleContainer = document.querySelector('.circle-carousel-container');
-        if (!circleContainer) return;
-        
-        // Clear existing images
-        circleContainer.innerHTML = '';
-        
-        // Add S3 images
-        circleImages.forEach((image, index) => {
-            const imgElement = document.createElement('img');
-            imgElement.src = image.url;
-            imgElement.alt = image.description || `Circle image ${index + 1}`;
-            imgElement.className = 'circle-carousel-image';
-            imgElement.style.display = index === 0 ? 'block' : 'none';
-            circleContainer.appendChild(imgElement);
-        });
-        
-        // Update dots
-        const circleDotsContainer = document.querySelector('.circle-carousel-dots');
-        if (circleDotsContainer) {
-            circleDotsContainer.innerHTML = '';
-            circleImages.forEach((_, index) => {
-                const dot = document.createElement('button');
-                dot.className = `circle-carousel-dot ${index === 0 ? 'active' : ''}`;
-                dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
-                circleDotsContainer.appendChild(dot);
-            });
-        }
+        updateHeroCarouselWithRandomImages(fallbackImages);
     }
+
 
     function updateGalleryImages(galleryImages) {
         if (galleryImages.length === 0) return;
@@ -392,6 +389,172 @@ document.addEventListener('DOMContentLoaded', function() {
                 programCards[index].alt = image.description || `Program ${index + 1}`;
             }
         });
+    }
+
+    function loadProgramGalleries(allImages) {
+        const programCategories = ['classical-dance', 'classical-music', 'yoga', 'robotics', 'hand-embroidery', 'aerobics'];
+        
+        programCategories.forEach(category => {
+            const galleryContainer = document.getElementById(`${category}-gallery`);
+            if (!galleryContainer) return;
+            
+            const categoryImages = allImages.filter(img => img.category === category);
+            
+            if (categoryImages.length === 0) {
+                galleryContainer.innerHTML = '<div class="gallery-loading">No images available for this program yet.</div>';
+                return;
+            }
+            
+            // Clear loading message
+            galleryContainer.innerHTML = '';
+            
+            // Special handling for yoga category - automatic image rotation
+            if (category === 'yoga' && categoryImages.length > 1) {
+                setupYogaImageRotation(galleryContainer, categoryImages);
+            } else {
+                // Regular gallery display for other categories
+                categoryImages.forEach(image => {
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'gallery-item';
+                    galleryItem.innerHTML = `
+                        <img src="${image.url}" alt="${image.description || 'Program image'}" loading="lazy">
+                        <div class="gallery-item-caption">${image.description || 'Program activity'}</div>
+                    `;
+                    galleryContainer.appendChild(galleryItem);
+                });
+            }
+        });
+    }
+
+    function setupYogaImageRotation(container, images) {
+        // Determine number of slots based on image count and screen space
+        const numberOfSlots = Math.min(images.length, 3); // Max 3 slots, but can be fewer if less images
+        
+        // Set up container for side-by-side images
+        container.style.cssText = `
+            display: flex; 
+            gap: 1.5rem; 
+            justify-content: center; 
+            width: 100%; 
+            flex-wrap: wrap;
+        `;
+
+        // Create image slots that will cycle through all images
+        const slots = [];
+        for (let i = 0; i < numberOfSlots; i++) {
+            const slot = document.createElement('div');
+            slot.className = 'yoga-slot';
+            slot.style.cssText = `
+                flex: 1; 
+                min-width: 280px; 
+                max-width: 350px; 
+                position: relative; 
+                overflow: hidden;
+            `;
+            
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item yoga-rotating-item';
+            galleryItem.style.cssText = `
+                transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+                transform: translateY(0);
+            `;
+            
+            // Start with first images available
+            const imageIndex = i % images.length;
+            const image = images[imageIndex];
+            galleryItem.innerHTML = `
+                <img src="${image.url}" alt="${image.description || 'Yoga practice'}" loading="lazy">
+                <div class="gallery-item-caption">${image.description || 'Yoga practice'}</div>
+            `;
+            
+            slot.appendChild(galleryItem);
+            container.appendChild(slot);
+            slots.push(slot);
+        }
+
+        // Start automatic rotation for all slots
+        startYogaMultiSlotRotation(slots, images);
+    }
+
+    let yogaRotationInterval;
+    let currentYogaIndices = [0, 1, 2]; // Track current image index for each slot
+
+    function updateYogaSlot(slot, image) {
+        const galleryItem = slot.querySelector('.yoga-rotating-item');
+        
+        // Fade out with slide up
+        galleryItem.style.opacity = '0';
+        galleryItem.style.transform = 'translateY(-20px)';
+        
+        setTimeout(() => {
+            // Update content
+            galleryItem.innerHTML = `
+                <img src="${image.url}" alt="${image.description || 'Yoga practice'}" loading="lazy">
+                <div class="gallery-item-caption">${image.description || 'Yoga practice'}</div>
+            `;
+            
+            // Fade in with slide down
+            galleryItem.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                galleryItem.style.opacity = '1';
+                galleryItem.style.transform = 'translateY(0)';
+            }, 50);
+        }, 400);
+    }
+
+    function startYogaMultiSlotRotation(slots, images) {
+        // Clear any existing interval
+        if (yogaRotationInterval) {
+            clearInterval(yogaRotationInterval);
+        }
+        
+        // Initialize indices to show first images
+        currentYogaIndices = [];
+        for (let i = 0; i < slots.length; i++) {
+            currentYogaIndices[i] = i % images.length;
+        }
+        
+        let currentSlotToUpdate = 0; // Track which slot to update next
+        
+        // Start sequential rotation every 2 seconds
+        yogaRotationInterval = setInterval(() => {
+            // Update only one slot at a time (sequential)
+            const slot = slots[currentSlotToUpdate];
+            currentYogaIndices[currentSlotToUpdate] = (currentYogaIndices[currentSlotToUpdate] + slots.length) % images.length;
+            const nextImage = images[currentYogaIndices[currentSlotToUpdate]];
+            updateYogaSlot(slot, nextImage);
+            
+            // Move to next slot for next update
+            currentSlotToUpdate = (currentSlotToUpdate + 1) % slots.length;
+        }, 2000);
+        
+        // Pause rotation on hover over container
+        const container = slots[0].parentElement;
+        container.addEventListener('mouseenter', () => {
+            if (yogaRotationInterval) {
+                clearInterval(yogaRotationInterval);
+            }
+        });
+        
+        // Resume rotation when mouse leaves
+        container.addEventListener('mouseleave', () => {
+            startYogaMultiSlotRotation(slots, images);
+        });
+    }
+
+    function updateAboutImage(aboutImages) {
+        if (aboutImages.length === 0) return;
+        
+        const aboutImageElement = document.getElementById('about-main-image');
+        const aboutCaptionElement = document.getElementById('about-image-caption');
+        
+        if (!aboutImageElement || !aboutCaptionElement) return;
+        
+        // Use the first image from the about category
+        const firstImage = aboutImages[0];
+        aboutImageElement.src = firstImage.url;
+        aboutImageElement.alt = firstImage.description || 'About our organization';
+        aboutCaptionElement.textContent = firstImage.description || 'Our team working in the community';
     }
 
     // Carousel Functionality

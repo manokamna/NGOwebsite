@@ -40,105 +40,148 @@
     </nav>
 
     <main>
-        <section class="page-header">
-            <div class="container">
-                <h1 data-en="Our Programs" data-hi="हमारे कार्यक्रम">Our Programs</h1>
-                <p data-en="Comprehensive initiatives designed to create lasting positive change in communities" data-hi="समुदायों में स्थायी सकारात्मक बदलाव लाने के लिए डिज़ाइन किए गए व्यापक पहल">Comprehensive initiatives designed to create lasting positive change in communities</p>
+        <section class="hero-programs" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 40vh; display: flex; align-items: center; position: relative; overflow: hidden; padding: 4rem 0;">
+            <!-- Animated background elements -->
+            <div class="bg-animation" style="position: absolute; width: 100%; height: 100%; opacity: 0.1;">
+                <div style="position: absolute; top: 10%; left: 10%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%); border-radius: 50%; animation: float 6s ease-in-out infinite;"></div>
+                <div style="position: absolute; top: 60%; right: 10%; width: 150px; height: 150px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); border-radius: 50%; animation: float 8s ease-in-out infinite reverse;"></div>
+                <div style="position: absolute; bottom: 20%; left: 30%; width: 100px; height: 100px; background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%); border-radius: 50%; animation: float 7s ease-in-out infinite;"></div>
             </div>
-        </section>
-
-        <section class="programs-detail">
-            <div class="container">
-                <div style="text-align:center; margin-bottom:2rem;">
-                    <h2 style="font-family: 'Playfair Display', serif; color: #2c3e50; font-size: 2rem;">Our Key Objectives</h2>
-                </div>
-                <div class="programs-grid">
-                    <div class="program-card">
-                        <img src="https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=400&q=80" alt="Clothes distribution" style="width:100%; height:140px; object-fit:cover; border-radius:0.75rem 0.75rem 0 0;">
-                        <div class="program-icon" style="font-size:2rem;">👗</div>
-                        <h3>Clothing Distribution</h3>
-                        <p>Providing clothes to women and girls (Donated by villagers through collection).</p>
-                    </div>
-                    <div class="program-card">
-                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Handicraft training" style="width:100%; height:140px; object-fit:cover; border-radius:0.75rem 0.75rem 0 0;">
-                        <div class="program-icon" style="font-size:2rem;">👜</div>
-                        <h3>Handicraft Training</h3>
-                        <p>Training women and girls in handicrafts like bags, shoes, etc. through skilled instructors.</p>
-                    </div>
-                    <div class="program-card">
-                        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Dairy, poultry, goat farming" style="width:100%; height:140px; object-fit:cover; border-radius:0.75rem 0.75rem 0 0;">
-                        <div class="program-icon" style="font-size:2rem;">🐄</div>
-                        <h3>Dairy, Poultry & Goat Farming</h3>
-                        <p>Providing training in dairy, poultry, and goat farming to women and girls by skilled experts.</p>
-                    </div>
-                    <div class="program-card">
-                        <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Medical camps" style="width:100%; height:140px; object-fit:cover; border-radius:0.75rem 0.75rem 0 0;">
-                        <div class="program-icon" style="font-size:2rem;">🩺</div>
-                        <h3>Awareness & Medical Camps</h3>
-                        <p>Organizing awareness programs and free medical camps for rural women through skilled doctors.</p>
-                    </div>
-                    <div class="program-card">
-                        <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=400&q=80" alt="Technical knowledge" style="width:100%; height:140px; object-fit:cover; border-radius:0.75rem 0.75rem 0 0;">
-                        <div class="program-icon" style="font-size:2rem;">💻</div>
-                        <h3>Technical Knowledge</h3>
-                        <p>Providing technical knowledge to rural women through trained teachers.</p>
-                    </div>
-                    <div class="program-card">
-                        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" alt="Health counseling" style="width:100%; height:140px; object-fit:cover; border-radius:0.75rem 0.75rem 0 0;">
-                        <div class="program-icon" style="font-size:2rem;">👩‍⚕️</div>
-                        <h3>Health Counseling</h3>
-                        <p>Arranging health counseling and information for rural women through trained doctors.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!--
-          TODO: In the future, replace the static gallery cards below with dynamic image loading from your S3 bucket.
-          You can use JavaScript to fetch image URLs from S3 and render them here.
-        -->
-        <section class="programs-gallery" style="background: #fff; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(44,62,80,0.08); margin: 2rem 0; padding: 2rem 0;">
-            <div class="container">
-                <h2 style="font-family: 'Playfair Display', serif; color: #2c3e50; font-size: 2rem; margin-bottom: 1.5rem;">Gallery</h2>
-                <div class="gallery-grid" style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center;">
-                    <div class="gallery-card" style="background: #f8f9fa; border-radius: 0.75rem; box-shadow: 0 1px 4px rgba(44,62,80,0.07); overflow: hidden; width: 260px;">
-                        <img src="https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=600&q=80" alt="Kids studying" style="width: 100%; height: 180px; object-fit: cover;">
-                        <div style="padding: 0.75rem; color: #222831; font-size: 1rem;">Kids studying in a classroom</div>
-                    </div>
-                    <div class="gallery-card" style="background: #f8f9fa; border-radius: 0.75rem; box-shadow: 0 1px 4px rgba(44,62,80,0.07); overflow: hidden; width: 260px;">
-                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Women doing art work" style="width: 100%; height: 180px; object-fit: cover;">
-                        <div style="padding: 0.75rem; color: #222831; font-size: 1rem;">Women doing handicraft work</div>
-                    </div>
-                    <div class="gallery-card" style="background: #f8f9fa; border-radius: 0.75rem; box-shadow: 0 1px 4px rgba(44,62,80,0.07); overflow: hidden; width: 260px;">
-                        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80" alt="Community work" style="width: 100%; height: 180px; object-fit: cover;">
-                        <div style="padding: 0.75rem; color: #222831; font-size: 1rem;">Community outreach event</div>
+            
+            <div class="container" style="text-align: center; z-index: 2; position: relative;">
+                <div style="max-width: 900px; margin: 0 auto;">
+                    <h1 style="font-size: 2.8rem; font-weight: 700; color: white; margin-bottom: 1.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); animation: slideUp 1s ease-out; line-height: 1.2;" data-en="Transforming Lives Through Education & Skills" data-hi="शिक्षा और कौशल के माध्यम से जीवन का रूपांतरण">Transforming Lives Through Education & Skills</h1>
+                    <p style="font-size: 1.2rem; color: rgba(255,255,255,0.9); line-height: 1.6; font-weight: 300; animation: slideUp 1s ease-out 0.3s both; max-width: 700px; margin: 0 auto;" data-en="Comprehensive initiatives designed to create lasting positive change in communities" data-hi="समुदायों में स्थायी सकारात्मक बदलाव लाने के लिए डिज़ाइन किए गए व्यापक पहल">Comprehensive initiatives designed to create lasting positive change in communities</p>
+                    
+                    <!-- Scroll indicator -->
+                    <div style="margin-top: 2rem; animation: bounce 2s infinite;">
+                        <div style="width: 2px; height: 25px; background: rgba(255,255,255,0.7); margin: 0 auto; border-radius: 2px;"></div>
+                        <div style="width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 6px solid rgba(255,255,255,0.7); margin: 3px auto 0;"></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="get-involved">
+        <section class="programs-detail" style="padding: 5rem 0; background: linear-gradient(to bottom, #f8fafc, #ffffff);">
             <div class="container">
-                <h2>Get Involved in Our Programs</h2>
-                <p>Join us in making a difference. There are many ways to support our programs and create lasting change.</p>
-                <div class="involvement-options">
-                    <div class="option">
-                        <h3>Volunteer</h3>
-                        <p>Share your skills and time with our programs</p>
-                        <a href="contact.html" class="btn btn-outline">Learn More</a>
+                
+                <!-- Classical Dance Section -->
+                <div class="program-section modern-card" data-category="classical-dance" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); margin: 3rem 0; padding: 3rem; border-radius: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: relative; overflow: hidden; transform: translateY(50px); opacity: 0; transition: all 0.8s ease-out;">
+                    <!-- Decorative elements -->
+                    <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(255,255,255,0.2); border-radius: 50%; opacity: 0.7;"></div>
+                    <div style="position: absolute; bottom: -30px; left: -30px; width: 100px; height: 100px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                    
+                    <div style="position: relative; z-index: 2;">
+                        <div style="display: flex; align-items: center; margin-bottom: 2rem;">
+                            <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.9); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                                <span style="font-size: 2rem;">💃</span>
+                            </div>
+                            <h3 class="program-title" style="font-size: 2.5rem; color: #2d3748; margin: 0; font-weight: 700;" data-en="Classical Dance" data-hi="शास्त्रीय नृत्य">Classical Dance</h3>
+                        </div>
+                        <p class="program-description" style="font-size: 1.2rem; color: #4a5568; line-height: 1.8; margin-bottom: 2.5rem;" data-en="Training in traditional Indian classical dance forms to preserve cultural heritage and develop artistic expression" data-hi="सांस्कृतिक विरासत को संरक्षित करने और कलात्मक अभिव्यक्ति विकसित करने के लिए पारंपरिक भारतीय शास्त्रीय नृत्य रूपों में प्रशिक्षण">Training in traditional Indian classical dance forms to preserve cultural heritage and develop artistic expression</p>
+                        <div class="program-gallery" id="classical-dance-gallery" style="margin-top: 2rem;">
+                            <div class="gallery-loading" style="text-align: center; padding: 3rem; color: #718096; font-style: italic;">Loading images...</div>
+                        </div>
                     </div>
-                    <div class="option">
-                        <h3>Donate</h3>
-                        <p>Support our programs financially</p>
-                        <a href="#donate" class="btn btn-primary">Donate Now</a>
+                </div>
+
+                <!-- Classical Music Section -->
+                <div class="program-section modern-card" data-category="classical-music" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); margin: 3rem 0; padding: 3rem; border-radius: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: relative; overflow: hidden; transform: translateY(50px); opacity: 0; transition: all 0.8s ease-out;">
+                    <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+                    <div style="position: absolute; bottom: -40px; left: -40px; width: 130px; height: 130px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                    
+                    <div style="position: relative; z-index: 2;">
+                        <div style="display: flex; align-items: center; margin-bottom: 2rem;">
+                            <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.9); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                                <span style="font-size: 2rem;">🎵</span>
+                            </div>
+                            <h3 class="program-title" style="font-size: 2.5rem; color: #2d3748; margin: 0; font-weight: 700;" data-en="Classical Music" data-hi="शास्त्रीय संगीत">Classical Music</h3>
+                        </div>
+                        <p class="program-description" style="font-size: 1.2rem; color: #4a5568; line-height: 1.8; margin-bottom: 2.5rem;" data-en="Teaching traditional Indian classical music including vocal and instrumental training" data-hi="पारंपरिक भारतीय शास्त्रीय संगीत सिखाना जिसमें मुखर और वाद्य प्रशिक्षण शामिल है">Teaching traditional Indian classical music including vocal and instrumental training</p>
+                        <div class="program-gallery" id="classical-music-gallery" style="margin-top: 2rem;">
+                            <div class="gallery-loading" style="text-align: center; padding: 3rem; color: #718096; font-style: italic;">Loading images...</div>
+                        </div>
                     </div>
-                    <div class="option">
-                        <h3>Partner</h3>
-                        <p>Collaborate with us as an organization</p>
-                        <a href="contact.html" class="btn btn-outline">Contact Us</a>
+                </div>
+
+                <!-- Yoga Section -->
+                <div class="program-section modern-card" data-category="yoga" style="background: linear-gradient(135deg, #d299c2 0%, #fef9d3 100%); margin: 3rem 0; padding: 3rem; border-radius: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: relative; overflow: hidden; transform: translateY(50px); opacity: 0; transition: all 0.8s ease-out;">
+                    <div style="position: absolute; top: -40px; right: -40px; width: 140px; height: 140px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+                    <div style="position: absolute; bottom: -20px; left: -20px; width: 90px; height: 90px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                    
+                    <div style="position: relative; z-index: 2;">
+                        <div style="display: flex; align-items: center; margin-bottom: 2rem;">
+                            <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.9); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                                <span style="font-size: 2rem;">🧘</span>
+                            </div>
+                            <h3 class="program-title" style="font-size: 2.5rem; color: #2d3748; margin: 0; font-weight: 700;" data-en="Yoga" data-hi="योग">Yoga</h3>
+                        </div>
+                        <p class="program-description" style="font-size: 1.2rem; color: #4a5568; line-height: 1.8; margin-bottom: 2.5rem;" data-en="Holistic wellness program combining physical postures, breathing techniques, and meditation for overall health" data-hi="शारीरिक मुद्राओं, श्वास तकनीकों और ध्यान को मिलाकर समग्र स्वास्थ्य के लिए समग्र कल्याण कार्यक्रम">Holistic wellness program combining physical postures, breathing techniques, and meditation for overall health</p>
+                        <div class="program-gallery" id="yoga-gallery" style="margin-top: 2rem;">
+                            <div class="gallery-loading" style="text-align: center; padding: 3rem; color: #718096; font-style: italic;">Loading images...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Robotics Section -->
+                <div class="program-section modern-card" data-category="robotics" style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); margin: 3rem 0; padding: 3rem; border-radius: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: relative; overflow: hidden; transform: translateY(50px); opacity: 0; transition: all 0.8s ease-out;">
+                    <div style="position: absolute; top: -35px; right: -35px; width: 110px; height: 110px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+                    <div style="position: absolute; bottom: -25px; left: -25px; width: 95px; height: 95px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                    
+                    <div style="position: relative; z-index: 2;">
+                        <div style="display: flex; align-items: center; margin-bottom: 2rem;">
+                            <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.9); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                                <span style="font-size: 2rem;">🤖</span>
+                            </div>
+                            <h3 class="program-title" style="font-size: 2.5rem; color: #2d3748; margin: 0; font-weight: 700;" data-en="Robotics" data-hi="रोबोटिक्स">Robotics</h3>
+                        </div>
+                        <p class="program-description" style="font-size: 1.2rem; color: #4a5568; line-height: 1.8; margin-bottom: 2.5rem;" data-en="Modern technology education program introducing students to robotics, programming, and STEM concepts" data-hi="आधुनिक प्रौद्योगिकी शिक्षा कार्यक्रम जो छात्रों को रोबोटिक्स, प्रोग्रामिंग और STEM अवधारणाओं से परिचित कराता है">Modern technology education program introducing students to robotics, programming, and STEM concepts</p>
+                        <div class="program-gallery" id="robotics-gallery" style="margin-top: 2rem;">
+                            <div class="gallery-loading" style="text-align: center; padding: 3rem; color: #718096; font-style: italic;">Loading images...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hand Embroidery Section -->
+                <div class="program-section modern-card" data-category="hand-embroidery" style="background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); margin: 3rem 0; padding: 3rem; border-radius: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: relative; overflow: hidden; transform: translateY(50px); opacity: 0; transition: all 0.8s ease-out;">
+                    <div style="position: absolute; top: -45px; right: -45px; width: 125px; height: 125px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+                    <div style="position: absolute; bottom: -15px; left: -15px; width: 85px; height: 85px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                    
+                    <div style="position: relative; z-index: 2;">
+                        <div style="display: flex; align-items: center; margin-bottom: 2rem;">
+                            <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.9); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                                <span style="font-size: 2rem;">🪡</span>
+                            </div>
+                            <h3 class="program-title" style="font-size: 2.5rem; color: #2d3748; margin: 0; font-weight: 700;" data-en="Hand Embroidery" data-hi="हस्त कढ़ाई">Hand Embroidery</h3>
+                        </div>
+                        <p class="program-description" style="font-size: 1.2rem; color: #4a5568; line-height: 1.8; margin-bottom: 2.5rem;" data-en="Traditional handicraft training in various embroidery techniques for skill development and income generation" data-hi="कौशल विकास और आय सृजन के लिए विभिन्न कढ़ाई तकनीकों में पारंपरिक हस्तशिल्प प्रशिक्षण">Traditional handicraft training in various embroidery techniques for skill development and income generation</p>
+                        <div class="program-gallery" id="hand-embroidery-gallery" style="margin-top: 2rem;">
+                            <div class="gallery-loading" style="text-align: center; padding: 3rem; color: #718096; font-style: italic;">Loading images...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aerobics Section -->
+                <div class="program-section modern-card" data-category="aerobics" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); margin: 3rem 0; padding: 3rem; border-radius: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: relative; overflow: hidden; transform: translateY(50px); opacity: 0; transition: all 0.8s ease-out;">
+                    <div style="position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+                    <div style="position: absolute; bottom: -35px; left: -35px; width: 115px; height: 115px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
+                    
+                    <div style="position: relative; z-index: 2;">
+                        <div style="display: flex; align-items: center; margin-bottom: 2rem;">
+                            <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.9); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                                <span style="font-size: 2rem;">🏃‍♀️</span>
+                            </div>
+                            <h3 class="program-title" style="font-size: 2.5rem; color: #2d3748; margin: 0; font-weight: 700;" data-en="Aerobics" data-hi="एरोबिक्स">Aerobics</h3>
+                        </div>
+                        <p class="program-description" style="font-size: 1.2rem; color: #4a5568; line-height: 1.8; margin-bottom: 2.5rem;" data-en="Fitness and health program promoting physical activity and cardiovascular wellness through aerobic exercises" data-hi="एरोबिक व्यायाम के माध्यम से शारीरिक गतिविधि और हृदय स्वास्थ्य को बढ़ावा देने वाला फिटनेस और स्वास्थ्य कार्यक्रम">Fitness and health program promoting physical activity and cardiovascular wellness through aerobic exercises</p>
+                        <div class="program-gallery" id="aerobics-gallery" style="margin-top: 2rem;">
+                            <div class="gallery-loading" style="text-align: center; padding: 3rem; color: #718096; font-style: italic;">Loading images...</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
+
     </main>
 
     <footer class="footer">
@@ -169,5 +212,152 @@
     </footer>
 
     <script src="js/script.js"></script>
+    
+    <!-- Enhanced animations and interactions -->
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .modern-card:hover {
+            transform: translateY(-10px) !important;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2) !important;
+        }
+        
+        .modern-card .program-title {
+            transition: color 0.3s ease;
+        }
+        
+        .modern-card:hover .program-title {
+            color: #1a202c !important;
+        }
+        
+        /* Gallery item enhancements */
+        .gallery-item {
+            transition: all 0.3s ease !important;
+            border-radius: 15px !important;
+            overflow: hidden !important;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-8px) scale(1.05) !important;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important;
+        }
+        
+        .gallery-item img {
+            transition: transform 0.5s ease !important;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1) !important;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero-programs {
+                min-height: 35vh !important;
+                padding: 3rem 0 !important;
+            }
+            
+            .hero-programs h1 {
+                font-size: 2.2rem !important;
+                margin-bottom: 1rem !important;
+            }
+            
+            .hero-programs p {
+                font-size: 1.1rem !important;
+                padding: 0 1rem !important;
+            }
+            
+            .modern-card {
+                margin: 2rem 0 !important;
+                padding: 2rem !important;
+            }
+            
+            .program-title {
+                font-size: 2rem !important;
+            }
+            
+            .bg-animation > div {
+                width: 100px !important;
+                height: 100px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-programs h1 {
+                font-size: 1.8rem !important;
+                line-height: 1.3 !important;
+            }
+            
+            .hero-programs p {
+                font-size: 1rem !important;
+            }
+            
+            .modern-card {
+                padding: 1.5rem !important;
+                border-radius: 20px !important;
+            }
+            
+            .program-title {
+                font-size: 1.8rem !important;
+            }
+        }
+    </style>
+    
+    <script>
+        // Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe all program cards
+            document.querySelectorAll('.modern-card').forEach(card => {
+                observer.observe(card);
+            });
+            
+            // Add parallax effect to hero section
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const heroSection = document.querySelector('.hero-programs');
+                if (heroSection) {
+                    heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
+                }
+            });
+            
+            // Add smooth scrolling for better UX
+            document.documentElement.style.scrollBehavior = 'smooth';
+        });
+    </script>
 </body>
 </html>

@@ -5,10 +5,14 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
+const compression = require('compression');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Enable gzip compression
+app.use(compression());
 
 // Security middleware
 app.use(helmet({
@@ -25,7 +29,13 @@ app.use(helmet({
 
 // CORS configuration
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production' ? ['your-domain.com'] : true,
+    origin: process.env.NODE_ENV === 'production' ? [
+        'https://sarojvandana.com',
+        'https://www.sarojvandana.com',
+        'http://sarojvandana.com',
+        'http://www.sarojvandana.com',
+        'ngo-website-app.eu-north-1.elasticbeanstalk.com'
+    ] : true,
     credentials: true
 }));
 
@@ -40,8 +50,12 @@ app.use('/api/', limiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Serve static files
-app.use(express.static(path.join(__dirname)));
+// Serve static files with caching
+app.use(express.static(path.join(__dirname), {
+    maxAge: process.env.NODE_ENV === 'production' ? '1d' : 0,
+    etag: true,
+    lastModified: true
+}));
 
 // Configure AWS S3
 AWS.config.update({

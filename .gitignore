@@ -41,6 +41,7 @@ jspm_packages/
 
 # dotenv environment variables file
 .env
+.env.example
 
 # IDE files
 .vscode/
@@ -55,3 +56,8 @@ Thumbs.db
 # Build files
 dist/
 build/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
