@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             try {
                 // Send form data to server
-                const response = await fetch('/api/contact', {
+                const response = await fetch('https://klbot0zc8l.execute-api.eu-north-1.amazonaws.com/prod/contact', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // S3 Image Integration
     async function loadS3Images() {
         try {
-            const response = await fetch('/api/images');
+            const response = await fetch('https://klbot0zc8l.execute-api.eu-north-1.amazonaws.com/prod/images');
             const data = await response.json();
             
             if (data.success && data.images.length > 0) {

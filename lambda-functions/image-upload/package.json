@@ -1,0 +1,9 @@
+{
+  "name": "sarojvandana-image-upload",
+  "version": "1.0.0",
+  "description": "Image upload Lambda function",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.1490.0"
+  }
+}
