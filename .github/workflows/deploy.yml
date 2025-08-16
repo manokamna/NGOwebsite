@@ -1,0 +1,132 @@
+name: Deploy to AWS
+
+  on:
+    push:
+      branches:
+        - main
+        - develop
+    pull_request:
+      branches:
+        - main
+
+  env:
+    AWS_REGION: eu-north-1
+    PROD_BUCKET: sarojvandana-prod
+    STAGING_BUCKET: sarojvandana-staging
+    CLOUDFRONT_DISTRIBUTION_ID: EPRN3DUQ04QBN
+
+  jobs:
+    test:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+
+        - name: Setup Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: '18'
+
+        - name: Install dependencies
+          run: npm ci
+
+        - name: Run linting
+          run: |
+            npm install -g eslint
+            eslint js/*.js --ignore-pattern 'js/admin*.js' || true
+
+        - name: Validate HTML
+          run: |
+            npm install -g html-validate
+            html-validate "*.html" || true
+
+    deploy-staging:
+      needs: test
+      runs-on: ubuntu-latest
+      if: github.ref == 'refs/heads/develop'
+
+      steps:
+        - uses: actions/checkout@v3
+
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v2
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ env.AWS_REGION }}
+
+        - name: Deploy to Staging S3
+          run: |
+            aws s3 sync . s3://${{ env.STAGING_BUCKET }}/ \
+              --exclude "*" \
+              --include "*.html" \
+              --include "css/*" \
+              --include "js/*" \
+              --exclude "admin.html" \
+              --exclude "js/admin*" \
+              --exclude "node_modules/*" \
+              --exclude ".*" \
+              --exclude "*.json" \
+              --exclude "*.md" \
+              --exclude "*.sh" \
+              --exclude "server.js" \
+              --exclude "lambda-functions/*" \
+              --delete
+
+    deploy-production:
+      needs: test
+      runs-on: ubuntu-latest
+      if: github.ref == 'refs/heads/main'
+
+      steps:
+        - uses: actions/checkout@v3
+
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v2
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ env.AWS_REGION }}
+
+        - name: Deploy to Production S3
+          run: |
+            aws s3 sync . s3://${{ env.PROD_BUCKET }}/ \
+              --exclude "*" \
+              --include "*.html" \
+              --include "css/*" \
+              --include "js/*" \
+              --exclude "admin.html" \
+              --exclude "js/admin*" \
+              --exclude "node_modules/*" \
+              --exclude ".*" \
+              --exclude "*.json" \
+              --exclude "*.md" \
+              --exclude "*.sh" \
+              --exclude "server.js" \
+              --exclude "lambda-functions/*" \
+              --delete
+              
+        - name: Deploy Lambda Functions (Production)
+          run: |
+            for func in contact-form admin-auth image-upload image-management; do
+              cd lambda-functions/$func
+              zip -r function.zip index.js
+              aws lambda update-function-code \
+                --function-name sarojvandana-$func \
+                --zip-file fileb://function.zip \
+                --region ${{ env.AWS_REGION }}
+              rm function.zip
+              cd ../..
+            done
+
+        - name: Invalidate CloudFront Cache
+          run: |
+            aws cloudfront create-invalidation \
+              --distribution-id ${{ env.CLOUDFRONT_DISTRIBUTION_ID }} \
+              --paths "/*"
+              
+        - name: Send Deployment Notification
+          if: success()
+          run: |
+            echo "✅ Deployment to production successful!"
+            echo "Website URL: https://sarojvandana.com"
+            echo "CloudFront URL: https://d1l3p7s5qgis4h.cloudfront.net"
