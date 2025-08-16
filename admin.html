@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/admin.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
 </head>
 <body>
     <!-- Login Modal -->
@@ -76,6 +77,7 @@
                             <select id="imageCategory" required>
                                 <option value="">Select Category</option>
                                 <option value="about">About Us</option>
+                                <option value="team">Team</option>
                                 <option value="classical-dance">Classical Dance</option>
                                 <option value="classical-music">Classical Music</option>
                                 <option value="yoga">Yoga</option>
@@ -87,11 +89,18 @@
                         <div class="form-group">
                             <label for="imageFile">Select Image File:</label>
                             <input type="file" id="imageFile" accept="image/*" multiple required>
-                            <small>Supports: JPG, PNG, GIF, WebP (Max 5MB per file)</small>
+                            <small>Supports: JPG, PNG, GIF, WebP (Max 50MB per file) - Large images will be automatically resized</small>
                         </div>
                         <div class="form-group">
-                            <label for="imageDescription">Image Description (Optional):</label>
-                            <input type="text" id="imageDescription" placeholder="Brief description of the image">
+                            <label for="imageDescription">Image Description (Required):</label>
+                            <textarea id="imageDescription" placeholder="Vice President - Nirmala Devi || Expert in community development with 10+ years experience." required rows="3" style="resize: vertical; min-height: 80px;"></textarea>
+                            <small class="description-hint">
+                                <strong>Format for Team Members:</strong><br>
+                                • Basic: "Designation - Name" (e.g., "President - Saroj")<br>
+                                • With Bio: "Designation - Name || Bio text here"<br>
+                                • Example: "Vice President - Nirmala Devi || Expert in community development with 10+ years experience in rural empowerment."<br>
+                                <strong>For Other Categories:</strong> Provide a brief description of the image.
+                            </small>
                         </div>
                         <button id="uploadBtn" class="btn btn-primary">Upload Images</button>
                         <div id="uploadProgress" class="progress-bar" style="display: none;">
@@ -110,6 +119,7 @@
                             <select id="filterCategory">
                                 <option value="">All Categories</option>
                                 <option value="about">About Us</option>
+                                <option value="team">Team</option>
                                 <option value="classical-dance">Classical Dance</option>
                                 <option value="classical-music">Classical Music</option>
                                 <option value="yoga">Yoga</option>
@@ -128,6 +138,75 @@
         </main>
     </div>
 
+    <!-- Edit Bio Modal -->
+    <div id="editBioModal" class="crop-modal" style="display: none;">
+        <div class="crop-modal-content" style="max-width: 600px;">
+            <div class="crop-modal-header">
+                <h3>Edit Team Member Info</h3>
+                <button id="closeEditBioModal" class="close-btn">&times;</button>
+            </div>
+            <div class="crop-modal-body">
+                <div class="form-group">
+                    <label for="editImagePreview">Current Image:</label>
+                    <div style="text-align: center; margin-bottom: 1rem;">
+                        <img id="editImagePreview" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #e2e8f0;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editBioDescription">Description (Name, Position & Bio):</label>
+                    <textarea id="editBioDescription" rows="4" style="resize: vertical; min-height: 100px;" placeholder="Vice President - Nirmala Devi || Expert in community development with 10+ years experience."></textarea>
+                    <small class="description-hint">
+                        <strong>Format:</strong> "Designation - Name || Bio text here"<br>
+                        Use || to separate the bio from name and position.
+                    </small>
+                </div>
+            </div>
+            <div class="crop-modal-footer">
+                <button id="cancelEditBio" class="btn btn-outline">Cancel</button>
+                <button id="saveEditBio" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Crop Modal -->
+    <div id="cropModal" class="crop-modal" style="display: none;">
+        <div class="crop-modal-content">
+            <div class="crop-modal-header">
+                <h3>Crop Image</h3>
+                <button id="closeCropModal" class="close-btn">&times;</button>
+            </div>
+            <div class="crop-modal-body">
+                <div class="crop-container">
+                    <img id="cropImage">
+                </div>
+                <div class="crop-controls">
+                    <div class="zoom-controls">
+                        <label>Zoom: <span id="zoomValue">100%</span></label>
+                        <input type="range" id="zoomSlider" min="0" max="200" value="100" step="1">
+                    </div>
+                    <div class="aspect-ratio-buttons">
+                        <button class="aspect-btn" data-ratio="1">1:1</button>
+                        <button class="aspect-btn" data-ratio="1.333">4:3</button>
+                        <button class="aspect-btn" data-ratio="1.777">16:9</button>
+                        <button class="aspect-btn" data-ratio="0">Free</button>
+                    </div>
+                    <div class="crop-actions">
+                        <button id="rotateLeftBtn" class="btn btn-secondary">↺ Rotate Left</button>
+                        <button id="rotateRightBtn" class="btn btn-secondary">↻ Rotate Right</button>
+                        <button id="flipHBtn" class="btn btn-secondary">↔ Flip H</button>
+                        <button id="flipVBtn" class="btn btn-secondary">↕ Flip V</button>
+                        <button id="resetCropBtn" class="btn btn-secondary">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <div class="crop-modal-footer">
+                <button id="cancelCropBtn" class="btn btn-outline">Cancel</button>
+                <button id="applyCropBtn" class="btn btn-primary">Apply Crop</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
     <script src="js/admin-api.js"></script>
     <script src="js/admin-new.js"></script>
 </body>

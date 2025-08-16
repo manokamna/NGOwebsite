@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
 const compression = require('compression');
+const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const app = express();
@@ -19,10 +20,10 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com"],
+            styleSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com", "cdnjs.cloudflare.com"],
             fontSrc: ["'self'", "fonts.gstatic.com"],
-            imgSrc: ["'self'", "data:", "https:", "*.s3.amazonaws.com"],
-            scriptSrc: ["'self'", "'unsafe-inline'"]
+            imgSrc: ["'self'", "data:", "blob:", "https:", "*.s3.amazonaws.com"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "cdnjs.cloudflare.com"]
         }
     }
 }));
@@ -58,14 +59,32 @@ app.use(express.static(path.join(__dirname), {
 }));
 
 // Configure AWS S3
+console.log('=== AWS Configuration ===');
+console.log('AWS_ACCESS_KEY_ID:', process.env.AWS_ACCESS_KEY_ID ? 'Set (' + process.env.AWS_ACCESS_KEY_ID.substring(0, 10) + '...)' : 'Not set');
+console.log('AWS_SECRET_ACCESS_KEY:', process.env.AWS_SECRET_ACCESS_KEY ? 'Set (length: ' + process.env.AWS_SECRET_ACCESS_KEY.length + ')' : 'Not set');
+console.log('AWS_REGION:', process.env.AWS_REGION);
+console.log('S3_BUCKET_NAME:', process.env.S3_BUCKET_NAME);
+
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION || 'eu-north-1'
+    region: process.env.AWS_REGION || 'eu-north-1',
+    httpOptions: {
+        timeout: 10000, // 10 second timeout
+        connectTimeout: 5000 // 5 second connection timeout
+    }
 });
 
-const s3 = new AWS.S3();
+const s3 = new AWS.S3({
+    httpOptions: {
+        timeout: 10000,
+        connectTimeout: 5000
+    }
+});
 const bucketName = process.env.S3_BUCKET_NAME || 'sarojvandana';
+
+console.log('AWS SDK Version:', AWS.VERSION);
+console.log('S3 Service Endpoint:', s3.endpoint.href);
 
 // Configure multer for file uploads
 const storage = multer.memoryStorage();
@@ -136,19 +155,99 @@ app.post('/api/admin/logout', authenticate, (req, res) => {
     res.json({ success: true });
 });
 
+// Test S3 connection (temporary - no auth for debugging)
+app.get('/api/s3/test-debug', async (req, res) => {
+    try {
+        console.log('=== DEBUG: Testing S3 connection without auth ===');
+        const result = await s3.headBucket({ Bucket: bucketName }).promise();
+        console.log('S3 headBucket successful:', result);
+        res.json({ success: true, message: 'S3 connection working!' });
+    } catch (error) {
+        console.error('=== DEBUG: S3 Error Details ===');
+        console.error('Error code:', error.code);
+        console.error('Error message:', error.message);
+        console.error('Error statusCode:', error.statusCode);
+        console.error('Full error:', error);
+        res.status(500).json({ error: error.code, message: error.message });
+    }
+});
+
 // Test S3 connection
 app.get('/api/s3/test', authenticate, async (req, res) => {
     try {
-        const params = {
+        console.log('Testing S3 connection...');
+        console.log('Bucket:', bucketName);
+        console.log('Region:', process.env.AWS_REGION);
+        console.log('Access Key ID:', process.env.AWS_ACCESS_KEY_ID ? process.env.AWS_ACCESS_KEY_ID.substring(0, 10) + '...' : 'Not set');
+        
+        // First, try to check if bucket exists
+        const headParams = {
+            Bucket: bucketName
+        };
+        
+        try {
+            await s3.headBucket(headParams).promise();
+            console.log('Bucket exists and is accessible');
+        } catch (headError) {
+            console.error('Bucket head error:', headError.code, headError.message);
+            if (headError.code === 'NotFound') {
+                return res.status(500).json({ 
+                    error: 'Bucket not found', 
+                    details: `Bucket '${bucketName}' does not exist or is not accessible`,
+                    suggestion: 'Check bucket name and ensure it exists in the specified region'
+                });
+            }
+            if (headError.code === 'Forbidden') {
+                return res.status(500).json({ 
+                    error: 'Access denied to bucket', 
+                    details: 'AWS credentials do not have permission to access this bucket',
+                    suggestion: 'Check IAM permissions for S3 access'
+                });
+            }
+        }
+        
+        // Then try to list objects
+        const listParams = {
             Bucket: bucketName,
             MaxKeys: 1
         };
         
-        await s3.listObjects(params).promise();
-        res.json({ success: true, message: 'S3 connection successful' });
+        const result = await s3.listObjects(listParams).promise();
+        console.log('S3 list objects successful');
+        
+        res.json({ 
+            success: true, 
+            message: 'S3 connection successful',
+            bucket: bucketName,
+            region: process.env.AWS_REGION,
+            objectCount: result.Contents ? result.Contents.length : 0
+        });
     } catch (error) {
         console.error('S3 connection error:', error);
-        res.status(500).json({ error: 'Failed to connect to S3', details: error.message });
+        
+        let errorMessage = 'Failed to connect to S3';
+        let suggestion = 'Check AWS credentials and configuration';
+        
+        if (error.code === 'InvalidAccessKeyId') {
+            errorMessage = 'Invalid AWS Access Key ID';
+            suggestion = 'Check your AWS_ACCESS_KEY_ID in .env file';
+        } else if (error.code === 'SignatureDoesNotMatch') {
+            errorMessage = 'Invalid AWS Secret Access Key';
+            suggestion = 'Check your AWS_SECRET_ACCESS_KEY in .env file';
+        } else if (error.code === 'TokenRefreshRequired') {
+            errorMessage = 'AWS credentials have expired';
+            suggestion = 'Generate new AWS credentials';
+        } else if (error.code === 'NoSuchBucket') {
+            errorMessage = 'Bucket does not exist';
+            suggestion = `Create bucket '${bucketName}' in region '${process.env.AWS_REGION}'`;
+        }
+        
+        res.status(500).json({ 
+            error: errorMessage,
+            details: error.message,
+            code: error.code,
+            suggestion: suggestion
+        });
     }
 });
 
@@ -264,6 +363,55 @@ app.get('/api/images', async (req, res) => {
     }
 });
 
+// Update image metadata (description) in S3
+app.put('/api/images/:key/metadata', authenticate, async (req, res) => {
+    try {
+        const key = decodeURIComponent(req.params.key);
+        const { description } = req.body;
+        
+        if (!description) {
+            return res.status(400).json({ error: 'Description is required' });
+        }
+
+        // First, get the current object to preserve other metadata
+        const currentObject = await s3.headObject({
+            Bucket: bucketName,
+            Key: key
+        }).promise();
+
+        // Sanitize description for S3 metadata (remove invalid characters)
+        const sanitizedDescription = description
+            .replace(/[\r\n\t]/g, ' ')  // Replace newlines and tabs with spaces
+            .replace(/[^\x20-\x7E]/g, '') // Remove non-ASCII characters
+            .trim();
+
+        // Copy the object with updated metadata
+        const copyParams = {
+            Bucket: bucketName,
+            CopySource: `${bucketName}/${key}`,
+            Key: key,
+            Metadata: {
+                ...currentObject.Metadata,
+                'description': sanitizedDescription,
+                'lastModified': new Date().toISOString()
+            },
+            MetadataDirective: 'REPLACE'
+        };
+
+        await s3.copyObject(copyParams).promise();
+        
+        res.json({ 
+            success: true, 
+            message: 'Image description updated successfully',
+            newDescription: description
+        });
+
+    } catch (error) {
+        console.error('Update metadata error:', error);
+        res.status(500).json({ error: 'Failed to update image description', details: error.message });
+    }
+});
+
 // Delete image from S3
 app.delete('/api/images/:key', authenticate, async (req, res) => {
     try {
@@ -280,6 +428,136 @@ app.delete('/api/images/:key', authenticate, async (req, res) => {
     } catch (error) {
         console.error('Delete error:', error);
         res.status(500).json({ error: 'Failed to delete image', details: error.message });
+    }
+});
+
+// Email configuration
+const createEmailTransporter = () => {
+    // For Gmail, you would need to set up an App Password
+    // For production, consider using services like SendGrid, AWS SES, or Mailgun
+    return nodemailer.createTransporter({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER || 'sarojvandana2022@gmail.com',
+            pass: process.env.EMAIL_PASS || 'your-app-password-here' // Use App Password for Gmail
+        }
+    });
+};
+
+// Contact form submission endpoint
+app.post('/api/contact', async (req, res) => {
+    try {
+        const { name, email, subject, message } = req.body;
+        
+        // Basic validation
+        if (!name || !email || !subject || !message) {
+            return res.status(400).json({ error: 'All fields are required' });
+        }
+        
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ error: 'Invalid email address' });
+        }
+        
+        console.log('📧 Contact Form Submission:');
+        console.log(`From: ${name} (${email})`);
+        console.log(`Subject: ${subject}`);
+        console.log(`Message: ${message}`);
+        console.log(`Timestamp: ${new Date().toISOString()}`);
+        
+        // Try to send email if email credentials are configured
+        if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+            try {
+                const transporter = createEmailTransporter();
+                
+                // Email to organization
+                const organizationEmailOptions = {
+                    from: `"NGO Contact Form" <${process.env.EMAIL_USER}>`,
+                    to: 'sarojvandana2022@gmail.com',
+                    subject: `New Contact Form Message: ${subject}`,
+                    html: `
+                        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                            <h2 style="color: #667eea; border-bottom: 2px solid #667eea; padding-bottom: 10px;">
+                                New Contact Form Submission
+                            </h2>
+                            <div style="background: #f8fafc; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                                <p><strong>From:</strong> ${name}</p>
+                                <p><strong>Email:</strong> ${email}</p>
+                                <p><strong>Subject:</strong> ${subject}</p>
+                                <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+                            </div>
+                            <div style="background: white; padding: 20px; border-left: 4px solid #667eea; margin: 20px 0;">
+                                <h3 style="color: #333; margin-top: 0;">Message:</h3>
+                                <p style="line-height: 1.6; color: #555;">${message.replace(/\n/g, '<br>')}</p>
+                            </div>
+                            <div style="text-align: center; margin-top: 30px; padding: 20px; background: #667eea; color: white; border-radius: 10px;">
+                                <p>This message was sent from the SAROJ VANDANA NGO website contact form.</p>
+                                <p>Please reply directly to: ${email}</p>
+                            </div>
+                        </div>
+                    `
+                };
+                
+                // Confirmation email to sender
+                const confirmationEmailOptions = {
+                    from: `"SAROJ VANDANA NGO" <${process.env.EMAIL_USER}>`,
+                    to: email,
+                    subject: 'Thank you for contacting SAROJ VANDANA NGO',
+                    html: `
+                        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                            <h2 style="color: #11998e; border-bottom: 2px solid #11998e; padding-bottom: 10px;">
+                                Thank You for Your Message
+                            </h2>
+                            <p>Dear ${name},</p>
+                            <p>Thank you for reaching out to SAROJ VANDANA WOMEN & CHILDREN EMPOWERMENT SOCIETY. We have received your message and will get back to you as soon as possible.</p>
+                            
+                            <div style="background: #f8fafc; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                                <h3 style="color: #333; margin-top: 0;">Your Message Summary:</h3>
+                                <p><strong>Subject:</strong> ${subject}</p>
+                                <p><strong>Message:</strong> ${message}</p>
+                                <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+                            </div>
+                            
+                            <div style="background: linear-gradient(135deg, #11998e, #38ef7d); padding: 20px; border-radius: 10px; color: white; text-align: center;">
+                                <h3 style="margin-top: 0;">Contact Information</h3>
+                                <p><strong>Email:</strong> sarojvandana2022@gmail.com</p>
+                                <p><strong>Phone:</strong> +91 87410 61834</p>
+                                <p><strong>Address:</strong> Village Main Road, Rural District, State 123456, India</p>
+                            </div>
+                            
+                            <p style="margin-top: 20px;">
+                                Best regards,<br>
+                                <strong>SAROJ VANDANA WOMEN & CHILDREN EMPOWERMENT SOCIETY</strong>
+                            </p>
+                        </div>
+                    `
+                };
+                
+                // Send both emails
+                await Promise.all([
+                    transporter.sendMail(organizationEmailOptions),
+                    transporter.sendMail(confirmationEmailOptions)
+                ]);
+                
+                console.log('✅ Emails sent successfully to both organization and sender');
+                
+            } catch (emailError) {
+                console.error('❌ Email sending failed:', emailError.message);
+                // Don't fail the request if email fails - still log the contact
+            }
+        } else {
+            console.log('⚠️ Email credentials not configured - contact form logged only');
+        }
+        
+        res.json({ 
+            success: true, 
+            message: 'Thank you for your message! We will get back to you soon.' 
+        });
+        
+    } catch (error) {
+        console.error('Contact form error:', error);
+        res.status(500).json({ error: 'Failed to send message. Please try again.' });
     }
 });
 

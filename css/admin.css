@@ -42,6 +42,143 @@ body {
     z-index: 1000;
 }
 
+/* Crop Modal Styles */
+.crop-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.crop-modal-content {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-lg);
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.crop-modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.crop-modal-header h3 {
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 0.5rem;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: var(--text-primary);
+}
+
+.crop-modal-body {
+    flex: 1;
+    overflow: auto;
+    padding: 1.5rem;
+}
+
+.crop-container {
+    height: 400px;
+    margin-bottom: 1.5rem;
+    background: #f1f5f9;
+    border-radius: var(--border-radius);
+    position: relative;
+    overflow: hidden;
+}
+
+.crop-container img {
+    max-width: 100%;
+    display: block;
+}
+
+.zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.zoom-controls label {
+    min-width: 100px;
+    font-weight: 500;
+}
+
+.zoom-controls input[type="range"] {
+    flex: 1;
+    max-width: 300px;
+}
+
+.crop-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.aspect-ratio-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.aspect-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    background: var(--card-background);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.aspect-btn:hover {
+    border-color: var(--primary-color);
+    background: #f0f9ff;
+}
+
+.aspect-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.crop-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.crop-modal-footer {
+    padding: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
 .login-modal-content {
     background: var(--card-background);
     padding: 2rem;
@@ -161,6 +298,22 @@ body {
     font-size: 0.875rem;
 }
 
+.form-group .description-hint {
+    background-color: #f0f9ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #1e40af;
+    line-height: 1.5;
+}
+
+.form-group .description-hint strong {
+    color: #1d4ed8;
+    font-weight: 600;
+}
+
 /* Button Styles */
 .btn {
     display: inline-block;
@@ -213,6 +366,17 @@ body {
 .btn-small {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
+}
+
+.btn-edit-bio {
+    background-color: #8b5cf6;
+    color: white;
+    border: 1px solid #8b5cf6;
+}
+
+.btn-edit-bio:hover {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
 }
 
 .btn-danger {

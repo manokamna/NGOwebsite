@@ -29,6 +29,14 @@ class AdminAPI {
             const data = await response.json();
 
             if (!response.ok) {
+                // Handle unauthorized errors (session expired)
+                if (response.status === 401 && data.error === 'Unauthorized') {
+                    console.log('Session expired, clearing local session');
+                    this.clearSession();
+                    // Trigger a page reload to show login modal
+                    window.location.reload();
+                    return;
+                }
                 throw new Error(data.error || `HTTP ${response.status}`);
             }
 
@@ -116,6 +124,19 @@ class AdminAPI {
             return data;
         } catch (error) {
             throw new Error('Failed to load images: ' + error.message);
+        }
+    }
+
+    async updateImageMetadata(imageKey, description) {
+        try {
+            const encodedKey = encodeURIComponent(imageKey);
+            const data = await this.makeRequest(`/images/${encodedKey}/metadata`, {
+                method: 'PUT',
+                body: JSON.stringify({ description })
+            });
+            return data;
+        } catch (error) {
+            throw new Error('Failed to update image description: ' + error.message);
         }
     }
 

@@ -3,7 +3,9 @@
 // Configuration and state management
 let adminState = {
     isAuthenticated: false,
-    images: []
+    images: [],
+    cropper: null,
+    croppedFiles: new Map()
 };
 
 // Initialize admin panel
@@ -21,6 +23,7 @@ function initializeAdmin() {
 
     // Setup event listeners
     setupEventListeners();
+    setupEditBioEventListeners();
 }
 
 function setupEventListeners() {
@@ -42,6 +45,70 @@ function setupEventListeners() {
     
     // File input change
     document.getElementById('imageFile').addEventListener('change', handleFileSelection);
+    
+    // Note: Crop modal controls will be setup when modal opens
+}
+
+function setupCropEventListeners() {
+    // Remove existing listeners to prevent duplicates
+    const elements = [
+        'closeCropModal', 'cancelCropBtn', 'applyCropBtn', 
+        'rotateLeftBtn', 'rotateRightBtn', 'flipHBtn', 'flipVBtn', 'resetCropBtn'
+    ];
+    
+    elements.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            const newElement = element.cloneNode(true);
+            element.parentNode.replaceChild(newElement, element);
+        }
+    });
+    
+    // Crop modal controls
+    document.getElementById('closeCropModal').addEventListener('click', closeCropModal);
+    document.getElementById('cancelCropBtn').addEventListener('click', closeCropModal);
+    document.getElementById('applyCropBtn').addEventListener('click', applyCrop);
+    document.getElementById('rotateLeftBtn').addEventListener('click', () => {
+        console.log('Rotate left clicked');
+        rotateCrop(-90);
+    });
+    document.getElementById('rotateRightBtn').addEventListener('click', () => {
+        console.log('Rotate right clicked');
+        rotateCrop(90);
+    });
+    document.getElementById('flipHBtn').addEventListener('click', () => {
+        console.log('Flip horizontal clicked');
+        flipCrop('horizontal');
+    });
+    document.getElementById('flipVBtn').addEventListener('click', () => {
+        console.log('Flip vertical clicked');
+        flipCrop('vertical');
+    });
+    document.getElementById('resetCropBtn').addEventListener('click', () => {
+        console.log('Reset clicked');
+        resetCrop();
+    });
+    
+    // Zoom slider
+    const zoomSlider = document.getElementById('zoomSlider');
+    const newZoomSlider = zoomSlider.cloneNode(true);
+    zoomSlider.parentNode.replaceChild(newZoomSlider, zoomSlider);
+    
+    document.getElementById('zoomSlider').addEventListener('input', function(e) {
+        console.log('Zoom slider changed to:', e.target.value);
+        const zoomValue = e.target.value / 100;
+        zoomCrop(zoomValue);
+        document.getElementById('zoomValue').textContent = e.target.value + '%';
+    });
+    
+    // Aspect ratio buttons
+    document.querySelectorAll('.aspect-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            console.log('Aspect ratio clicked:', this.getAttribute('data-ratio'));
+            const ratio = parseFloat(this.getAttribute('data-ratio'));
+            setAspectRatio(ratio, e);
+        });
+    });
 }
 
 // Authentication functions
@@ -138,6 +205,10 @@ function handleFileSelection(e) {
     if (files.length > 0) {
         let totalSize = 0;
         let invalidFiles = [];
+        let largeFiles = [];
+        
+        // Clear previous cropped files
+        adminState.croppedFiles.clear();
         
         for (let file of files) {
             totalSize += file.size;
@@ -147,9 +218,12 @@ function handleFileSelection(e) {
                 invalidFiles.push(file.name + ' (not an image)');
             }
             
-            // Check file size (5MB limit)
-            if (file.size > 5 * 1024 * 1024) {
-                invalidFiles.push(file.name + ' (too large)');
+            // Check for extremely large files (50MB limit - we'll resize automatically)
+            if (file.size > 50 * 1024 * 1024) {
+                invalidFiles.push(file.name + ' (file too large - max 50MB)');
+            } else if (file.size > 5 * 1024 * 1024) {
+                // Files over 5MB will be automatically resized
+                largeFiles.push(file.name);
             }
         }
         
@@ -158,7 +232,13 @@ function handleFileSelection(e) {
             return;
         }
         
-        showStatus('uploadStatus', `${files.length} file(s) selected (${formatFileSize(totalSize)})`, 'info');
+        let message = `${files.length} file(s) selected (${formatFileSize(totalSize)}).`;
+        if (largeFiles.length > 0) {
+            message += ` Large files will be automatically resized: ${largeFiles.join(', ')}.`;
+        }
+        message += ' Click upload to crop and upload.';
+        
+        showStatus('uploadStatus', message, 'info');
     }
 }
 
@@ -166,7 +246,7 @@ function handleFileSelection(e) {
 async function handleImageUpload() {
     const category = document.getElementById('imageCategory').value;
     const files = document.getElementById('imageFile').files;
-    const description = document.getElementById('imageDescription').value;
+    const description = document.getElementById('imageDescription').value.trim();
     
     if (!category) {
         showStatus('uploadStatus', 'Please select an image category.', 'error');
@@ -178,7 +258,29 @@ async function handleImageUpload() {
         return;
     }
     
-    await uploadFilesToServer(files, category, description);
+    if (!description) {
+        showStatus('uploadStatus', 'Please provide an image description. For team images, use format: "Designation - Name" or "Designation - Name || Bio" (e.g., "President - Saroj || Experienced leader with 15 years in social work.").', 'error');
+        return;
+    }
+    
+    // Process images with cropper
+    adminState.currentFileIndex = 0;
+    adminState.filesToProcess = Array.from(files);
+    adminState.currentCategory = category;
+    adminState.currentDescription = description;
+    
+    processNextImage();
+}
+
+async function processNextImage() {
+    if (adminState.currentFileIndex >= adminState.filesToProcess.length) {
+        // All images processed, now upload
+        await uploadCroppedImages();
+        return;
+    }
+    
+    const file = adminState.filesToProcess[adminState.currentFileIndex];
+    openCropModal(file);
 }
 
 async function uploadFilesToServer(files, category, description) {
@@ -280,6 +382,11 @@ function displayGalleryImages(images) {
 
 function createImageCard(image) {
     const uploadDate = new Date(image.uploadDate).toLocaleDateString();
+    
+    // Add Edit Bio button for team category images
+    const editBioButton = image.category === 'team' ? 
+        `<button class="btn btn-small btn-edit-bio" data-key="${image.key}" data-url="${image.url}" data-description="${image.description.replace(/"/g, '&quot;')}" title="Edit Bio">Edit Bio</button>` : '';
+    
     return `
         <div class="gallery-item" data-category="${image.category}">
             <img src="${image.url}" alt="${image.description}" loading="lazy">
@@ -291,6 +398,7 @@ function createImageCard(image) {
                 <div class="gallery-item-description">${image.description}</div>
                 <div class="gallery-item-actions">
                     <button class="btn btn-small btn-copy" data-url="${image.url}" title="Copy URL">Copy URL</button>
+                    ${editBioButton}
                     <button class="btn btn-small btn-danger" data-key="${image.key}" title="Delete Image">Delete</button>
                 </div>
             </div>
@@ -309,6 +417,16 @@ function addGalleryEventListeners() {
                     this.textContent = 'Copy URL';
                 }, 2000);
             });
+        });
+    });
+    
+    // Edit Bio buttons
+    document.querySelectorAll('.btn-edit-bio').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const key = this.getAttribute('data-key');
+            const url = this.getAttribute('data-url');
+            const description = this.getAttribute('data-description');
+            openEditBioModal(key, url, description);
         });
     });
     
@@ -360,4 +478,299 @@ function formatFileSize(bytes) {
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// Edit Bio Modal Functions
+let currentEditingImageKey = null;
+
+function setupEditBioEventListeners() {
+    document.getElementById('closeEditBioModal').addEventListener('click', closeEditBioModal);
+    document.getElementById('cancelEditBio').addEventListener('click', closeEditBioModal);
+    document.getElementById('saveEditBio').addEventListener('click', saveEditBio);
+}
+
+function openEditBioModal(imageKey, imageUrl, currentDescription) {
+    currentEditingImageKey = imageKey;
+    
+    // Set image preview
+    document.getElementById('editImagePreview').src = imageUrl;
+    
+    // Set current description (decode HTML entities)
+    document.getElementById('editBioDescription').value = currentDescription.replace(/&quot;/g, '"');
+    
+    // Show modal
+    document.getElementById('editBioModal').style.display = 'flex';
+}
+
+function closeEditBioModal() {
+    document.getElementById('editBioModal').style.display = 'none';
+    currentEditingImageKey = null;
+}
+
+async function saveEditBio() {
+    const newDescription = document.getElementById('editBioDescription').value.trim();
+    
+    if (!newDescription) {
+        alert('Please provide a description.');
+        return;
+    }
+    
+    const saveBtn = document.getElementById('saveEditBio');
+    const originalText = saveBtn.textContent;
+    
+    try {
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Saving...';
+        
+        const response = await adminAPI.updateImageMetadata(currentEditingImageKey, newDescription);
+        
+        if (response.success) {
+            closeEditBioModal();
+            showStatus('configStatus', 'Team member info updated successfully! Refresh the website to see changes.', 'success');
+            loadImageGallery(); // Refresh gallery to show updated description
+        }
+        
+    } catch (error) {
+        showStatus('configStatus', error.message, 'error');
+    } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = originalText;
+    }
+}
+
+// Cropping functions
+function openCropModal(file) {
+    // First resize the image if it's too large
+    resizeImageIfNeeded(file).then(resizedFile => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const cropImage = document.getElementById('cropImage');
+            const cropModal = document.getElementById('cropModal');
+            
+            // Reset zoom slider
+            document.getElementById('zoomSlider').value = 100;
+            document.getElementById('zoomValue').textContent = '100%';
+            
+            // Show modal first
+            cropModal.style.display = 'flex';
+            
+            // Setup event listeners for crop modal
+            setupCropEventListeners();
+            
+            // Set image source
+            cropImage.src = e.target.result;
+            
+            // Wait for image to load before initializing cropper
+            cropImage.onload = function() {
+                // Destroy previous cropper if exists
+                if (adminState.cropper) {
+                    adminState.cropper.destroy();
+                    adminState.cropper = null;
+                }
+                
+                // Initialize new cropper with proper settings
+                setTimeout(() => {
+                    adminState.cropper = new Cropper(cropImage, {
+                        aspectRatio: NaN, // Free aspect ratio by default
+                        viewMode: 1, // Restrict crop box to not exceed the canvas
+                        dragMode: 'crop', // Create new crop box
+                        initialAspectRatio: NaN,
+                        autoCropArea: 0.8,
+                        responsive: true,
+                        restore: false,
+                        guides: true,
+                        center: true,
+                        highlight: true,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        toggleDragModeOnDblclick: true,
+                        background: true,
+                        modal: true,
+                        zoomable: true,
+                        zoomOnWheel: true,
+                        zoomOnTouch: true,
+                        wheelZoomRatio: 0.1,
+                        ready: function() {
+                            console.log('Cropper initialized successfully');
+                            // Reset aspect ratio buttons
+                            document.querySelectorAll('.aspect-btn').forEach(btn => {
+                                btn.classList.remove('active');
+                            });
+                            const freeBtn = document.querySelector('.aspect-btn[data-ratio="0"]');
+                            if (freeBtn) freeBtn.classList.add('active');
+                        }
+                    });
+                }, 100);
+            };
+            
+            adminState.currentFile = resizedFile;
+        };
+        reader.readAsDataURL(resizedFile);
+    });
+}
+
+// Function to resize image if it's too large
+function resizeImageIfNeeded(file) {
+    return new Promise((resolve) => {
+        const MAX_WIDTH = 1920;
+        const MAX_HEIGHT = 1920;
+        const MAX_SIZE = 2 * 1024 * 1024; // 2MB
+        
+        // If file is already small enough, return as is
+        if (file.size <= MAX_SIZE) {
+            resolve(file);
+            return;
+        }
+        
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        
+        img.onload = function() {
+            let { width, height } = img;
+            
+            // Calculate new dimensions
+            if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+                const ratio = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
+                width *= ratio;
+                height *= ratio;
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            
+            // Draw resized image
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Convert to blob
+            canvas.toBlob((blob) => {
+                const resizedFile = new File([blob], file.name, {
+                    type: file.type,
+                    lastModified: Date.now()
+                });
+                
+                console.log(`Image resized from ${formatFileSize(file.size)} to ${formatFileSize(resizedFile.size)}`);
+                resolve(resizedFile);
+            }, file.type, 0.8); // 80% quality
+        };
+        
+        img.src = URL.createObjectURL(file);
+    });
+}
+
+function closeCropModal() {
+    document.getElementById('cropModal').style.display = 'none';
+    if (adminState.cropper) {
+        adminState.cropper.destroy();
+        adminState.cropper = null;
+    }
+    
+    // Reset file input if user cancels
+    if (adminState.croppedFiles.size === 0) {
+        document.getElementById('imageFile').value = '';
+        showStatus('uploadStatus', 'Upload cancelled', 'info');
+    }
+}
+
+function rotateCrop(degrees) {
+    if (adminState.cropper) {
+        adminState.cropper.rotate(degrees);
+    }
+}
+
+function flipCrop(direction) {
+    if (adminState.cropper) {
+        console.log('Flipping', direction);
+        const imageData = adminState.cropper.getImageData();
+        if (direction === 'horizontal') {
+            const currentScaleX = imageData.scaleX || 1;
+            adminState.cropper.scaleX(-currentScaleX);
+        } else {
+            const currentScaleY = imageData.scaleY || 1;
+            adminState.cropper.scaleY(-currentScaleY);
+        }
+    }
+}
+
+function zoomCrop(ratio) {
+    if (adminState.cropper) {
+        console.log('Zooming to', ratio);
+        adminState.cropper.zoomTo(ratio);
+    }
+}
+
+function resetCrop() {
+    if (adminState.cropper) {
+        console.log('Resetting crop');
+        adminState.cropper.reset();
+        document.getElementById('zoomSlider').value = 100;
+        document.getElementById('zoomValue').textContent = '100%';
+        
+        // Reset aspect ratio buttons
+        document.querySelectorAll('.aspect-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        const freeBtn = document.querySelector('.aspect-btn[data-ratio="0"]');
+        if (freeBtn) freeBtn.classList.add('active');
+    }
+}
+
+function setAspectRatio(ratio, event) {
+    if (adminState.cropper) {
+        console.log('Setting aspect ratio to', ratio);
+        adminState.cropper.setAspectRatio(ratio === 0 ? NaN : ratio);
+    }
+    
+    // Update button styles
+    document.querySelectorAll('.aspect-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
+}
+
+function applyCrop() {
+    if (!adminState.cropper) return;
+    
+    // Get cropped canvas
+    adminState.cropper.getCroppedCanvas({
+        maxWidth: 1920,
+        maxHeight: 1920,
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high'
+    }).toBlob(function(blob) {
+        // Create a new file from the blob
+        const fileName = adminState.currentFile.name;
+        const croppedFile = new File([blob], fileName, {
+            type: blob.type || 'image/jpeg'
+        });
+        
+        // Store the cropped file
+        adminState.croppedFiles.set(fileName, croppedFile);
+        
+        // Close modal
+        document.getElementById('cropModal').style.display = 'none';
+        if (adminState.cropper) {
+            adminState.cropper.destroy();
+            adminState.cropper = null;
+        }
+        
+        // Process next image
+        adminState.currentFileIndex++;
+        processNextImage();
+    }, 'image/jpeg', 0.9);
+}
+
+async function uploadCroppedImages() {
+    if (adminState.croppedFiles.size === 0) {
+        showStatus('uploadStatus', 'No images to upload', 'error');
+        return;
+    }
+    
+    const files = Array.from(adminState.croppedFiles.values());
+    await uploadFilesToServer(files, adminState.currentCategory, adminState.currentDescription);
+    
+    // Clear the cropped files after upload
+    adminState.croppedFiles.clear();
 }

@@ -40,95 +40,171 @@
     </nav>
 
     <main>
-        <section class="hero-contact" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); min-height: 40vh; display: flex; align-items: center; position: relative; overflow: hidden; padding: 4rem 0;">
-            <!-- Animated background elements -->
-            <div class="bg-animation" style="position: absolute; width: 100%; height: 100%; opacity: 0.1;">
-                <div style="position: absolute; top: 20%; left: 20%; width: 160px; height: 160px; background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%); border-radius: 50%; animation: float 6s ease-in-out infinite;"></div>
-                <div style="position: absolute; top: 60%; right: 20%; width: 120px; height: 120px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); border-radius: 50%; animation: float 8s ease-in-out infinite reverse;"></div>
-                <div style="position: absolute; bottom: 30%; left: 50%; width: 90px; height: 90px; background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%); border-radius: 50%; animation: float 7s ease-in-out infinite;"></div>
+        <section class="hero-contact" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); padding: 1.5rem 0;">
+            <div class="container" style="text-align: center;">
+                <h1 style="font-size: 2rem; font-weight: 700; color: white; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);" data-en="Let's Connect & Make a Difference" data-hi="आइए जुड़ें और बदलाव लाएं">Let's Connect & Make a Difference</h1>
             </div>
-            
-            <div class="container" style="text-align: center; z-index: 2; position: relative;">
-                <div style="max-width: 800px; margin: 0 auto;">
-                    <h1 style="font-size: 2.8rem; font-weight: 700; color: white; margin-bottom: 1.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); animation: slideUp 1s ease-out; line-height: 1.2;" data-en="Let's Connect & Make a Difference" data-hi="आइए जुड़ें और बदलाव लाएं">Let's Connect & Make a Difference</h1>
-                    <p style="font-size: 1.2rem; color: rgba(255,255,255,0.9); line-height: 1.6; font-weight: 300; animation: slideUp 1s ease-out 0.3s both; max-width: 700px; margin: 0 auto;" data-en="Get in touch to learn more about our work or how you can get involved" data-hi="हमारे काम के बारे में जानने या आप कैसे शामिल हो सकते हैं इसके लिए संपर्क करें">Get in touch to learn more about our work or how you can get involved</p>
+        </section>
+
+        <!-- Quick Access Section -->
+        <section class="quick-access-section" style="padding: 2rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div class="container">
+                <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                        <button id="emailUsBtn" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 1rem; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); color: white; transition: all 0.3s ease; cursor: pointer; width: 100%;">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📧</div>
+                            <div style="font-weight: 600; font-size: 0.9rem;">Email Us</div>
+                            <div style="font-size: 0.75rem; margin-top: 0.3rem; opacity: 0.8;">sarojvandana2022@gmail.com</div>
+                        </button>
+                        <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 1rem; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); color: white;">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📞</div>
+                            <div style="font-size: 0.9rem; margin-top: 0.3rem; opacity: 0.9; font-weight: 600;">+91 87410 61834</div>
+                            <div style="font-size: 0.7rem; margin-top: 0.2rem; opacity: 0.8;">Mon-Fri: 9:00 AM - 6:00 PM IST</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 1rem; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2);">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📍</div>
+                            <div style="font-weight: 600; font-size: 0.9rem;">Address</div>
+                            <div style="font-size: 0.75rem; margin-top: 0.3rem; opacity: 0.9; line-height: 1.4;">
+                                Village Main Road<br>
+                                Rural District, State 123456<br>
+                                India
+                            </div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 1rem; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2);">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🌐</div>
+                            <div style="font-weight: 600; font-size: 0.9rem;">Follow Us</div>
+                            <div style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.5rem;">
+                                <a href="#" style="padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.2); color: white; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.3s ease; font-size: 0.7rem;">Facebook</a>
+                                <a href="#" style="padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.2); color: white; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.3s ease; font-size: 0.7rem;">Instagram</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="contact-content" style="padding: 5rem 0; background: linear-gradient(to bottom, #f8fafc, #ffffff);">
-            <div class="container">
-                <div class="contact-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1200px; margin: 0 auto;">
-                    <div class="contact-form" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 3rem; border-radius: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: relative; overflow: hidden;">
-                        <!-- Decorative elements -->
-                        <div style="position: absolute; top: -40px; right: -40px; width: 120px; height: 120px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
-                        <div style="position: absolute; bottom: -30px; left: -30px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        
-                        <div style="position: relative; z-index: 2;">
-                            <h2 style="font-size: 2.2rem; margin-bottom: 2rem; color: white; font-weight: 700;">Send us a Message</h2>
-                            <form id="contactForm">
-                                <div class="form-group" style="margin-bottom: 1.5rem;">
-                                    <label for="name" style="font-weight: 600; color: white; display: block; margin-bottom: 0.5rem;">Full Name</label>
-                                    <input type="text" id="name" name="name" required style="width: 100%; padding: 1rem; font-size: 1rem; border-radius: 15px; border: none; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);">
-                                </div>
-                                <div class="form-group" style="margin-bottom: 1.5rem;">
-                                    <label for="email" style="font-weight: 600; color: white; display: block; margin-bottom: 0.5rem;">Email Address</label>
-                                    <input type="email" id="email" name="email" required style="width: 100%; padding: 1rem; font-size: 1rem; border-radius: 15px; border: none; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);">
-                                </div>
-                                <div class="form-group" style="margin-bottom: 1.5rem;">
-                                    <label for="subject" style="font-weight: 600; color: white; display: block; margin-bottom: 0.5rem;">Subject</label>
-                                    <select id="subject" name="subject" required style="width: 100%; padding: 1rem; font-size: 1rem; border-radius: 15px; border: none; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);">
-                                        <option value="">Select a topic</option>
-                                        <option value="volunteer">Volunteer Opportunities</option>
-                                        <option value="donate">Donations</option>
-                                        <option value="partnership">Partnership</option>
-                                        <option value="general">General Inquiry</option>
-                                        <option value="media">Media Inquiry</option>
-                                    </select>
-                                </div>
-                                <div class="form-group" style="margin-bottom: 2rem;">
-                                    <label for="message" style="font-weight: 600; color: white; display: block; margin-bottom: 0.5rem;">Message</label>
-                                    <textarea id="message" name="message" rows="4" required style="width: 100%; padding: 1rem; font-size: 1rem; border-radius: 15px; border: none; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); resize: vertical;"></textarea>
-                                </div>
-                                <button type="submit" style="width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 600; border: none; border-radius: 15px; background: rgba(255,255,255,0.9); color: #667eea; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(10px);">Send Message</button>
-                            </form>
-                            <div id="formMessage" class="form-message" style="margin-top: 1rem; color: white;"></div>
+        <!-- Contact Form Modal -->
+        <div id="contactModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;">
+            <div class="contact-form" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem; border-radius: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); position: relative; overflow: hidden; max-width: 500px; width: 90%; margin: 2rem; max-height: 90vh; overflow-y: auto;">
+                <!-- Close button -->
+                <button id="closeModalBtn" style="position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 35px; height: 35px; color: white; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">&times;</button>
+                
+                <!-- Decorative elements -->
+                <div style="position: absolute; top: -30px; right: -30px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                <div style="position: absolute; bottom: -20px; left: -20px; width: 70px; height: 70px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+                
+                <div style="position: relative; z-index: 2;">
+                    <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: white; font-weight: 700; text-align: center;">Send us a Message</h2>
+                    <form id="contactForm" style="display: flex; flex-direction: column;">
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label for="modalName" style="font-weight: 600; color: white; display: block; margin-bottom: 0.3rem; font-size: 0.9rem;">Full Name</label>
+                            <input type="text" id="modalName" name="name" required style="width: 100%; padding: 0.8rem; font-size: 0.9rem; border-radius: 12px; border: none; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);">
                         </div>
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label for="modalEmail" style="font-weight: 600; color: white; display: block; margin-bottom: 0.3rem; font-size: 0.9rem;">Email Address</label>
+                            <input type="email" id="modalEmail" name="email" required style="width: 100%; padding: 0.8rem; font-size: 0.9rem; border-radius: 12px; border: none; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label for="modalSubject" style="font-weight: 600; color: white; display: block; margin-bottom: 0.3rem; font-size: 0.9rem;">Subject</label>
+                            <select id="modalSubject" name="subject" required style="width: 100%; padding: 0.8rem; font-size: 0.9rem; border-radius: 12px; border: none; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);">
+                                <option value="">Select a topic</option>
+                                <option value="volunteer">Volunteer Opportunities</option>
+                                <option value="donate">Donations</option>
+                                <option value="partnership">Partnership</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="media">Media Inquiry</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <label for="modalMessage" style="font-weight: 600; color: white; display: block; margin-bottom: 0.3rem; font-size: 0.9rem;">Message</label>
+                            <textarea id="modalMessage" name="message" rows="4" required style="width: 100%; padding: 0.8rem; font-size: 0.9rem; border-radius: 12px; border: none; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); resize: vertical; min-height: 100px;"></textarea>
+                        </div>
+                        <button type="submit" style="width: 100%; padding: 0.8rem; font-size: 1rem; font-weight: 600; border: none; border-radius: 12px; background: rgba(255,255,255,0.9); color: #667eea; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(10px);">Send Message</button>
+                    </form>
+                    <div id="modalFormMessage" class="form-message" style="margin-top: 1rem; color: white;"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Visual Separator -->
+        <div style="height: 1px; background: linear-gradient(to right, transparent, rgba(102, 126, 234, 0.3), transparent); margin: 2rem 0;"></div>
+
+        <!-- NGO Team Contact Numbers Section -->
+        <section class="team-contact-section" style="padding: 4rem 0; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); position: relative; overflow: hidden;">
+            <!-- Decorative Background Elements -->
+            <div style="position: absolute; top: -50px; left: -50px; width: 150px; height: 150px; background: rgba(255,255,255,0.05); border-radius: 50%; opacity: 0.6;"></div>
+            <div style="position: absolute; bottom: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.08); border-radius: 50%; opacity: 0.4;"></div>
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; background: rgba(255,255,255,0.02); border-radius: 50%; opacity: 0.3;"></div>
+            <div class="container" style="position: relative; z-index: 2;">
+                <div style="max-width: 1000px; margin: 0 auto;">
+                    <div style="text-align: center; margin-bottom: 3rem;">
+                        <h2 style="font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);" data-en="NGO Team Contact Numbers" data-hi="एनजीओ टीम संपर्क नंबर">NGO Team Contact Numbers</h2>
+                        <p style="font-size: 1.1rem; color: rgba(255,255,255,0.9); margin: 0; text-shadow: 1px 1px 3px rgba(0,0,0,0.3);" data-en="Get in touch with our dedicated team members for specific inquiries" data-hi="विशिष्ट पूछताछ के लिए हमारे समर्पित टीम सदस्यों से संपर्क करें">Get in touch with our dedicated team members for specific inquiries</p>
                     </div>
                     
-                    <div class="contact-info" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); padding: 3rem; border-radius: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: relative; overflow: hidden;">
-                        <!-- Decorative elements -->
-                        <div style="position: absolute; top: -30px; right: -30px; width: 110px; height: 110px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
-                        <div style="position: absolute; bottom: -20px; left: -20px; width: 90px; height: 90px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                        
-                        <div style="position: relative; z-index: 2;">
-                            <h2 style="font-size: 2.2rem; margin-bottom: 2rem; color: white; font-weight: 700;">Get in Touch</h2>
-                            <div class="contact-details">
-                                <div class="contact-item" style="margin-bottom: 2rem; padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 15px; backdrop-filter: blur(10px);">
-                                    <h3 style="font-size: 1.3rem; font-weight: 600; color: white; margin-bottom: 1rem; display: flex; align-items: center;"><span style="margin-right: 0.5rem;">📧</span> Email</h3>
-                                    <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0;">info@sarojvandana.org</p>
-                                    <p style="color: rgba(255,255,255,0.9); margin: 0;">volunteer@sarojvandana.org</p>
-                                </div>
-                                <div class="contact-item" style="margin-bottom: 2rem; padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 15px; backdrop-filter: blur(10px);">
-                                    <h3 style="font-size: 1.3rem; font-weight: 600; color: white; margin-bottom: 1rem; display: flex; align-items: center;"><span style="margin-right: 0.5rem;">📞</span> Phone</h3>
-                                    <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0;">(555) 123-4567</p>
-                                    <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.9rem;">Mon-Fri: 9:00 AM - 6:00 PM IST</p>
-                                </div>
-                                <div class="contact-item" style="margin-bottom: 2rem; padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 15px; backdrop-filter: blur(10px);">
-                                    <h3 style="font-size: 1.3rem; font-weight: 600; color: white; margin-bottom: 1rem; display: flex; align-items: center;"><span style="margin-right: 0.5rem;">📍</span> Address</h3>
-                                    <p style="color: rgba(255,255,255,0.9); margin: 0; line-height: 1.6;">Village Main Road<br>
-                                    Rural District, State 123456<br>
-                                    India</p>
-                                </div>
-                                <div class="contact-item" style="padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 15px; backdrop-filter: blur(10px);">
-                                    <h3 style="font-size: 1.3rem; font-weight: 600; color: white; margin-bottom: 1rem; display: flex; align-items: center;"><span style="margin-right: 0.5rem;">🌐</span> Follow Us</h3>
-                                    <div class="social-links" style="display: flex; gap: 1rem;">
-                                        <a href="#" style="padding: 0.5rem 1rem; background: rgba(255,255,255,0.2); color: white; text-decoration: none; border-radius: 10px; font-weight: 500; transition: all 0.3s ease;">Facebook</a>
-                                        <a href="#" style="padding: 0.5rem 1rem; background: rgba(255,255,255,0.2); color: white; text-decoration: none; border-radius: 10px; font-weight: 500; transition: all 0.3s ease;">Instagram</a>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="team-contacts-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                        <!-- President Contact -->
+                        <div class="team-contact-card" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 1.8rem; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.3s ease;">
+                            <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;">👑</div>
+                            <h3 style="font-size: 1.3rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-en="President" data-hi="अध्यक्ष">President</h3>
+                            <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 500;">Saroj Devi</p>
+                            <a href="tel:+918741061834" style="color: rgba(255,255,255,0.95); font-size: 1rem; font-weight: 600; background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 10px; display: inline-block; text-decoration: none; transition: all 0.3s ease;">+91 87410 61834</a>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.85rem; margin-top: 0.5rem;">General Inquiries & Leadership</p>
                         </div>
+
+                        <!-- Vice President Contact -->
+                        <div class="team-contact-card" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 1.8rem; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.3s ease;">
+                            <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;">🤝</div>
+                            <h3 style="font-size: 1.3rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-en="Vice President" data-hi="उपाध्यक्ष">Vice President</h3>
+                            <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 500;">Nirmala Devi</p>
+                            <a href="tel:+919999988888" style="color: rgba(255,255,255,0.95); font-size: 1rem; font-weight: 600; background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 10px; display: inline-block; text-decoration: none; transition: all 0.3s ease;">+91 99999 88888</a>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.85rem; margin-top: 0.5rem;">Program Coordination</p>
+                        </div>
+
+                        <!-- Secretary Contact -->
+                        <div class="team-contact-card" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 1.8rem; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.3s ease;">
+                            <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;">📋</div>
+                            <h3 style="font-size: 1.3rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-en="Secretary" data-hi="सचिव">Secretary</h3>
+                            <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 500;">Team Member</p>
+                            <a href="tel:+917777766666" style="color: rgba(255,255,255,0.95); font-size: 1rem; font-weight: 600; background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 10px; display: inline-block; text-decoration: none; transition: all 0.3s ease;">+91 77777 66666</a>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.85rem; margin-top: 0.5rem;">Documentation & Records</p>
+                        </div>
+
+                        <!-- Volunteer Coordinator -->
+                        <div class="team-contact-card" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 1.8rem; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.3s ease;">
+                            <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;">🙋‍♀️</div>
+                            <h3 style="font-size: 1.3rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-en="Volunteer Coordinator" data-hi="स्वयंसेवक समन्वयक">Volunteer Coordinator</h3>
+                            <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 500;">Team Member</p>
+                            <a href="tel:+915555544444" style="color: rgba(255,255,255,0.95); font-size: 1rem; font-weight: 600; background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 10px; display: inline-block; text-decoration: none; transition: all 0.3s ease;">+91 55555 44444</a>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.85rem; margin-top: 0.5rem;">Volunteer Opportunities</p>
+                        </div>
+
+                        <!-- Program Manager -->
+                        <div class="team-contact-card" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 1.8rem; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.3s ease;">
+                            <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;">📚</div>
+                            <h3 style="font-size: 1.3rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-en="Program Manager" data-hi="कार्यक्रम प्रबंधक">Program Manager</h3>
+                            <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 500;">Team Member</p>
+                            <a href="tel:+913333322222" style="color: rgba(255,255,255,0.95); font-size: 1rem; font-weight: 600; background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 10px; display: inline-block; text-decoration: none; transition: all 0.3s ease;">+91 33333 22222</a>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.85rem; margin-top: 0.5rem;">Training Programs</p>
+                        </div>
+
+                        <!-- Emergency Contact -->
+                        <div class="team-contact-card" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 1.8rem; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.2); transition: transform 0.3s ease;">
+                            <div style="width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;">🚨</div>
+                            <h3 style="font-size: 1.3rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-en="Emergency Contact" data-hi="आपातकालीन संपर्क">Emergency Contact</h3>
+                            <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 500;">24/7 Helpline</p>
+                            <a href="tel:+918741061834" style="color: rgba(255,255,255,0.95); font-size: 1rem; font-weight: 600; background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 10px; display: inline-block; text-decoration: none; transition: all 0.3s ease;">+91 87410 61834</a>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.85rem; margin-top: 0.5rem;">Urgent Assistance</p>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information Note -->
+                    <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: rgba(255,255,255,0.1); border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15);">
+                        <h4 style="color: white; margin: 0 0 1rem 0; font-size: 1.1rem; font-weight: 600;">📋 Important Information</h4>
+                        <p style="color: rgba(255,255,255,0.9); margin: 0; font-size: 0.95rem; line-height: 1.6;" data-en="Contact hours: Monday to Friday, 9:00 AM - 6:00 PM IST. For urgent matters outside office hours, please use the emergency contact number." data-hi="संपर्क समय: सोमवार से शुक्रवार, सुबह 9:00 बजे - शाम 6:00 बजे IST। कार्यालय के समय के बाहर तत्काल मामलों के लिए, कृपया आपातकालीन संपर्क नंबर का उपयोग करें।">
+                            Contact hours: Monday to Friday, 9:00 AM - 6:00 PM IST. For urgent matters outside office hours, please use the emergency contact number.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -153,8 +229,8 @@
                 </div>
                 <div class="footer-section">
                     <h4>Contact Info</h4>
-                    <p>Email: info@sarojvandana.org</p>
-                    <p>Phone: (555) 123-4567</p>
+                    <p>Email: sarojvandana2022@gmail.com</p>
+                    <p>Phone: +91 87410 61834</p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -193,6 +269,46 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.15);
         }
         
+        .quick-access-section a:hover, .quick-access-section button:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.25) !important;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        /* Modal Styles */
+        #contactModal {
+            backdrop-filter: blur(5px);
+        }
+        
+        #contactModal .contact-form {
+            animation: modalSlideIn 0.4s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        #contactModal .contact-form input:focus,
+        #contactModal .contact-form select:focus,
+        #contactModal .contact-form textarea:focus {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            outline: none;
+        }
+        
+        #contactModal .contact-form button[type="submit"]:hover {
+            background: white !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
         .contact-form input:focus,
         .contact-form select:focus,
         .contact-form textarea:focus {
@@ -206,6 +322,11 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         
+        .team-contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
         .social-links a:hover {
             background: rgba(255,255,255,0.3) !important;
             transform: translateY(-2px);
@@ -214,11 +335,15 @@
         /* Responsive design */
         @media (max-width: 768px) {
             .hero-contact h1 {
-                font-size: 2.2rem !important;
+                font-size: 1.8rem !important;
             }
             
-            .hero-contact p {
-                font-size: 1.1rem !important;
+            .quick-access-section h2 {
+                font-size: 1.5rem !important;
+            }
+            
+            .quick-access-section div[style*="grid-template-columns"] {
+                grid-template-columns: repeat(2, 1fr) !important;
             }
             
             .contact-grid {
@@ -226,22 +351,63 @@
                 gap: 2rem !important;
             }
             
-            .contact-form, .contact-info {
-                padding: 2rem !important;
+            .contact-info {
+                padding: 1.5rem !important;
+                min-height: auto !important;
+            }
+            
+            #contactModal .contact-form {
+                padding: 1.5rem !important;
+                margin: 1rem !important;
+                max-height: 85vh !important;
+            }
+            
+            .team-contacts-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+                gap: 1rem !important;
+            }
+            
+            .team-contact-card {
+                padding: 1.5rem !important;
             }
         }
         
         @media (max-width: 480px) {
             .hero-contact h1 {
+                font-size: 1.5rem !important;
+            }
+            
+            .quick-access-section {
+                padding: 1.5rem 0 !important;
+            }
+            
+            .quick-access-section div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .contact-content {
+                padding: 2rem 0 !important;
+            }
+            
+            .contact-info h2, #contactModal h2 {
+                font-size: 1.5rem !important;
+            }
+            
+            #contactModal .contact-form {
+                padding: 1rem !important;
+                margin: 0.5rem !important;
+            }
+            
+            .team-contact-section {
+                padding: 2.5rem 0 !important;
+            }
+            
+            .team-contact-section h2 {
                 font-size: 1.8rem !important;
             }
             
-            .hero-contact p {
-                font-size: 1rem !important;
-            }
-            
-            .contact-form h2, .contact-info h2 {
-                font-size: 1.8rem !important;
+            .team-contacts-grid {
+                grid-template-columns: 1fr !important;
             }
         }
     </style>
@@ -265,15 +431,216 @@
             }, observerOptions);
             
             // Observe elements for animation
-            document.querySelectorAll('.contact-form, .contact-info').forEach(element => {
+            document.querySelectorAll('.contact-form, .contact-info, .team-contact-card').forEach(element => {
                 element.style.opacity = '0';
                 element.style.transform = 'translateY(30px)';
                 element.style.transition = 'all 0.8s ease-out';
                 observer.observe(element);
             });
             
+            // Animate quick access cards
+            document.querySelectorAll('.quick-access-section button, .quick-access-section a, .quick-access-section > div > div > div').forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'all 0.6s ease-out';
+                setTimeout(() => {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+            
             // Add smooth scrolling
             document.documentElement.style.scrollBehavior = 'smooth';
+            
+            // Add parallax effect to team section background elements
+            window.addEventListener('scroll', function() {
+                const teamSection = document.querySelector('.team-contact-section');
+                if (teamSection) {
+                    const scrolled = window.pageYOffset;
+                    const parallaxElements = teamSection.querySelectorAll('div[style*="absolute"]');
+                    parallaxElements.forEach((element, index) => {
+                        const speed = 0.1 + (index * 0.05);
+                        const yPos = scrolled * speed;
+                        element.style.transform = `translate(-50%, calc(-50% + ${yPos}px))`;
+                    });
+                }
+            });
+            
+            // Contact Modal Functionality
+            const emailUsBtn = document.getElementById('emailUsBtn');
+            const contactModal = document.getElementById('contactModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const modalContactForm = document.querySelector('#contactModal #contactForm');
+            const modalFormMessage = document.getElementById('modalFormMessage');
+            
+            // Open modal when clicking Email Us button
+            if (emailUsBtn && contactModal) {
+                emailUsBtn.addEventListener('click', function() {
+                    contactModal.style.display = 'flex';
+                    contactModal.style.opacity = '0';
+                    setTimeout(() => {
+                        contactModal.style.opacity = '1';
+                        contactModal.style.transition = 'opacity 0.3s ease';
+                    }, 10);
+                    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                });
+            }
+            
+            // Close modal functionality
+            function closeContactModal() {
+                if (contactModal) {
+                    contactModal.style.opacity = '0';
+                    contactModal.style.transition = 'opacity 0.3s ease';
+                    setTimeout(() => {
+                        contactModal.style.display = 'none';
+                        document.body.style.overflow = 'auto'; // Restore scrolling
+                    }, 300);
+                }
+            }
+            
+            // Close button click
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', closeContactModal);
+                
+                // Close button hover effects
+                closeModalBtn.addEventListener('mouseenter', function() {
+                    this.style.background = 'rgba(255,255,255,0.3)';
+                    this.style.transform = 'scale(1.1)';
+                });
+                
+                closeModalBtn.addEventListener('mouseleave', function() {
+                    this.style.background = 'rgba(255,255,255,0.2)';
+                    this.style.transform = 'scale(1)';
+                });
+            }
+            
+            // Close modal when clicking outside the form
+            if (contactModal) {
+                contactModal.addEventListener('click', function(event) {
+                    if (event.target === contactModal) {
+                        closeContactModal();
+                    }
+                });
+            }
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && contactModal && contactModal.style.display === 'flex') {
+                    closeContactModal();
+                }
+            });
+            
+            // Handle modal form submission
+            if (modalContactForm && modalFormMessage) {
+                modalContactForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    // Get form data
+                    const formData = new FormData(modalContactForm);
+                    const name = formData.get('name');
+                    const email = formData.get('email');
+                    const subject = formData.get('subject');
+                    const message = formData.get('message');
+
+                    // Basic validation
+                    if (!name || !email || !subject || !message) {
+                        showModalMessage('Please fill in all required fields.', 'error');
+                        return;
+                    }
+
+                    if (!isValidEmail(email)) {
+                        showModalMessage('Please enter a valid email address.', 'error');
+                        return;
+                    }
+
+                    // Show loading state
+                    const submitButton = modalContactForm.querySelector('button[type="submit"]');
+                    const originalButtonText = submitButton.textContent;
+                    submitButton.textContent = 'Sending...';
+                    submitButton.disabled = true;
+
+                    try {
+                        // Send form data to server
+                        const response = await fetch('/api/contact', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                name: name,
+                                email: email,
+                                subject: subject,
+                                message: message
+                            })
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok && result.success) {
+                            showModalMessage(result.message || 'Thank you for your message! We will get back to you soon.', 'success');
+                            modalContactForm.reset();
+                            
+                            // Close modal after 2 seconds
+                            setTimeout(() => {
+                                closeContactModal();
+                            }, 2000);
+                        } else {
+                            showModalMessage(result.error || 'Failed to send message. Please try again.', 'error');
+                        }
+
+                    } catch (error) {
+                        console.error('Contact form error:', error);
+                        showModalMessage('Failed to send message. Please check your connection and try again.', 'error');
+                    } finally {
+                        // Reset button state
+                        submitButton.textContent = originalButtonText;
+                        submitButton.disabled = false;
+                    }
+                });
+            }
+            
+            // Show message in modal
+            function showModalMessage(text, type) {
+                if (modalFormMessage) {
+                    modalFormMessage.textContent = text;
+                    modalFormMessage.className = `form-message ${type}`;
+                    
+                    // Style the message based on type
+                    if (type === 'success') {
+                        modalFormMessage.style.cssText = `
+                            display: block;
+                            padding: 1rem;
+                            margin-top: 1rem;
+                            background-color: rgba(34, 197, 94, 0.2);
+                            color: rgba(255, 255, 255, 0.95);
+                            border: 1px solid rgba(34, 197, 94, 0.4);
+                            border-radius: 10px;
+                            font-weight: 500;
+                            backdrop-filter: blur(10px);
+                            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);
+                        `;
+                    } else if (type === 'error') {
+                        modalFormMessage.style.cssText = `
+                            display: block;
+                            padding: 1rem;
+                            margin-top: 1rem;
+                            background-color: rgba(239, 68, 68, 0.2);
+                            color: rgba(255, 255, 255, 0.95);
+                            border: 1px solid rgba(239, 68, 68, 0.4);
+                            border-radius: 10px;
+                            font-weight: 500;
+                            backdrop-filter: blur(10px);
+                            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+                        `;
+                    }
+                    
+                    setTimeout(() => {
+                        if (type !== 'success') { // Keep success message visible
+                            modalFormMessage.style.display = 'none';
+                        }
+                    }, 5000);
+                }
+            }
         });
     </script>
 </body>

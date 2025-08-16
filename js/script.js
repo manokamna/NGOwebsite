@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const formMessage = document.getElementById('formMessage');
 
     if (contactForm && formMessage) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             // Get form data
@@ -109,9 +109,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Simulate form submission (replace with actual backend integration)
-            showMessage('Thank you for your message! We will get back to you soon.', 'success');
-            contactForm.reset();
+            // Show loading state
+            const submitButton = contactForm.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.textContent = 'Sending...';
+            submitButton.disabled = true;
+
+            try {
+                // Send form data to server
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        subject: subject,
+                        message: message
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    showMessage(result.message || 'Thank you for your message! We will get back to you soon.', 'success');
+                    contactForm.reset();
+                } else {
+                    showMessage(result.error || 'Failed to send message. Please try again.', 'error');
+                }
+
+            } catch (error) {
+                console.error('Contact form error:', error);
+                showMessage('Failed to send message. Please check your connection and try again.', 'error');
+            } finally {
+                // Reset button state
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            }
         });
     }
 
@@ -650,7 +685,35 @@ function showMessage(text, type) {
     if (formMessage) {
         formMessage.textContent = text;
         formMessage.className = `form-message ${type}`;
-        formMessage.style.display = 'block';
+        
+        // Style the message based on type
+        if (type === 'success') {
+            formMessage.style.cssText = `
+                display: block;
+                padding: 1rem;
+                margin-top: 1rem;
+                background-color: rgba(34, 197, 94, 0.2);
+                color: rgba(255, 255, 255, 0.95);
+                border: 1px solid rgba(34, 197, 94, 0.4);
+                border-radius: 10px;
+                font-weight: 500;
+                backdrop-filter: blur(10px);
+                box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);
+            `;
+        } else if (type === 'error') {
+            formMessage.style.cssText = `
+                display: block;
+                padding: 1rem;
+                margin-top: 1rem;
+                background-color: rgba(239, 68, 68, 0.2);
+                color: rgba(255, 255, 255, 0.95);
+                border: 1px solid rgba(239, 68, 68, 0.4);
+                border-radius: 10px;
+                font-weight: 500;
+                backdrop-filter: blur(10px);
+                box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+            `;
+        }
         
         setTimeout(() => {
             formMessage.style.display = 'none';
