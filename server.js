@@ -276,12 +276,12 @@ app.post('/api/images/upload', authenticate, upload.array('images', 10), async (
                 Key: fileName,
                 Body: file.buffer,
                 ContentType: file.mimetype,
-                ACL: 'public-read',
+                // ACL removed - bucket doesn't allow ACLs
                 Metadata: {
                     'category': category,
-                    'description': description || '',
+                    'description': (description || '').replace(/[\r\n\t]/g, ' ').trim(),
                     'uploadDate': new Date().toISOString(),
-                    'originalName': file.originalname
+                    'originalName': file.originalname.replace(/[\r\n\t]/g, ' ').trim()
                 }
             };
 

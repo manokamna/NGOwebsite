@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SAROJ VANDANA WOMEN & CHILDREN EMPOWERMENT SOCIETY</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-responsive.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
@@ -15,6 +16,9 @@
             <div class="nav-logo">
                 <h2 class="org-name">SAROJ VANDANA WOMEN AND CHILDREN EMPOWERMENT SOCIETY</h2>
             </div>
+            <button class="mobile-menu-toggle" style="display: none;" aria-label="Toggle mobile menu">
+                ☰
+            </button>
             <ul class="nav-menu">
                 <li class="nav-item">
                     <a href="index.html" class="nav-link active" data-en="Home" data-hi="होम">Home</a>
@@ -70,14 +74,15 @@
                 </div>
                 
                 <div class="hero-visual-flashy" style="flex: 1; max-width: none; width: 100%; position: relative;">
-                    <!-- Interactive 3D Card Effect -->
+                    <!-- Hero Image -->
                     <div class="image-card-3d" style="position: relative; perspective: 1000px; width: 100%;">
-                        <div class="carousel-flashy" style="transform-style: preserve-3d; transition: transform 0.6s ease; border-radius: 25px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.2); position: relative; width: 100%; height: 550px; background: linear-gradient(45deg, rgba(255,255,255,0.05), rgba(255,255,255,0.1));">
-                            <div class="carousel-loading-flashy" style="display: flex; align-items: center; justify-content: center; height: 550px; background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2)); backdrop-filter: blur(20px); color: white; font-size: 1.1rem; border-radius: 25px; position: absolute; top: 0; left: 0; width: 100%; z-index: 2;">
-                                <div class="loading-spinner" style="width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 1rem;"></div>
-                                Loading amazing content...
+                        <div class="hero-image-container" style="transform-style: preserve-3d; transition: transform 0.6s ease; border-radius: 25px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.2); position: relative; width: 100%; height: 550px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2);">
+                                <div style="text-align: center; color: white; padding: 2rem;">
+                                    <h2 style="font-size: 3rem; font-weight: 700; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Empowering Communities</h2>
+                                    <p style="font-size: 1.3rem; opacity: 0.95;">Building a better future for women and children</p>
+                                </div>
                             </div>
-                            <div class="carousel-dots-flashy" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10;"></div>
                         </div>
                     </div>
                 </div>
@@ -703,8 +708,8 @@
             // Add 3D tilt effect to cards
             add3DTiltEffect();
             
-            // Add interactive cursor
-            addInteractiveCursor();
+            // Custom cursor removed for better UX
+            // addInteractiveCursor();
         }
         
         function createFloatingParticles() {
@@ -784,40 +789,8 @@
             });
         }
         
-        function addInteractiveCursor() {
-            // Create custom cursor
-            const cursor = document.createElement('div');
-            cursor.className = 'custom-cursor';
-            cursor.style.cssText = `
-                position: fixed;
-                width: 20px;
-                height: 20px;
-                background: rgba(255,255,255,0.8);
-                border-radius: 50%;
-                pointer-events: none;
-                z-index: 9999;
-                mix-blend-mode: difference;
-                transition: transform 0.1s ease;
-            `;
-            document.body.appendChild(cursor);
-            
-            // Update cursor position
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX - 10 + 'px';
-                cursor.style.top = e.clientY - 10 + 'px';
-            });
-            
-            // Scale cursor on interactive elements
-            const interactiveElements = document.querySelectorAll('.btn-flashy, .carousel-flashy');
-            interactiveElements.forEach(el => {
-                el.addEventListener('mouseenter', () => {
-                    cursor.style.transform = 'scale(2)';
-                });
-                el.addEventListener('mouseleave', () => {
-                    cursor.style.transform = 'scale(1)';
-                });
-            });
-        }
+        // Custom cursor function removed for better UX
+        // function addInteractiveCursor() { ... }
         
         // Add CSS for ripple animation and word cloud
         const style = document.createElement('style');

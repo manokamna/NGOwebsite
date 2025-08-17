@@ -672,11 +672,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     // Close modal when clicking outside content
-    donationModal.addEventListener('click', function(e) {
-        if (e.target === donationModal) {
-            donationModal.style.display = 'none';
-        }
-    });
+    if (donationModal) {
+        donationModal.addEventListener('click', function(e) {
+            if (e.target === donationModal) {
+                donationModal.style.display = 'none';
+            }
+        });
+    }
 });
 
 // Helper Functions
@@ -893,3 +895,48 @@ function clearFieldError(field) {
         errorDiv.remove();
     }
 }
+
+// Mobile Menu Functionality
+function initMobileMenu() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    if (mobileToggle && navMenu) {
+        mobileToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            
+            // Update hamburger icon
+            if (navMenu.classList.contains('active')) {
+                mobileToggle.innerHTML = '✕';
+                mobileToggle.setAttribute('aria-expanded', 'true');
+            } else {
+                mobileToggle.innerHTML = '☰';
+                mobileToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+        
+        // Close menu when clicking on a link
+        const navLinks = navMenu.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                mobileToggle.innerHTML = '☰';
+                mobileToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!navMenu.contains(event.target) && !mobileToggle.contains(event.target)) {
+                navMenu.classList.remove('active');
+                mobileToggle.innerHTML = '☰';
+                mobileToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+}
+
+// Initialize mobile menu when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initMobileMenu();
+});

@@ -1,6 +1,4 @@
 const crypto = require('crypto');
-const AWS = require('aws-sdk');
-const secretsManager = new AWS.SecretsManager({ region: 'eu-north-1' });
 
 // Simple in-memory session store (use DynamoDB in production)
 const sessions = new Map();

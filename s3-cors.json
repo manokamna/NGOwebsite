@@ -1,0 +1,11 @@
+{
+    "CORSRules": [
+        {
+            "AllowedHeaders": ["*"],
+            "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+            "AllowedOrigins": ["http://localhost:3000", "https://sarojvandana.com", "https://d1l3p7s5qgis4h.cloudfront.net"],
+            "ExposeHeaders": ["ETag"],
+            "MaxAgeSeconds": 3000
+        }
+    ]
+}

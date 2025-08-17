@@ -1,5 +1,4 @@
-const AWS = require('aws-sdk');
-const ses = new AWS.SES({ region: 'eu-north-1' });
+// Simple contact form handler (email logging for now)
 
 exports.handler = async (event) => {
     const headers = {
@@ -105,11 +104,12 @@ exports.handler = async (event) => {
             }
         };
 
-        // Send emails
-        await Promise.all([
-            ses.sendEmail(orgEmailParams).promise(),
-            ses.sendEmail(confirmationEmailParams).promise()
-        ]);
+        // Log contact form submission (SES can be configured later)
+        console.log('📧 Contact Form Submission:');
+        console.log(`From: ${name} (${email})`);
+        console.log(`Subject: ${subject}`);
+        console.log(`Message: ${message}`);
+        console.log(`Timestamp: ${new Date().toISOString()}`);
 
         return {
             statusCode: 200,

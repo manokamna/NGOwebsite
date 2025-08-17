@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - SAROJ VANDANA WOMEN & CHILDREN EMPOWERMENT SOCIETY</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile-responsive.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -14,6 +15,9 @@
             <div class="nav-logo">
                 <h2 class="org-name">SAROJ VANDANA WOMEN AND CHILDREN EMPOWERMENT SOCIETY</h2>
             </div>
+            <button class="mobile-menu-toggle" style="display: none;" aria-label="Toggle mobile menu">
+                ☰
+            </button>
             <ul class="nav-menu">
                 <li class="nav-item">
                     <a href="index.html" class="nav-link" data-en="Home" data-hi="होम">Home</a>
@@ -63,9 +67,17 @@
                     </div>
                 </div>
                 
+                <!-- Managers Team -->
+                <div class="team-category" style="margin-bottom: 2.5rem;">
+                    <h3 style="font-size: 1.3rem; font-weight: 600; text-align: center; margin-bottom: 1.5rem; color: rgba(255,255,255,0.9);" data-en="Managers" data-hi="प्रबंधक">Managers</h3>
+                    <div id="managersGrid" class="team-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto;">
+                        <!-- Manager members will be dynamically generated here -->
+                    </div>
+                </div>
+                
                 <!-- Trainers Team -->
                 <div class="team-category" style="margin-bottom: 2.5rem;">
-                    <h3 style="font-size: 1.3rem; font-weight: 600; text-align: center; margin-bottom: 1.5rem; color: rgba(255,255,255,0.9);" data-en="Trainers" data-hi="प्रशिक्षक">Trainers</h3>
+                    <h3 style="font-size: 1.3rem; font-weight: 600; text-align: center; margin-bottom: 1.5rem; color: rgba(255,255,255,0.9);" data-en="Trainers/Instructors" data-hi="प्रशिक्षक/अनुदेशक">Trainers/Instructors</h3>
                     <div id="trainersGrid" class="team-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto;">
                         <!-- Trainer members will be dynamically generated here -->
                     </div>
@@ -239,7 +251,11 @@
         async function loadTeamImages() {
             try {
                 console.log('Loading team images from S3...');
-                const response = await fetch('/api/images?category=team');
+                // Use API Gateway for production, local API for development
+                const apiURL = window.location.hostname === 'localhost' 
+                    ? '/api/images?category=team'
+                    : 'https://klbot0zc8l.execute-api.eu-north-1.amazonaws.com/prod/images?category=team';
+                const response = await fetch(apiURL);
                 const data = await response.json();
                 
                 if (data.success && data.images.length > 0) {
@@ -247,11 +263,13 @@
                     
                     // Clear existing team grids
                     document.getElementById('leadershipGrid').innerHTML = '';
+                    document.getElementById('managersGrid').innerHTML = '';
                     document.getElementById('trainersGrid').innerHTML = '';
                     document.getElementById('membersGrid').innerHTML = '';
                     
                     // Categorize team members
                     const leadership = [];
+                    const managers = [];
                     const trainers = [];
                     const members = [];
                     
@@ -262,6 +280,8 @@
                         
                         if (isLeadership(designation)) {
                             leadership.push({...parsedInfo, image});
+                        } else if (isManager(designation)) {
+                            managers.push({...parsedInfo, image});
                         } else if (isTrainer(designation)) {
                             trainers.push({...parsedInfo, image});
                         } else {
@@ -278,6 +298,13 @@
                                            member.originalDesignation || 'Position', 
                                            member.bio || '',
                                            member.image.url, index, 'leadershipGrid');
+                    });
+                    
+                    managers.forEach((member, index) => {
+                        createTeamMemberCard(member.originalName || 'Team Member', 
+                                           member.originalDesignation || 'Position', 
+                                           member.bio || '',
+                                           member.image.url, index, 'managersGrid');
                     });
                     
                     trainers.forEach((member, index) => {
@@ -459,10 +486,18 @@
         function isLeadership(designation) {
             const leadershipRoles = [
                 'president', 'vice president', 'vice-president', 'secretary', 'treasurer', 
-                'chairman', 'chairwoman', 'director', 'manager',
+                'chairman', 'chairwoman', 'director',
                 'अध्यक्ष', 'मंत्री', 'कोषाध्यक्ष'
             ];
             return leadershipRoles.some(role => designation.includes(role));
+        }
+
+        // Check if designation is manager
+        function isManager(designation) {
+            const managerRoles = [
+                'manager', 'प्रबंधक'
+            ];
+            return managerRoles.some(role => designation.includes(role));
         }
 
         // Check if designation is trainer
@@ -539,7 +574,7 @@
             memberCard.innerHTML = `
                 ${viewBioButton}
                 <div class="member-photo" style="margin-bottom: 1rem;">
-                    <img src="${imageUrl}" alt="${name} portrait" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.3); object-fit: cover; transition: transform 0.3s ease; opacity: 0.5;">
+                    <img src="${imageUrl}" alt="${name} portrait" style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.3); object-fit: cover; transition: transform 0.3s ease; opacity: 1;">
                 </div>
                 <h3 class="member-designation" style="font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; color: white;" data-en="${designation}" data-hi="${designation}">${designation}</h3>
                 <p class="member-name" style="font-size: 1.2rem; font-weight: 700; color: rgba(255,255,255,0.9); margin: 0;" data-en="${name}" data-hi="${name}">${name}</p>
@@ -604,7 +639,8 @@
                 </div>
             `;
             
-            // Hide trainer and member sections if no data
+            // Hide all other sections if no data
+            document.getElementById('managersGrid').innerHTML = '';
             document.getElementById('trainersGrid').innerHTML = '';
             document.getElementById('membersGrid').innerHTML = '';
         }
