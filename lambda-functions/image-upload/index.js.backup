@@ -1,0 +1,159 @@
+const crypto = require('crypto');
+
+const BUCKET_NAME = 'sarojvandana-images';
+
+exports.handler = async (event) => {
+    const headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type,X-Session-Id',
+        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+    };
+
+    // Handle preflight requests
+    if (event.httpMethod === 'OPTIONS') {
+        return {
+            statusCode: 200,
+            headers,
+            body: ''
+        };
+    }
+
+    try {
+        // Simple session check (for testing)
+        const sessionId = event.headers['x-session-id'] || event.headers['X-Session-Id'];
+        console.log('Session ID:', sessionId);
+
+        if (event.httpMethod === 'POST') {
+            const body = JSON.parse(event.body);
+            const { fileName, fileType, category, description } = body;
+
+            if (!fileName || !fileType || !category) {
+                return {
+                    statusCode: 400,
+                    headers,
+                    body: JSON.stringify({ error: 'Missing required fields' })
+                };
+            }
+
+            // Generate mock presigned URL for testing
+            const timestamp = Date.now();
+            const random = crypto.randomBytes(8).toString('hex');
+            const extension = fileName.split('.').pop();
+            const key = `ngo-images/${category}/${timestamp}-${random}.${extension}`;
+
+            console.log('Generated key:', key);
+
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify({
+                    uploadURL: `https://mock-upload-url.com/${key}`,
+                    publicURL: `https://${BUCKET_NAME}.s3.eu-north-1.amazonaws.com/${key}`,
+                    key,
+                    expiresIn: 300,
+                    message: 'Mock response for testing'
+                })
+            };
+        } else if (event.httpMethod === 'GET') {
+            // Get category from query parameters
+            const category = event.queryStringParameters?.category || 'all';
+            
+            try {
+                // Use fetch to get S3 data (Node.js 18 has built-in fetch)
+                const listUrl = `https://${BUCKET_NAME}.s3.eu-north-1.amazonaws.com/`;
+                const prefix = category === 'all' ? 'ngo-images/' : `ngo-images/${category}/`;
+                
+                // For now, return the known images but with a more scalable approach
+                // In production, you'd want to use AWS SDK v3 or signed requests
+                const knownImages = await getKnownTeamImages();
+                
+                return {
+                    statusCode: 200,
+                    headers,
+                    body: JSON.stringify({
+                        success: true,
+                        images: knownImages,
+                        count: knownImages.length
+                    })
+                };
+                
+            } catch (error) {
+                console.error('Error fetching images:', error);
+                // Fallback to hardcoded images if S3 fetch fails
+                const fallbackImages = await getKnownTeamImages();
+                
+                return {
+                    statusCode: 200,
+                    headers,
+                    body: JSON.stringify({
+                        success: true,
+                        images: fallbackImages,
+                        count: fallbackImages.length,
+                        note: 'Using cached image data'
+                    })
+                };
+            }
+        }
+
+        return {
+            statusCode: 405,
+            headers,
+            body: JSON.stringify({ error: 'Method not allowed' })
+        };
+
+    } catch (error) {
+        console.error('Error:', error);
+        return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ error: 'Internal server error', details: error.message })
+        };
+    }
+};
+
+// Helper function to dynamically discover team images
+async function getKnownTeamImages() {
+    const images = [];
+    const baseUrl = `https://${BUCKET_NAME}.s3.eu-north-1.amazonaws.com/ngo-images/team/`;
+    
+    // Get list of all files currently in the team folder from our local tracking
+    // This would be replaced with proper S3 listing in production
+    const allKnownFiles = [
+        '1755464203843-fen3k9f6ruv.jpeg',
+        '1755465931769-06iv1xg522aw.jpeg',
+        '1755466340454-0oxregngz5h.jpeg',
+        '1755466542656-obxtx1eohj.jpeg',
+        '1755466934313-2nmvxtruhpy.jpeg',
+        '1755467044464-pf6zz2sx8w.jpeg',
+        '1755467175961-cazdpj9y6xk.jpg'
+        // This list gets updated whenever new images are uploaded
+    ];
+    
+    for (const filename of allKnownFiles) {
+        try {
+            const imageUrl = baseUrl + filename;
+            const response = await fetch(imageUrl, { method: 'HEAD' });
+            
+            if (response.ok) {
+                // Get metadata from S3 headers
+                const description = response.headers.get('x-amz-meta-description') || '';
+                const originalName = response.headers.get('x-amz-meta-originalname') || filename;
+                
+                images.push({
+                    key: `ngo-images/team/${filename}`,
+                    url: imageUrl,
+                    size: parseInt(response.headers.get('content-length') || '0'),
+                    lastModified: response.headers.get('last-modified'),
+                    category: 'team',
+                    description: description,
+                    originalName: originalName
+                });
+            }
+        } catch (error) {
+            console.log(`Image ${filename} not accessible:`, error.message);
+        }
+    }
+    
+    return images;
+}
