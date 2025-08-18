@@ -61,3 +61,11 @@ build/
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# Deployment and safety files
+DEPLOYMENT-SAFETY.md
+backup-uploads.sh
+cloudfront-url-rewrite.js
+deploy-safe.sh
+monitor-uploads.sh
+.s3exclude
