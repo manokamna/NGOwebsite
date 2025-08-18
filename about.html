@@ -476,7 +476,7 @@
             const designations = [
                 'president', 'vice president', 'secretary', 'treasurer', 'chairman', 'chairwoman', 
                 'director', 'manager', 'coordinator', 'advisor', 'member', 'vice-president',
-                'trainer', 'instructor', 'teacher',
+                'trainer', 'instructor', 'teacher', 'yoga trainer',
                 'अध्यक्ष', 'मंत्री', 'कोषाध्यक्ष' // Hindi designations
             ];
             return designations.includes(word.toLowerCase());
@@ -503,7 +503,7 @@
         // Check if designation is trainer
         function isTrainer(designation) {
             const trainerRoles = [
-                'trainer', 'instructor', 'teacher', 'coach'
+                'trainer', 'instructor', 'teacher', 'coach', 'yoga trainer'
             ];
             return trainerRoles.some(role => designation.includes(role));
         }
@@ -511,15 +511,14 @@
         // Get leadership order for sorting
         function getLeadershipOrder(designation) {
             const order = {
-                'president': 1,
+                'president': 1,  // President will appear first
                 'vice president': 2,
                 'vice-president': 2,
                 'secretary': 3,
                 'treasurer': 4,
-                'manager': 5,
-                'chairman': 6,
-                'chairwoman': 6,
-                'director': 7
+                'chairman': 5,
+                'chairwoman': 5,
+                'director': 6
             };
             
             for (let [role, orderNum] of Object.entries(order)) {
