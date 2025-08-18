@@ -784,13 +784,17 @@
                     const rotateX = (y - centerY) / 10;
                     const rotateY = (centerX - x) / 10;
                     
-                    const carousel = card.querySelector('.carousel-flashy');
-                    carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    const carousel = card.querySelector('.hero-image-container');
+                    if (carousel) {
+                        carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    }
                 });
                 
                 card.addEventListener('mouseleave', () => {
-                    const carousel = card.querySelector('.carousel-flashy');
-                    carousel.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                    const carousel = card.querySelector('.hero-image-container');
+                    if (carousel) {
+                        carousel.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                    }
                 });
             });
         }
