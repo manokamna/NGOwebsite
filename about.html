@@ -20,16 +20,16 @@
             </button>
             <ul class="nav-menu">
                 <li class="nav-item">
-                    <a href="index.html" class="nav-link" data-en="Home" data-hi="होम">Home</a>
+                    <a href="/" class="nav-link" data-en="Home" data-hi="होम">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a href="about.html" class="nav-link active" data-en="About" data-hi="हमारे बारे में">About</a>
+                    <a href="/about" class="nav-link active" data-en="About" data-hi="हमारे बारे में">About</a>
                 </li>
                 <li class="nav-item">
-                    <a href="programs.html" class="nav-link" data-en="Programs" data-hi="कार्यक्रम">Programs</a>
+                    <a href="/programs" class="nav-link" data-en="Programs" data-hi="कार्यक्रम">Programs</a>
                 </li>
                 <li class="nav-item">
-                    <a href="contact.html" class="nav-link" data-en="Contact" data-hi="संपर्क">Contact</a>
+                    <a href="/contact" class="nav-link" data-en="Contact" data-hi="संपर्क">Contact</a>
                 </li>
                 <li class="nav-item">
                     <button id="langToggle" class="lang-toggle">हिन्दी</button>
@@ -122,9 +122,9 @@
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="programs.html">Programs</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/programs">Programs</a></li>
+                        <li><a href="/contact">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -289,8 +289,13 @@
                         }
                     });
                     
-                    // Sort leadership by hierarchy
-                    leadership.sort((a, b) => getLeadershipOrder(a.designation) - getLeadershipOrder(b.designation));
+                    // Sort leadership by hierarchy - President first
+                    leadership.sort((a, b) => {
+                        const orderA = getLeadershipOrder(a.designation);
+                        const orderB = getLeadershipOrder(b.designation);
+                        console.log(`Sorting: ${a.originalDesignation} (${orderA}) vs ${b.originalDesignation} (${orderB})`);
+                        return orderA - orderB;
+                    });
                     
                     // Create team member cards for each category
                     leadership.forEach((member, index) => {
@@ -510,22 +515,35 @@
 
         // Get leadership order for sorting
         function getLeadershipOrder(designation) {
-            const order = {
-                'president': 1,  // President will appear first
-                'vice president': 2,
-                'vice-president': 2,
-                'secretary': 3,
-                'treasurer': 4,
-                'chairman': 5,
-                'chairwoman': 5,
-                'director': 6
-            };
+            const designationLower = designation.toLowerCase();
             
-            for (let [role, orderNum] of Object.entries(order)) {
-                if (designation.toLowerCase().includes(role)) {
-                    return orderNum;
-                }
+            // Check for exact matches first, then partial matches
+            if (designationLower.includes('president') && !designationLower.includes('vice')) {
+                console.log(`Found President: ${designation}`);
+                return 1;  // President appears first
             }
+            if (designationLower.includes('vice president') || designationLower.includes('vice-president')) {
+                console.log(`Found Vice President: ${designation}`);
+                return 2;
+            }
+            if (designationLower.includes('secretary')) {
+                console.log(`Found Secretary: ${designation}`);
+                return 3;
+            }
+            if (designationLower.includes('treasurer')) {
+                console.log(`Found Treasurer: ${designation}`);
+                return 4;
+            }
+            if (designationLower.includes('chairman') || designationLower.includes('chairwoman')) {
+                console.log(`Found Chairman/Chairwoman: ${designation}`);
+                return 5;
+            }
+            if (designationLower.includes('director')) {
+                console.log(`Found Director: ${designation}`);
+                return 6;
+            }
+            
+            console.log(`Unknown leadership role: ${designation}`);
             return 999; // Default for unknown roles
         }
 
