@@ -228,8 +228,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Add typing effect to hero title (only on homepage)
-    const heroTitle = document.querySelector('.hero h1');
-    if (heroTitle && window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
+    const heroTitle = document.querySelector('.hero-title-animated');
+    if (heroTitle && (window.location.pathname.endsWith('index.html') || window.location.pathname === '/')) {
         const originalText = heroTitle.textContent;
         heroTitle.textContent = '';
         typeWriter(heroTitle, originalText, 50);
