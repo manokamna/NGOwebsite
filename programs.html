@@ -375,50 +375,58 @@
         
         // Load images for each program category
         async function loadProgramImages() {
-            const categories = ['classical-dance', 'classical-music', 'yoga', 'robotics', 'hand-embroidery', 'aerobics'];
+            // Map program sections to S3 bucket categories
+            const categoryMappings = {
+                'classical-dance': 'dance',
+                'classical-music': 'music', 
+                'yoga': 'yoga',
+                'robotics': 'robotics',
+                'hand-embroidery': 'hand-embroidery', // Keep original if exists
+                'aerobics': 'aerobics' // Keep original if exists
+            };
             
-            for (const category of categories) {
+            for (const [programSection, s3Category] of Object.entries(categoryMappings)) {
                 try {
-                    await loadCategoryImages(category);
+                    await loadCategoryImages(programSection, s3Category);
                 } catch (error) {
-                    console.error(`Error loading images for ${category}:`, error);
+                    console.error(`Error loading images for ${programSection} from ${s3Category}:`, error);
                 }
             }
         }
         
-        async function loadCategoryImages(category) {
+        async function loadCategoryImages(programSection, s3Category) {
             try {
-                console.log(`Loading images for ${category}...`);
+                console.log(`Loading images for ${programSection} from S3 category: ${s3Category}...`);
                 
                 // Use API_CONFIG for consistent endpoint management
                 const apiURL = window.location.hostname === 'localhost' 
-                    ? `/api/images?category=${category}`
-                    : (window.API_CONFIG ? window.API_CONFIG.getURL('images') + `?category=${category}` : `https://klbot0zc8l.execute-api.eu-north-1.amazonaws.com/prod/images?category=${category}`);
+                    ? `/api/images?category=${s3Category}`
+                    : (window.API_CONFIG ? window.API_CONFIG.getURL('images') + `?category=${s3Category}` : `https://klbot0zc8l.execute-api.eu-north-1.amazonaws.com/prod/images?category=${s3Category}`);
                 
-                console.log(`API URL for ${category}:`, apiURL);
+                console.log(`API URL for ${programSection} (${s3Category}):`, apiURL);
                 
                 const response = await fetch(apiURL);
-                console.log(`Response status for ${category}:`, response.status);
+                console.log(`Response status for ${programSection} (${s3Category}):`, response.status);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 
                 const data = await response.json();
-                console.log(`API Response for ${category}:`, data);
+                console.log(`API Response for ${programSection} (${s3Category}):`, data);
                 
-                const galleryContainer = document.getElementById(`${category}-gallery`);
+                const galleryContainer = document.getElementById(`${programSection}-gallery`);
                 if (!galleryContainer) {
-                    console.warn(`Gallery container not found for ${category}`);
+                    console.warn(`Gallery container not found for ${programSection}`);
                     return;
                 }
                 
                 if (data.success && data.images && data.images.length > 0) {
-                    console.log(`Found ${data.images.length} images for ${category}`);
+                    console.log(`Found ${data.images.length} images for ${programSection} in ${s3Category} category`);
                     
                     // Create auto-changing image carousel
                     let galleryHTML = `
-                        <div class="image-carousel" data-category="${category}" style="position: relative; height: 350px; background: rgba(255,255,255,0.9); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                        <div class="image-carousel" data-category="${programSection}" style="position: relative; height: 350px; background: rgba(255,255,255,0.9); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
                             <div class="carousel-container" style="position: relative; width: 100%; height: 100%;">
                     `;
                     
@@ -429,7 +437,7 @@
                                      alt="${image.originalName || 'Program Image'}" 
                                      style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;"
                                      onclick="openImageModal('${image.url}', '${image.originalName || 'Image ' + (index + 1)}')"
-                                     onload="console.log('Image loaded for ${category}:', this.src)"
+                                     onload="console.log('Image loaded for ${programSection}:', this.src)"
                                      onerror="this.style.display='none';">
                                 <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); padding: 2rem 1.5rem 1.5rem; color: white;">
                                     ${image.originalName ? `<h4 style="margin: 0 0 0.5rem 0; font-size: 1.2rem; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">${image.originalName}</h4>` : ''}
@@ -447,7 +455,7 @@
                     
                     data.images.forEach((_, index) => {
                         galleryHTML += `
-                            <button class="indicator" data-slide="${index}" style="width: 12px; height: 12px; border: 2px solid white; border-radius: 50%; background: ${index === 0 ? 'white' : 'transparent'}; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.3);" onclick="goToSlide('${category}', ${index})"></button>
+                            <button class="indicator" data-slide="${index}" style="width: 12px; height: 12px; border: 2px solid white; border-radius: 50%; background: ${index === 0 ? 'white' : 'transparent'}; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.3);" onclick="goToSlide('${programSection}', ${index})"></button>
                         `;
                     });
                     
@@ -462,28 +470,28 @@
                     galleryContainer.innerHTML = galleryHTML;
                     
                     // Initialize carousel functionality
-                    initializeCarousel(category, data.images.length);
+                    initializeCarousel(programSection, data.images.length);
                     
-                    console.log(`Carousel loaded successfully for ${category}`);
+                    console.log(`Carousel loaded successfully for ${programSection}`);
                 } else {
-                    console.log(`No images found for ${category}`);
+                    console.log(`No images found for ${programSection} in S3 category: ${s3Category}`);
                     galleryContainer.innerHTML = `
-                        <div style="text-align: center; padding: 3rem; color: #718096; background: rgba(255,255,255,0.7); border-radius: 15px;">
-                            <div style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;">📷</div>
-                            <p style="margin: 0; font-size: 1.1rem; font-weight: 500;">No images available</p>
-                            <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">Images will appear here once uploaded to the admin panel</p>
+                        <div style="text-align: center; padding: 3rem; color: #718096; background: rgba(255,255,255,0.7); border-radius: 15px; min-height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.4;">📷</div>
+                            <p style="margin: 0; font-size: 1.1rem; font-weight: 600; color: #4a5568;">No Images Available</p>
+                            <p style="margin: 0.5rem 0 0 0; font-size: 0.95rem; opacity: 0.8; line-height: 1.4; max-width: 300px; text-align: center;">Images will appear here once uploaded to the <strong>${s3Category}</strong> category in the admin panel</p>
                         </div>
                     `;
                 }
             } catch (error) {
-                console.error(`Error loading images for ${category}:`, error);
-                const galleryContainer = document.getElementById(`${category}-gallery`);
+                console.error(`Error loading images for ${programSection} from ${s3Category}:`, error);
+                const galleryContainer = document.getElementById(`${programSection}-gallery`);
                 if (galleryContainer) {
                     galleryContainer.innerHTML = `
-                        <div style="text-align: center; padding: 3rem; color: #e53e3e; background: rgba(254,242,242,0.8); border-radius: 15px; border: 1px solid rgba(245,101,101,0.2);">
-                            <div style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;">⚠️</div>
-                            <p style="margin: 0; font-size: 1.1rem; font-weight: 500;">Unable to load images</p>
-                            <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">Error: ${error.message}</p>
+                        <div style="text-align: center; padding: 3rem; color: #718096; background: rgba(255,255,255,0.7); border-radius: 15px; min-height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.4;">📷</div>
+                            <p style="margin: 0; font-size: 1.1rem; font-weight: 600; color: #4a5568;">Images Not Available</p>
+                            <p style="margin: 0.5rem 0 0 0; font-size: 0.95rem; opacity: 0.8; line-height: 1.4; max-width: 300px; text-align: center;">Could not load images from <strong>${s3Category}</strong> category. Please check your connection or try again later.</p>
                         </div>
                     `;
                 }
