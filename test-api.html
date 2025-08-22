@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test API Connection</title>
+</head>
+<body>
+    <h1>API Test</h1>
+    <div id="result"></div>
+    
+    <script>
+        async function testAPI() {
+            try {
+                console.log('Testing API connection...');
+                
+                const response = await fetch('/api/images?category=yoga');
+                console.log('Response status:', response.status);
+                
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                const resultDiv = document.getElementById('result');
+                
+                if (data.success && data.images && data.images.length > 0) {
+                    resultDiv.innerHTML = `
+                        <h2>✅ API Working - Found ${data.images.length} yoga images:</h2>
+                        <ul>
+                            ${data.images.map(img => `<li>${img.originalName} - ${img.url}</li>`).join('')}
+                        </ul>
+                    `;
+                } else {
+                    resultDiv.innerHTML = '<h2>❌ No images found in yoga category</h2>';
+                }
+            } catch (error) {
+                console.error('API Error:', error);
+                document.getElementById('result').innerHTML = `<h2>❌ API Error: ${error.message}</h2>`;
+            }
+        }
+        
+        // Run test when page loads
+        testAPI();
+    </script>
+</body>
+</html>
