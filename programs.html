@@ -416,33 +416,55 @@
                 if (data.success && data.images && data.images.length > 0) {
                     console.log(`Found ${data.images.length} images for ${category}`);
                     
-                    // Create gallery HTML
-                    let galleryHTML = '<div class="image-gallery" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; padding: 1rem 0;">';
+                    // Create auto-changing image carousel
+                    let galleryHTML = `
+                        <div class="image-carousel" data-category="${category}" style="position: relative; height: 350px; background: rgba(255,255,255,0.9); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                            <div class="carousel-container" style="position: relative; width: 100%; height: 100%;">
+                    `;
                     
                     data.images.forEach((image, index) => {
                         galleryHTML += `
-                            <div class="gallery-item" style="background: rgba(255,255,255,0.9); border-radius: 15px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: all 0.3s ease; cursor: pointer;" onclick="openImageModal('${image.url}', '${image.originalName || 'Image ' + (index + 1)}')">
-                                <div style="height: 250px; overflow: hidden; position: relative;">
-                                    <img src="${image.url}" 
-                                         alt="${image.originalName || 'Program Image'}" 
-                                         style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;"
-                                         onload="console.log('Image loaded for ${category}:', this.src)"
-                                         onerror="this.parentElement.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:100%;color:#999;\\'>Image not available</div>'">
+                            <div class="carousel-slide" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: ${index === 0 ? '1' : '0'}; transition: opacity 1s ease-in-out;">
+                                <img src="${image.url}" 
+                                     alt="${image.originalName || 'Program Image'}" 
+                                     style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;"
+                                     onclick="openImageModal('${image.url}', '${image.originalName || 'Image ' + (index + 1)}')"
+                                     onload="console.log('Image loaded for ${category}:', this.src)"
+                                     onerror="this.style.display='none';">
+                                <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); padding: 2rem 1.5rem 1.5rem; color: white;">
+                                    ${image.originalName ? `<h4 style="margin: 0 0 0.5rem 0; font-size: 1.2rem; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">${image.originalName}</h4>` : ''}
+                                    ${image.description ? `<p style="margin: 0; font-size: 0.9rem; opacity: 0.9; line-height: 1.4; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">${image.description}</p>` : ''}
                                 </div>
-                                ${image.originalName || image.description ? `
-                                    <div style="padding: 1.5rem;">
-                                        <h4 style="margin: 0 0 0.5rem 0; font-size: 1.1rem; color: #2d3748; font-weight: 600;">${image.originalName || 'Program Image'}</h4>
-                                        ${image.description ? `<p style="margin: 0; font-size: 0.9rem; color: #718096; line-height: 1.4;">${image.description}</p>` : ''}
-                                    </div>
-                                ` : ''}
                             </div>
                         `;
                     });
                     
-                    galleryHTML += '</div>';
+                    // Add navigation indicators
+                    galleryHTML += `
+                            </div>
+                            <div class="carousel-indicators" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10;">
+                    `;
+                    
+                    data.images.forEach((_, index) => {
+                        galleryHTML += `
+                            <button class="indicator" data-slide="${index}" style="width: 12px; height: 12px; border: 2px solid white; border-radius: 50%; background: ${index === 0 ? 'white' : 'transparent'}; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.3);" onclick="goToSlide('${category}', ${index})"></button>
+                        `;
+                    });
+                    
+                    galleryHTML += `
+                            </div>
+                            <div class="carousel-counter" style="position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.5); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; backdrop-filter: blur(10px);">
+                                <span class="current-slide">1</span> / <span class="total-slides">${data.images.length}</span>
+                            </div>
+                        </div>
+                    `;
+                    
                     galleryContainer.innerHTML = galleryHTML;
                     
-                    console.log(`Gallery loaded successfully for ${category}`);
+                    // Initialize carousel functionality
+                    initializeCarousel(category, data.images.length);
+                    
+                    console.log(`Carousel loaded successfully for ${category}`);
                 } else {
                     console.log(`No images found for ${category}`);
                     galleryContainer.innerHTML = `
@@ -467,6 +489,109 @@
                 }
             }
         }
+        
+        // Carousel functionality
+        const carousels = {};
+        
+        function initializeCarousel(category, imageCount) {
+            if (imageCount <= 1) return; // No need for carousel with single image
+            
+            carousels[category] = {
+                currentSlide: 0,
+                totalSlides: imageCount,
+                interval: null,
+                isPaused: false
+            };
+            
+            // Start auto-play
+            startCarouselAutoPlay(category);
+            
+            // Add hover pause/resume functionality
+            const carousel = document.querySelector(`[data-category="${category}"]`);
+            if (carousel) {
+                carousel.addEventListener('mouseenter', () => {
+                    pauseCarousel(category);
+                });
+                
+                carousel.addEventListener('mouseleave', () => {
+                    resumeCarousel(category);
+                });
+            }
+        }
+        
+        function startCarouselAutoPlay(category) {
+            if (!carousels[category]) return;
+            
+            carousels[category].interval = setInterval(() => {
+                if (!carousels[category].isPaused) {
+                    nextSlide(category);
+                }
+            }, 4000); // Change image every 4 seconds
+        }
+        
+        function pauseCarousel(category) {
+            if (carousels[category]) {
+                carousels[category].isPaused = true;
+            }
+        }
+        
+        function resumeCarousel(category) {
+            if (carousels[category]) {
+                carousels[category].isPaused = false;
+            }
+        }
+        
+        function stopCarousel(category) {
+            if (carousels[category] && carousels[category].interval) {
+                clearInterval(carousels[category].interval);
+                carousels[category].interval = null;
+            }
+        }
+        
+        function nextSlide(category) {
+            if (!carousels[category]) return;
+            
+            const nextIndex = (carousels[category].currentSlide + 1) % carousels[category].totalSlides;
+            goToSlide(category, nextIndex);
+        }
+        
+        function goToSlide(category, slideIndex) {
+            if (!carousels[category]) return;
+            
+            const carousel = document.querySelector(`[data-category="${category}"]`);
+            if (!carousel) return;
+            
+            const slides = carousel.querySelectorAll('.carousel-slide');
+            const indicators = carousel.querySelectorAll('.indicator');
+            const currentSlideSpan = carousel.querySelector('.current-slide');
+            
+            // Hide current slide
+            if (slides[carousels[category].currentSlide]) {
+                slides[carousels[category].currentSlide].style.opacity = '0';
+            }
+            if (indicators[carousels[category].currentSlide]) {
+                indicators[carousels[category].currentSlide].style.background = 'transparent';
+            }
+            
+            // Show new slide
+            carousels[category].currentSlide = slideIndex;
+            if (slides[slideIndex]) {
+                slides[slideIndex].style.opacity = '1';
+            }
+            if (indicators[slideIndex]) {
+                indicators[slideIndex].style.background = 'white';
+            }
+            if (currentSlideSpan) {
+                currentSlideSpan.textContent = slideIndex + 1;
+            }
+        }
+        
+        // Clean up intervals when page is unloaded
+        window.addEventListener('beforeunload', () => {
+            Object.keys(carousels).forEach(category => {
+                stopCarousel(category);
+            });
+        });
         
         // Image modal functionality
         function openImageModal(imageUrl, imageTitle) {

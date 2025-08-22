@@ -99,28 +99,8 @@
             </div>
         </section>
 
-        <!-- Donate Section -->
-        <section class="donate-section" style="padding: 3rem 0; background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%); text-align: center;">
-            <div class="container">
-                <h2 style="font-size: 2.2rem; color: white; margin-bottom: 1rem; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);" data-en="Support Our Mission" data-hi="हमारे मिशन का समर्थन करें">Support Our Mission</h2>
-                <p style="font-size: 1.1rem; color: rgba(255,255,255,0.95); line-height: 1.8; margin: 0 auto 2rem; max-width: 700px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3);" data-en="Your contribution helps us empower more women and children. Every donation makes a difference." data-hi="आपका योगदान हमें अधिक महिलाओं और बच्चों को सशक्त बनाने में मदद करता है। हर दान से फर्क पड़ता है।">Your contribution helps us empower more women and children. Every donation makes a difference.</p>
-                <button class="donate-btn" id="donateBtn" style="background: white; color: #ff6b6b; padding: 1.2rem 3rem; border: none; border-radius: 50px; font-weight: 700; font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,0,0,0.2);" data-en="🤝 Donate Now" data-hi="🤝 अभी दान करें">🤝 Donate Now</button>
-            </div>
-        </section>
     </main>
 
-    <!-- Donation Modal -->
-    <div id="donationModal" class="donation-modal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;">
-        <div class="donation-modal-content" style="background: white; border-radius: 20px; max-width: 500px; width: 90%; margin: 2rem; padding: 2rem; position: relative;">
-            <span class="donation-modal-close" id="donationModalClose" style="position: absolute; top: 1rem; right: 1rem; font-size: 2rem; cursor: pointer; color: #666;">&times;</span>
-            <h2 style="text-align: center; color: #333; margin-bottom: 1.5rem;">Donate via QR Code</h2>
-            <div id="qrCodeContainer" style="min-height: 250px; display: flex; align-items: center; justify-content: center;">
-                <div class="loading-spinner" style="border: 4px solid #f3f3f3; border-top: 4px solid #667eea; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
-            </div>
-            <p style="text-align:center;font-size:1.1rem;margin:1rem 0 0 0;">Mobile/UPI: <strong>+91 87410 61834</strong></p>
-            <p style="text-align:center;color:#6c757d;font-size:0.95rem;">Scan the QR code or use the mobile number above to donate via UPI, Paytm, PhonePe, etc.</p>
-        </div>
-    </div>
 
     <!-- Bio Modal -->
     <div id="bioModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;">
@@ -770,109 +750,7 @@
         // Initialize modal event listeners when page loads
         document.addEventListener('DOMContentLoaded', function() {
             setupBioModalEventListeners();
-            setupDonationModal();
-            loadQRCodeImage();
         });
-
-        // Setup donation modal functionality
-        function setupDonationModal() {
-            const donateBtn = document.getElementById('donateBtn');
-            const donationModal = document.getElementById('donationModal');
-            const donationModalClose = document.getElementById('donationModalClose');
-
-            // Open modal when donate button is clicked
-            if (donateBtn) {
-                donateBtn.addEventListener('click', function() {
-                    donationModal.style.display = 'flex';
-                });
-
-                // Add hover effect to donate button
-                donateBtn.addEventListener('mouseenter', function() {
-                    this.style.transform = 'scale(1.05)';
-                    this.style.boxShadow = '0 15px 35px rgba(0,0,0,0.3)';
-                });
-
-                donateBtn.addEventListener('mouseleave', function() {
-                    this.style.transform = 'scale(1)';
-                    this.style.boxShadow = '0 10px 25px rgba(0,0,0,0.2)';
-                });
-            }
-
-            // Close modal when X is clicked
-            if (donationModalClose) {
-                donationModalClose.addEventListener('click', function() {
-                    donationModal.style.display = 'none';
-                });
-            }
-
-            // Close modal when clicking outside
-            if (donationModal) {
-                donationModal.addEventListener('click', function(e) {
-                    if (e.target === donationModal) {
-                        donationModal.style.display = 'none';
-                    }
-                });
-            }
-        }
-
-        // Load QR code image from S3
-        async function loadQRCodeImage() {
-            try {
-                console.log('Loading QR code image from S3...');
-                
-                // Use API Gateway for production, local API for development
-                const apiURL = window.location.hostname === 'localhost' 
-                    ? '/api/images?category=about'
-                    : 'https://klbot0zc8l.execute-api.eu-north-1.amazonaws.com/prod/images?category=about';
-                
-                const response = await fetch(apiURL);
-                const data = await response.json();
-                
-                if (data.success && data.images.length > 0) {
-                    console.log('Found images in about category:', data.images.length);
-                    
-                    // Find image with name or description containing "qr" or "code"
-                    const qrImage = data.images.find(img => 
-                        (img.originalName && img.originalName.toLowerCase().includes('qr')) ||
-                        (img.description && img.description.toLowerCase().includes('qr')) ||
-                        (img.description && img.description.toLowerCase().includes('code'))
-                    );
-                    
-                    // Update the QR code container
-                    const qrContainer = document.getElementById('qrCodeContainer');
-                    if (qrContainer && qrImage) {
-                        qrContainer.innerHTML = `
-                            <img src="${qrImage.url}" 
-                                 alt="Donation QR Code" 
-                                 style="max-width: 250px; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                        `;
-                        console.log('QR code loaded successfully');
-                    }
-                } else {
-                    console.log('No QR code found in about category');
-                    // Show placeholder message
-                    const qrContainer = document.getElementById('qrCodeContainer');
-                    if (qrContainer) {
-                        qrContainer.innerHTML = `
-                            <div style="text-align: center; color: #666;">
-                                <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">QR Code will appear here</p>
-                                <p style="font-size: 0.9rem; color: #999;">Please upload QR code image with "QR" in name or description to 'about' category</p>
-                            </div>
-                        `;
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading QR code:', error);
-                const qrContainer = document.getElementById('qrCodeContainer');
-                if (qrContainer) {
-                    qrContainer.innerHTML = `
-                        <div style="text-align: center; color: #666;">
-                            <p style="font-size: 1rem;">Unable to load QR code</p>
-                        </div>
-                    `;
-                }
-            }
-        }
     </script>
 </body>
 </html>
