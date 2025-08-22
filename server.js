@@ -566,6 +566,21 @@ app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'admin.html'));
 });
 
+// Serve contact page
+app.get('/contact', (req, res) => {
+    res.sendFile(path.join(__dirname, 'contact.html'));
+});
+
+// Serve about page
+app.get('/about', (req, res) => {
+    res.sendFile(path.join(__dirname, 'about.html'));
+});
+
+// Serve programs page
+app.get('/programs', (req, res) => {
+    res.sendFile(path.join(__dirname, 'programs.html'));
+});
+
 // Serve main website
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));

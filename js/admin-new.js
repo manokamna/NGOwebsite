@@ -46,7 +46,43 @@ function setupEventListeners() {
     // File input change
     document.getElementById('imageFile').addEventListener('change', handleFileSelection);
     
+    // Category change - update description requirements
+    document.getElementById('imageCategory').addEventListener('change', updateDescriptionRequirement);
+    
     // Note: Crop modal controls will be setup when modal opens
+}
+
+function updateDescriptionRequirement() {
+    const category = document.getElementById('imageCategory').value;
+    const descriptionLabel = document.getElementById('descriptionLabel');
+    const descriptionField = document.getElementById('imageDescription');
+    const descriptionHint = document.getElementById('descriptionHint');
+    
+    if (category === 'team') {
+        // Make description required for team category
+        descriptionLabel.innerHTML = 'Image Description <span style="color: red;">*</span> (Required for Team):';
+        descriptionField.setAttribute('required', 'required');
+        descriptionField.placeholder = 'Required: "Designation - Name" or "Designation - Name || Bio"';
+        
+        // Update hint to emphasize requirement
+        descriptionHint.innerHTML = `
+            <strong style="color: #d32f2f;">⚠️ REQUIRED for Team Members:</strong><br>
+            • Basic: "Designation - Name" (e.g., "President - Saroj")<br>
+            • With Bio: "Designation - Name || Bio text here"<br>
+            • Example: "Vice President - Nirmala Devi || Expert in community development with 10+ years experience."
+        `;
+    } else {
+        // Make description optional for other categories
+        descriptionLabel.innerHTML = 'Image Description (Optional):';
+        descriptionField.removeAttribute('required');
+        descriptionField.placeholder = 'Enter description (optional for this category)';
+        
+        // Update hint for optional
+        descriptionHint.innerHTML = `
+            <strong>Description is optional for this category.</strong><br>
+            You can provide a brief description of the image if desired.
+        `;
+    }
 }
 
 function setupCropEventListeners() {
@@ -258,8 +294,9 @@ async function handleImageUpload() {
         return;
     }
     
-    if (!description) {
-        showStatus('uploadStatus', 'Please provide an image description. For team images, use format: "Designation - Name" or "Designation - Name || Bio" (e.g., "President - Saroj || Experienced leader with 15 years in social work.").', 'error');
+    // Make description mandatory only for team category
+    if (category === 'team' && !description) {
+        showStatus('uploadStatus', 'Description is required for team members. Use format: "Designation - Name" or "Designation - Name || Bio" (e.g., "President - Saroj || Experienced leader with 15 years in social work.").', 'error');
         return;
     }
     

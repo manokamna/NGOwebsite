@@ -92,14 +92,14 @@
                             <small>Supports: JPG, PNG, GIF, WebP (Max 50MB per file) - Large images will be automatically resized</small>
                         </div>
                         <div class="form-group">
-                            <label for="imageDescription">Image Description (Required):</label>
-                            <textarea id="imageDescription" placeholder="Vice President - Nirmala Devi || Expert in community development with 10+ years experience." required rows="3" style="resize: vertical; min-height: 80px;"></textarea>
-                            <small class="description-hint">
+                            <label for="imageDescription" id="descriptionLabel">Image Description:</label>
+                            <textarea id="imageDescription" placeholder="Enter description (required for team members)" rows="3" style="resize: vertical; min-height: 80px;"></textarea>
+                            <small class="description-hint" id="descriptionHint">
                                 <strong>Format for Team Members:</strong><br>
                                 • Basic: "Designation - Name" (e.g., "President - Saroj")<br>
                                 • With Bio: "Designation - Name || Bio text here"<br>
                                 • Example: "Vice President - Nirmala Devi || Expert in community development with 10+ years experience in rural empowerment."<br>
-                                <strong>For Other Categories:</strong> Provide a brief description of the image.
+                                <strong>For Other Categories:</strong> Description is optional.
                             </small>
                         </div>
                         <button id="uploadBtn" class="btn btn-primary">Upload Images</button>
