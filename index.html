@@ -912,14 +912,14 @@
         // Load QR code image from S3
         async function loadQRCodeImage() {
             try {
-                console.log('Loading QR code image from S3...');
+                console.log('🔍 Loading QR code image from S3...');
                 
                 // Use API_CONFIG for consistent endpoint management
                 const apiURL = window.location.hostname === 'localhost' 
                     ? '/api/images?category=about'
                     : (window.API_CONFIG ? window.API_CONFIG.getURL('images') + '?category=about' : 'https://klbot0zc8l.execute-api.eu-north-1.amazonaws.com/prod/images?category=about');
                 
-                console.log('API URL:', apiURL);
+                console.log('🌐 API URL:', apiURL);
                 
                 const response = await fetch(apiURL);
                 console.log('Response status:', response.status);
@@ -929,11 +929,11 @@
                 }
                 
                 const data = await response.json();
-                console.log('API Response:', data);
+                console.log('📊 API Response:', data);
                 
                 if (data.success && data.images && data.images.length > 0) {
-                    console.log('Found images in about category:', data.images.length);
-                    console.log('All images:', data.images.map(img => ({
+                    console.log('📸 Found images in about category:', data.images.length);
+                    console.log('📋 All images:', data.images.map(img => ({
                         originalName: img.originalName,
                         description: img.description,
                         url: img.url
@@ -945,38 +945,43 @@
                         const desc = (img.description || '').toLowerCase();
                         const key = (img.key || '').toLowerCase();
                         
-                        return name.includes('qr') || 
-                               name.includes('code') || 
-                               name.includes('donation') ||
-                               desc.includes('qr') || 
-                               desc.includes('code') || 
-                               desc.includes('donation') ||
-                               key.includes('qr') ||
-                               key.includes('code') ||
-                               key.includes('donation');
+                        console.log(`🔍 Checking image: name="${name}", desc="${desc}", key="${key}"`);
+                        const hasQR = name.includes('qr') || desc.includes('qr') || key.includes('qr');
+                        const hasCode = name.includes('code') || desc.includes('code') || key.includes('code');
+                        const hasDonation = name.includes('donation') || desc.includes('donation') || key.includes('donation');
+                        
+                        console.log(`   - hasQR: ${hasQR}, hasCode: ${hasCode}, hasDonation: ${hasDonation}`);
+                        
+                        return hasQR || hasCode || hasDonation;
                     });
                     
-                    console.log('Found QR image:', qrImage);
+                    console.log('🎯 Found QR image:', qrImage);
                     
                     // Update the QR code container
                     const qrContainer = document.getElementById('qrCodeContainer');
+                    console.log('📦 QR Container found:', !!qrContainer);
+                    console.log('🖼️ QR Image found:', !!qrImage);
+                    
                     if (qrContainer && qrImage) {
+                        console.log('✅ Loading QR code image:', qrImage.url);
                         qrContainer.innerHTML = `
                             <img src="${qrImage.url}" 
                                  alt="Donation QR Code" 
                                  style="max-width: 250px; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
-                                 onload="console.log('QR image loaded successfully')"
-                                 onerror="console.error('Failed to load QR image:', this.src)">
+                                 onload="console.log('✅ QR image loaded successfully from DOM')"
+                                 onerror="console.error('❌ Failed to load QR image from DOM:', this.src)">
                         `;
-                        console.log('QR code loaded successfully from:', qrImage.url);
+                        console.log('🎉 QR code HTML updated successfully');
                     } else if (qrContainer && !qrImage) {
-                        console.log('No QR code found in about category. Try uploading an image with "qr", "code", or "donation" in the filename.');
+                        console.log('❌ No QR code found in about category. Available images:', data.images.map(img => img.originalName));
                         qrContainer.innerHTML = `
                             <div style="text-align: center; color: #666;">
                                 <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">QR Code will appear here</p>
                                 <p style="font-size: 0.9rem; color: #999;">Please upload QR code image with "QR" or "code" in filename</p>
                             </div>
                         `;
+                    } else if (!qrContainer) {
+                        console.error('❌ QR Container not found in DOM');
                     }
                 } else {
                     console.log('No images found in about category or API response format unexpected');
