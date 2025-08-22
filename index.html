@@ -946,33 +946,54 @@
                         const key = (img.key || '').toLowerCase();
                         
                         console.log(`🔍 Checking image: name="${name}", desc="${desc}", key="${key}"`);
-                        const hasQR = name.includes('qr') || desc.includes('qr') || key.includes('qr');
-                        const hasCode = name.includes('code') || desc.includes('code') || key.includes('code');
-                        const hasDonation = name.includes('donation') || desc.includes('donation') || key.includes('donation');
                         
-                        console.log(`   - hasQR: ${hasQR}, hasCode: ${hasCode}, hasDonation: ${hasDonation}`);
+                        // Check each condition separately for better debugging
+                        const nameHasQR = name.includes('qr');
+                        const nameHasCode = name.includes('code');
+                        const nameHasDonation = name.includes('donation');
+                        const descHasQR = desc.includes('qr');
+                        const descHasCode = desc.includes('code');
+                        const descHasDonation = desc.includes('donation');
+                        const keyHasQR = key.includes('qr');
+                        const keyHasCode = key.includes('code');
+                        const keyHasDonation = key.includes('donation');
                         
-                        return hasQR || hasCode || hasDonation;
+                        console.log(`   - name checks: qr=${nameHasQR}, code=${nameHasCode}, donation=${nameHasDonation}`);
+                        console.log(`   - desc checks: qr=${descHasQR}, code=${descHasCode}, donation=${descHasDonation}`);
+                        console.log(`   - key checks: qr=${keyHasQR}, code=${keyHasCode}, donation=${keyHasDonation}`);
+                        
+                        const isMatch = nameHasQR || nameHasCode || nameHasDonation || 
+                                       descHasQR || descHasCode || descHasDonation ||
+                                       keyHasQR || keyHasCode || keyHasDonation;
+                        
+                        console.log(`   - RESULT: ${isMatch ? '✅ MATCH' : '❌ NO MATCH'}`);
+                        
+                        return isMatch;
                     });
                     
                     console.log('🎯 Found QR image:', qrImage);
+                    
+                    // Fallback: if no specific QR image found, use the first image
+                    const imageToUse = qrImage || data.images[0];
+                    console.log('🖼️ Image to use:', imageToUse);
                     
                     // Update the QR code container
                     const qrContainer = document.getElementById('qrCodeContainer');
                     console.log('📦 QR Container found:', !!qrContainer);
                     console.log('🖼️ QR Image found:', !!qrImage);
+                    console.log('🖼️ Using image:', !!imageToUse);
                     
-                    if (qrContainer && qrImage) {
-                        console.log('✅ Loading QR code image:', qrImage.url);
+                    if (qrContainer && imageToUse) {
+                        console.log('✅ Loading QR code image:', imageToUse.url);
                         qrContainer.innerHTML = `
-                            <img src="${qrImage.url}" 
+                            <img src="${imageToUse.url}" 
                                  alt="Donation QR Code" 
                                  style="max-width: 250px; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
                                  onload="console.log('✅ QR image loaded successfully from DOM')"
                                  onerror="console.error('❌ Failed to load QR image from DOM:', this.src)">
                         `;
                         console.log('🎉 QR code HTML updated successfully');
-                    } else if (qrContainer && !qrImage) {
+                    } else if (qrContainer && !imageToUse) {
                         console.log('❌ No QR code found in about category. Available images:', data.images.map(img => img.originalName));
                         qrContainer.innerHTML = `
                             <div style="text-align: center; color: #666;">
