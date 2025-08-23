@@ -973,8 +973,15 @@
                     
                     console.log('🎯 Found QR image:', qrImage);
                     
-                    // Fallback: if no specific QR image found, use the first image
-                    const imageToUse = qrImage || data.images[0];
+                    // Look for the specific QR code image first
+                    const specificQRImage = data.images.find(img => 
+                        img.key && img.key.includes('1755898950420-q8k73fw3fu.jpeg')
+                    );
+                    
+                    console.log('🎯 Found specific QR image:', specificQRImage);
+                    
+                    // Priority: specific QR image > found QR image > first image
+                    const imageToUse = specificQRImage || qrImage || data.images[0];
                     console.log('🖼️ Image to use:', imageToUse);
                     
                     // Update the QR code container
@@ -1007,26 +1014,36 @@
                 } else {
                     console.log('No images found in about category or API response format unexpected');
                     console.log('Full response:', data);
+                    
+                    // As a last resort, use the direct URL to the specific QR code
                     const qrContainer = document.getElementById('qrCodeContainer');
                     if (qrContainer) {
+                        console.log('🚨 Using direct QR code URL as fallback');
+                        const directQRUrl = 'https://sarojvandana-images.s3.amazonaws.com/ngo-images/about/1755898950420-q8k73fw3fu.jpeg';
                         qrContainer.innerHTML = `
-                            <div style="text-align: center; color: #666;">
-                                <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">QR Code will appear here</p>
-                                <p style="font-size: 0.9rem; color: #999;">No images found in about category</p>
-                            </div>
+                            <img src="${directQRUrl}" 
+                                 alt="Donation QR Code" 
+                                 style="max-width: 250px; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
+                                 onload="console.log('✅ Direct QR image loaded successfully')"
+                                 onerror="console.error('❌ Failed to load direct QR image:', this.src)">
                         `;
                     }
                 }
             } catch (error) {
                 console.error('Error loading QR code:', error);
                 console.error('Error details:', error.message, error.stack);
+                
+                // Even on API error, try to load the direct QR code URL
                 const qrContainer = document.getElementById('qrCodeContainer');
                 if (qrContainer) {
+                    console.log('🚨 API failed, using direct QR code URL as emergency fallback');
+                    const directQRUrl = 'https://sarojvandana-images.s3.amazonaws.com/ngo-images/about/1755898950420-q8k73fw3fu.jpeg';
                     qrContainer.innerHTML = `
-                        <div style="text-align: center; color: #666;">
-                            <p style="font-size: 1rem;">Unable to load QR code</p>
-                            <p style="font-size: 0.9rem; color: #999;">Error: ${error.message}</p>
-                        </div>
+                        <img src="${directQRUrl}" 
+                             alt="Donation QR Code" 
+                             style="max-width: 250px; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
+                             onload="console.log('✅ Emergency QR image loaded successfully')"
+                             onerror="console.error('❌ Emergency QR image also failed:', this.src); this.parentElement.innerHTML='<div style=\\'text-align:center;color:#666;\\'>QR Code temporarily unavailable</div>';">
                     `;
                 }
             }
