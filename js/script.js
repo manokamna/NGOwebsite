@@ -52,7 +52,7 @@ function translatePage(language) {
     });
     
     // Translate bio modal elements if they exist and have translation data
-    const bioModalElements = document.querySelectorAll('#bioModalName[data-en][data-hi], #bioModalDesignation[data-en][data-hi], #bioModalText[data-en][data-hi]');
+    const bioModalElements = document.querySelectorAll('#bioModalName[data-en][data-hi], #bioModalDesignation[data-en][data-hi], #bioModalText[data-en][data-hi], #bioModalAboutHeading[data-en][data-hi]');
     bioModalElements.forEach(element => {
         if (language === 'hi') {
             element.textContent = element.getAttribute('data-hi');

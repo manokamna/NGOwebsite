@@ -114,7 +114,7 @@
                 <h3 id="bioModalDesignation" style="font-size: 1.3rem; font-weight: 600; margin: 0 0 1.5rem 0; color: rgba(255,255,255,0.9);"></h3>
                 
                 <div style="text-align: left; background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 15px; backdrop-filter: blur(10px);">
-                    <h4 style="margin: 0 0 1rem 0; color: rgba(255,255,255,0.9); font-size: 1.1rem;">About</h4>
+                    <h4 id="bioModalAboutHeading" style="margin: 0 0 1rem 0; color: rgba(255,255,255,0.9); font-size: 1.1rem;" data-en="About" data-hi="परिचय">About</h4>
                     <p id="bioModalText" style="line-height: 1.6; margin: 0; color: rgba(255,255,255,0.85);"></p>
                 </div>
             </div>
@@ -577,9 +577,14 @@
             if (!englishBio) return '';
             
             const bioTranslations = {
+                // Complete bio text translations
+                'about': 'परिचय',
+                'i am passionate about helping people lead healthier and more active lives. i am always open to exploring and engaging in various physical activities that enhance both physical and mental well-being. i have completed my b.sc. in physical health education and sports sciences, along with b.p.ed and m.p.ed, which have equipped me with strong theoretical and practical knowledge in the field. i dedicate a significant amount of time to improving my skills and staying updated with new techniques and trends in fitness and wellness. i stay active and enthusiastic about every opportunity to grow and guide others on their fitness journey.': 'मैं लोगों को स्वस्थ और अधिक सक्रिय जीवन जीने में मदद करने के लिए जुनूनी हूं। मैं हमेशा विभिन्न शारीरिक गतिविधियों की खोज करने और उनमें भाग लेने के लिए तैयार हूं जो शारीरिक और मानसिक कल्याण दोनों को बढ़ाती हैं। मैंने शारीरिक स्वास्थ्य शिक्षा और खेल विज्ञान में बी.एससी. के साथ-साथ बी.पी.एड और एम.पी.एड पूरा किया है, जिसने मुझे इस क्षेत्र में मजबूत सैद्धांतिक और व्यावहारिक ज्ञान से लैस किया है। मैं अपने कौशल में सुधार करने और फिटनेस और वेलनेस में नई तकनीकों और रुझानों के साथ अपडेट रहने के लिए काफी समय समर्पित करती हूं। मैं अपनी फिटनेस यात्रा में बढ़ने और दूसरों का मार्गदर्शन करने के हर अवसर के लिए सक्रिय और उत्साही रहती हूं।',
+                
                 // Common bio phrases and sentences
                 'dedicated to empowering women': 'महिलाओं को सशक्त बनाने के लिए समर्पित',
                 'passionate about social work': 'समाजिक कार्य के प्रति जुनूनी',
+                'passionate about helping people': 'लोगों की मदद करने के लिए जुनूनी',
                 'committed to community development': 'सामुदायिक विकास के लिए प्रतिबद्ध',
                 'skilled in traditional crafts': 'पारंपरिक शिल्प में कुशल',
                 'expert in embroidery and stitching': 'कढ़ाई और सिलाई में विशेषज्ञ',
@@ -587,7 +592,12 @@
                 'helps women become self-reliant': 'महिलाओं को आत्मनिर्भर बनाने में मदद करती हैं',
                 'works for rural development': 'ग्रामीण विकास के लिए काम करती हैं',
                 'believes in women empowerment': 'महिला सशक्तिकरण में विश्वास रखती हैं',
-                'supports underprivileged communities': 'वंचित समुदायों का समर्थन करती हैं'
+                'supports underprivileged communities': 'वंचित समुदायों का समर्थन करती हैं',
+                'lead healthier and more active lives': 'स्वस्थ और अधिक सक्रिय जीवन जीने',
+                'physical and mental well-being': 'शारीरिक और मानसिक कल्याण',
+                'b.sc. in physical health education': 'शारीरिक स्वास्थ्य शिक्षा में बी.एससी.',
+                'fitness and wellness': 'फिटनेस और वेलनेस',
+                'fitness journey': 'फिटनेस यात्रा'
             };
             
             // Try exact match first
