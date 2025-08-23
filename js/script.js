@@ -22,13 +22,22 @@ function initOrgNameAnimations() {
 // Translation functionality
 function translatePage(language) {
     currentLanguage = language;
-    const elementsToTranslate = document.querySelectorAll('[data-en][data-hi]');
+    console.log('Translating to:', language);
     
-    elementsToTranslate.forEach(element => {
+    // Get all elements with translation attributes
+    const elementsToTranslate = document.querySelectorAll('[data-en][data-hi]');
+    console.log('Found elements to translate:', elementsToTranslate.length);
+    
+    elementsToTranslate.forEach((element, index) => {
+        const englishText = element.getAttribute('data-en');
+        const hindiText = element.getAttribute('data-hi');
+        
         if (language === 'hi') {
-            element.innerHTML = element.getAttribute('data-hi');
+            element.innerHTML = hindiText;
+            console.log(`Element ${index}: ${englishText} → ${hindiText}`);
         } else {
-            element.innerHTML = element.getAttribute('data-en');
+            element.innerHTML = englishText;
+            console.log(`Element ${index}: ${hindiText} → ${englishText}`);
         }
     });
     
@@ -45,7 +54,7 @@ function translatePage(language) {
     // Update language toggle button
     const langToggle = document.getElementById('langToggle');
     if (langToggle) {
-        langToggle.textContent = language === 'en' ? 'हिं' : 'EN';
+        langToggle.textContent = language === 'en' ? 'हिन्दी' : 'English';
     }
     
     // Store language preference
@@ -53,6 +62,9 @@ function translatePage(language) {
     
     // Update HTML lang attribute
     document.documentElement.lang = language === 'hi' ? 'hi' : 'en';
+    
+    // Update document direction for better Hindi display
+    document.documentElement.dir = language === 'hi' ? 'ltr' : 'ltr';
 }
 
 // Mobile Navigation Toggle
@@ -65,11 +77,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if (langToggle) {
         // Load saved language preference
         const savedLanguage = localStorage.getItem('preferredLanguage') || 'en';
-        if (savedLanguage === 'hi') {
-            translatePage('hi');
-        }
+        console.log('Saved language:', savedLanguage);
+        
+        // Use setTimeout to ensure all elements are loaded before translation
+        setTimeout(() => {
+            console.log('Initializing translation with language:', savedLanguage);
+            translatePage(savedLanguage);
+        }, 100);
         
         langToggle.addEventListener('click', function() {
+            console.log('Language toggle clicked, current:', currentLanguage);
             const newLanguage = currentLanguage === 'en' ? 'hi' : 'en';
             translatePage(newLanguage);
         });
