@@ -32,6 +32,16 @@ function translatePage(language) {
         }
     });
     
+    // Also translate team member elements specifically (for dynamically loaded content)
+    const teamElements = document.querySelectorAll('.member-designation[data-en][data-hi], .member-name[data-en][data-hi]');
+    teamElements.forEach(element => {
+        if (language === 'hi') {
+            element.innerHTML = element.getAttribute('data-hi');
+        } else {
+            element.innerHTML = element.getAttribute('data-en');
+        }
+    });
+    
     // Update language toggle button
     const langToggle = document.getElementById('langToggle');
     if (langToggle) {
