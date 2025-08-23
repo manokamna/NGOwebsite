@@ -572,6 +572,46 @@
             return 999; // Default for unknown roles
         }
 
+        // Bio translation function  
+        function getBioTranslation(englishBio) {
+            if (!englishBio) return '';
+            
+            const bioTranslations = {
+                // Common bio phrases and sentences
+                'dedicated to empowering women': 'महिलाओं को सशक्त बनाने के लिए समर्पित',
+                'passionate about social work': 'समाजिक कार्य के प्रति जुनूनी',
+                'committed to community development': 'सामुदायिक विकास के लिए प्रतिबद्ध',
+                'skilled in traditional crafts': 'पारंपरिक शिल्प में कुशल',
+                'expert in embroidery and stitching': 'कढ़ाई और सिलाई में विशेषज्ञ',
+                'experienced in teaching yoga': 'योग सिखाने में अनुभवी',
+                'helps women become self-reliant': 'महिलाओं को आत्मनिर्भर बनाने में मदद करती हैं',
+                'works for rural development': 'ग्रामीण विकास के लिए काम करती हैं',
+                'believes in women empowerment': 'महिला सशक्तिकरण में विश्वास रखती हैं',
+                'supports underprivileged communities': 'वंचित समुदायों का समर्थन करती हैं'
+            };
+            
+            // Try exact match first
+            const lowerBio = englishBio.toLowerCase().trim();
+            if (bioTranslations[lowerBio]) {
+                return bioTranslations[lowerBio];
+            }
+            
+            // Try partial matches and word replacement
+            let translatedBio = englishBio;
+            for (let englishPhrase in bioTranslations) {
+                if (lowerBio.includes(englishPhrase)) {
+                    translatedBio = translatedBio.replace(new RegExp(englishPhrase, 'gi'), bioTranslations[englishPhrase]);
+                }
+            }
+            
+            // If no translation found, return original with a note
+            if (translatedBio === englishBio) {
+                return englishBio; // Return original English if no translation available
+            }
+            
+            return translatedBio;
+        }
+
         // Complete English to Hindi translation function
         function getHindiTranslation(englishText, isName = false) {
             if (isName) {
@@ -859,6 +899,7 @@
             // Get Hindi translations
             const hindiDesignation = getHindiTranslation(designation);
             const hindiName = getHindiTranslation(name, true);
+            const hindiBio = getBioTranslation(bio);
             
             // Create team member card HTML
             const memberCard = document.createElement('div');
@@ -871,6 +912,9 @@
                     data-name="${name}" 
                     data-designation="${designation}" 
                     data-bio="${bio.replace(/"/g, '&quot;')}" 
+                    data-bio-hi="${hindiBio.replace(/"/g, '&quot;')}" 
+                    data-name-hi="${hindiName.replace(/"/g, '&quot;')}" 
+                    data-designation-hi="${hindiDesignation.replace(/"/g, '&quot;')}" 
                     data-image="${imageUrl}"
                     style="
                         position: absolute; 
@@ -917,7 +961,10 @@
                     const memberDesignation = this.getAttribute('data-designation');
                     const memberBio = this.getAttribute('data-bio');
                     const memberImage = this.getAttribute('data-image');
-                    openBioModal(memberName, memberDesignation, memberBio, memberImage);
+                    const memberNameHi = this.getAttribute('data-name-hi');
+                    const memberDesignationHi = this.getAttribute('data-designation-hi');
+                    const memberBioHi = this.getAttribute('data-bio-hi');
+                    openBioModal(memberName, memberDesignation, memberBio, memberImage, memberNameHi, memberDesignationHi, memberBioHi);
                 });
                 
                 // Hover effects
@@ -974,13 +1021,34 @@
 
 
         // Bio Modal Functions
-        function openBioModal(name, designation, bio, imageUrl) {
+        function openBioModal(name, designation, bio, imageUrl, nameHi, designationHi, bioHi) {
             console.log('Opening bio modal for:', name, designation, bio);
             
             document.getElementById('bioModalImage').src = imageUrl;
-            document.getElementById('bioModalName').textContent = name;
-            document.getElementById('bioModalDesignation').textContent = designation;
-            document.getElementById('bioModalText').textContent = bio || 'No bio available.';
+            
+            // Set data attributes for both languages
+            const nameElement = document.getElementById('bioModalName');
+            const designationElement = document.getElementById('bioModalDesignation');
+            const bioElement = document.getElementById('bioModalText');
+            
+            nameElement.setAttribute('data-en', name);
+            nameElement.setAttribute('data-hi', nameHi || name);
+            designationElement.setAttribute('data-en', designation);
+            designationElement.setAttribute('data-hi', designationHi || designation);
+            bioElement.setAttribute('data-en', bio || 'No bio available.');
+            bioElement.setAttribute('data-hi', bioHi || bio || 'कोई जानकारी उपलब्ध नहीं।');
+            
+            // Set initial content based on current language
+            const currentLang = currentLanguage || 'en';
+            if (currentLang === 'hi') {
+                nameElement.textContent = nameHi || name;
+                designationElement.textContent = designationHi || designation;
+                bioElement.textContent = bioHi || bio || 'कोई जानकारी उपलब्ध नहीं।';
+            } else {
+                nameElement.textContent = name;
+                designationElement.textContent = designation;
+                bioElement.textContent = bio || 'No bio available.';
+            }
             
             const modal = document.getElementById('bioModal');
             modal.style.display = 'flex';

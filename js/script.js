@@ -51,6 +51,16 @@ function translatePage(language) {
         }
     });
     
+    // Translate bio modal elements if they exist and have translation data
+    const bioModalElements = document.querySelectorAll('#bioModalName[data-en][data-hi], #bioModalDesignation[data-en][data-hi], #bioModalText[data-en][data-hi]');
+    bioModalElements.forEach(element => {
+        if (language === 'hi') {
+            element.textContent = element.getAttribute('data-hi');
+        } else {
+            element.textContent = element.getAttribute('data-en');
+        }
+    });
+    
     // Update language toggle button
     const langToggle = document.getElementById('langToggle');
     if (langToggle) {
