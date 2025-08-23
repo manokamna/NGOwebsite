@@ -635,76 +635,202 @@
             return designationTranslations[lowerText] || englishText;
         }
 
-        // Basic transliteration function for names not in the dictionary
+        // Robust transliteration function for any English name to Hindi
         function transliterateToHindi(englishName) {
-            // Simple phonetic mapping for common sounds
-            const transliterationMap = {
-                'a': 'अ', 'aa': 'आ', 'i': 'इ', 'ii': 'ई', 'u': 'उ', 'uu': 'ऊ',
-                'e': 'ए', 'ai': 'ऐ', 'o': 'ओ', 'au': 'औ',
-                'ka': 'क', 'kha': 'ख', 'ga': 'ग', 'gha': 'घ', 'nga': 'ङ',
-                'cha': 'च', 'chha': 'छ', 'ja': 'ज', 'jha': 'झ', 'nja': 'ञ',
-                'ta': 'ट', 'tha': 'ठ', 'da': 'ड', 'dha': 'ढ', 'na': 'ण',
-                'pa': 'प', 'pha': 'फ', 'ba': 'ब', 'bha': 'भ', 'ma': 'म',
-                'ya': 'य', 'ra': 'र', 'la': 'ल', 'va': 'व', 'wa': 'व',
-                'sha': 'श', 'sa': 'स', 'ha': 'ह'
-            };
-            
-            // For now, return a basic transliteration or the original name
-            // This is a simplified approach - for better results, use a proper transliteration library
             const words = englishName.split(' ');
             const transliteratedWords = words.map(word => {
-                // Try to find pattern matches
-                const lowerWord = word.toLowerCase();
-                
-                // Common name patterns
-                if (lowerWord.includes('kumar')) return word.replace(/kumar/i, 'कुमार');
-                if (lowerWord.includes('singh')) return word.replace(/singh/i, 'सिंह');
-                if (lowerWord.includes('sharma')) return word.replace(/sharma/i, 'शर्मा');
-                if (lowerWord.includes('gupta')) return word.replace(/gupta/i, 'गुप्ता');
-                if (lowerWord.includes('verma')) return word.replace(/verma/i, 'वर्मा');
-                if (lowerWord.includes('agarwal')) return word.replace(/agarwal/i, 'अग्रवाल');
-                if (lowerWord.includes('jain')) return word.replace(/jain/i, 'जैन');
-                if (lowerWord.includes('patel')) return word.replace(/patel/i, 'पटेल');
-                if (lowerWord.includes('devi')) return word.replace(/devi/i, 'देवी');
-                if (lowerWord.includes('bano')) return word.replace(/bano/i, 'बानो');
-                
-                // For other names, try basic phonetic conversion
-                return basicPhoneticConversion(word);
+                return robustTransliterate(word.trim());
             });
             
             return transliteratedWords.join(' ');
         }
 
-        // Basic phonetic conversion for individual words
-        function basicPhoneticConversion(word) {
-            const phoneticMap = {
-                'aafreen': 'आफ्रीन',
-                'nirmala': 'निर्मला', 
-                'saroj': 'सरोज',
-                'vandana': 'वंदना',
-                'priya': 'प्रिया',
-                'sunita': 'सुनीता',
-                'kavita': 'कविता',
-                'rashmi': 'रश्मि',
-                'mamta': 'ममता',
-                'rekha': 'रेखा',
-                'meera': 'मीरा',
-                'anita': 'अनीता',
-                'geeta': 'गीता',
-                'sushma': 'सुष्मा',
-                'usha': 'उषा',
-                'rita': 'रीता',
-                'radha': 'राधा',
-                'krishna': 'कृष्ण',
-                'shanti': 'शांति',
-                'kiran': 'किरण',
-                'deepika': 'दीपिका',
-                'pooja': 'पूजा',
-                'asha': 'आशा'
+        // Advanced phonetic transliteration system
+        function robustTransliterate(word) {
+            if (!word) return '';
+            
+            // Check predefined translations first
+            const predefined = getPredefinedTranslation(word.toLowerCase());
+            if (predefined) return predefined;
+            
+            // Apply advanced phonetic rules
+            return applyPhoneticRules(word.toLowerCase());
+        }
+
+        // Comprehensive predefined name translations
+        function getPredefinedTranslation(lowerWord) {
+            const translations = {
+                // Names starting with A
+                'aafreen': 'आफ्रीन', 'anita': 'अनीता', 'asha': 'आशा', 'arun': 'अरुण',
+                'amit': 'अमित', 'arjun': 'अर्जुन', 'anjali': 'अंजली', 'alok': 'आलोक',
+                
+                // Names starting with B
+                'bano': 'बानो', 'bharat': 'भरत', 'bhavna': 'भावना', 'bindu': 'बिंदू',
+                
+                // Names starting with C
+                'chandra': 'चंद्रा', 'chandni': 'चांदनी', 'chetan': 'चेतन',
+                
+                // Names starting with D
+                'deepika': 'दीपिका', 'devi': 'देवी', 'dinesh': 'दिनेश', 'divya': 'दिव्या',
+                
+                // Names starting with G
+                'geeta': 'गीता', 'gaurav': 'गौरव', 'gita': 'गीता', 'govind': 'गोविंद',
+                
+                // Names starting with H
+                'hari': 'हरि', 'hema': 'हेमा', 'himani': 'हिमानी',
+                
+                // Names starting with J
+                'jyoti': 'ज्योति', 'jaya': 'जया', 'jayesh': 'जयेश',
+                
+                // Names starting with K
+                'kavita': 'कविता', 'kiran': 'किरण', 'krishna': 'कृष्ण', 'kamala': 'कमला',
+                'kailash': 'कैलाश', 'kamal': 'कमल',
+                
+                // Names starting with L
+                'lata': 'लता', 'laxmi': 'लक्ष्मी', 'leela': 'लीला',
+                
+                // Names starting with M
+                'mamta': 'ममता', 'meera': 'मीरा', 'mohan': 'मोहन', 'maya': 'माया',
+                'manish': 'मनीष', 'mukesh': 'मुकेश',
+                
+                // Names starting with N
+                'nirmala': 'निर्मला', 'neha': 'नेहा', 'nita': 'नीता', 'naresh': 'नरेश',
+                
+                // Names starting with P
+                'priya': 'प्रिया', 'pooja': 'पूजा', 'preeti': 'प्रीति', 'pankaj': 'पंकज',
+                'prakash': 'प्रकाश',
+                
+                // Names starting with R
+                'radha': 'राधा', 'rekha': 'रेखा', 'rashmi': 'रश्मि', 'rita': 'रीता',
+                'raj': 'राज', 'rajesh': 'राजेश', 'ravi': 'रवि', 'rohit': 'रोहित',
+                
+                // Names starting with S
+                'saroj': 'सरोज', 'sunita': 'सुनीता', 'sushma': 'सुष्मा', 'shanti': 'शांति',
+                'santara': 'संतरा', 'sanjay': 'संजय', 'sangeeta': 'संगीता', 'savita': 'सविता',
+                'suresh': 'सुरेश', 'sita': 'सीता', 'shyam': 'श्याम',
+                
+                // Names starting with T
+                'tara': 'तारा', 'tejas': 'तेजस',
+                
+                // Names starting with U
+                'usha': 'उषा', 'uma': 'उमा', 'urmila': 'उर्मिला',
+                
+                // Names starting with V
+                'vandana': 'वंदना', 'vijay': 'विजय', 'vinod': 'विनोद', 'veena': 'वीणा',
+                'vishal': 'विशाल',
+                
+                // Common surnames and titles
+                'kumar': 'कुमार', 'kumari': 'कुमारी', 'singh': 'सिंह', 'sharma': 'शर्मा',
+                'gupta': 'गुप्ता', 'verma': 'वर्मा', 'agarwal': 'अग्रवाल', 'jain': 'जैन',
+                'patel': 'पटेल', 'yadav': 'यादव', 'mishra': 'मिश्रा', 'tiwari': 'तिवारी',
+                'pandey': 'पांडेय', 'shukla': 'शुक्ला', 'mathur': 'माथुर', 'mittal': 'मित्तल',
+                
+                // Titles
+                'ji': 'जी', 'sahab': 'साहब', 'madam': 'मैडम'
             };
             
-            const lowerWord = word.toLowerCase();
-            return phoneticMap[lowerWord] || word; // Return original if no translation found
+            return translations[lowerWord];
+        }
+
+        // Advanced phonetic rules for automatic transliteration
+        function applyPhoneticRules(word) {
+            let result = '';
+            let i = 0;
+            
+            // Comprehensive phonetic mapping rules
+            const phoneticRules = [
+                // Vowels
+                { pattern: /^a(?![aeiou])/g, replacement: 'अ' },
+                { pattern: /aa|a(?=r$|h$)/g, replacement: 'आ' },
+                { pattern: /^i(?![aeiou])/g, replacement: 'इ' },
+                { pattern: /ee|i(?=r$|h$)/g, replacement: 'ई' },
+                { pattern: /^u(?![aeiou])/g, replacement: 'उ' },
+                { pattern: /oo|u(?=r$|h$)/g, replacement: 'ऊ' },
+                { pattern: /^e(?![aeiou])/g, replacement: 'ए' },
+                { pattern: /ai|ay/g, replacement: 'ऐ' },
+                { pattern: /^o(?![aeiou])/g, replacement: 'ओ' },
+                { pattern: /au|aw/g, replacement: 'औ' },
+                
+                // Consonants with inherent 'a'
+                { pattern: /ka/g, replacement: 'क' },
+                { pattern: /kha/g, replacement: 'ख' },
+                { pattern: /ga/g, replacement: 'ग' },
+                { pattern: /gha/g, replacement: 'घ' },
+                { pattern: /cha/g, replacement: 'च' },
+                { pattern: /chha/g, replacement: 'छ' },
+                { pattern: /ja/g, replacement: 'ज' },
+                { pattern: /jha/g, replacement: 'झ' },
+                { pattern: /ta/g, replacement: 'त' },
+                { pattern: /tha/g, replacement: 'थ' },
+                { pattern: /da/g, replacement: 'द' },
+                { pattern: /dha/g, replacement: 'ध' },
+                { pattern: /na/g, replacement: 'न' },
+                { pattern: /pa/g, replacement: 'प' },
+                { pattern: /pha/g, replacement: 'फ' },
+                { pattern: /ba/g, replacement: 'ब' },
+                { pattern: /bha/g, replacement: 'भ' },
+                { pattern: /ma/g, replacement: 'म' },
+                { pattern: /ya/g, replacement: 'य' },
+                { pattern: /ra/g, replacement: 'र' },
+                { pattern: /la/g, replacement: 'ल' },
+                { pattern: /va|wa/g, replacement: 'व' },
+                { pattern: /sha/g, replacement: 'श' },
+                { pattern: /sa/g, replacement: 'स' },
+                { pattern: /ha/g, replacement: 'ह' },
+                
+                // Special combinations
+                { pattern: /ksh/g, replacement: 'क्ष' },
+                { pattern: /tr/g, replacement: 'त्र' },
+                { pattern: /gn/g, replacement: 'ज्ञ' },
+                
+                // Single consonants (at end or before consonants)
+                { pattern: /k(?![aeiou])/g, replacement: 'क्' },
+                { pattern: /g(?![aeiou])/g, replacement: 'ग्' },
+                { pattern: /ch(?![aeiou])/g, replacement: 'च्' },
+                { pattern: /j(?![aeiou])/g, replacement: 'ज्' },
+                { pattern: /t(?![aeiou])/g, replacement: 'त्' },
+                { pattern: /d(?![aeiou])/g, replacement: 'द्' },
+                { pattern: /n(?![aeiou])/g, replacement: 'न्' },
+                { pattern: /p(?![aeiou])/g, replacement: 'प्' },
+                { pattern: /b(?![aeiou])/g, replacement: 'ब्' },
+                { pattern: /m(?![aeiou])/g, replacement: 'म्' },
+                { pattern: /y(?![aeiou])/g, replacement: 'य्' },
+                { pattern: /r(?![aeiou])/g, replacement: 'र्' },
+                { pattern: /l(?![aeiou])/g, replacement: 'ल्' },
+                { pattern: /v(?![aeiou])/g, replacement: 'व्' },
+                { pattern: /s(?![aeiou])/g, replacement: 'स्' },
+                { pattern: /h(?![aeiou])/g, replacement: 'ह्' }
+            ];
+            
+            // Apply rules in sequence
+            let transliterated = word;
+            phoneticRules.forEach(rule => {
+                transliterated = transliterated.replace(rule.pattern, rule.replacement);
+            });
+            
+            // Clean up and finalize
+            transliterated = cleanupTransliteration(transliterated);
+            
+            return transliterated || word; // Return original if transliteration fails
+        }
+
+        // Clean up transliteration artifacts
+        function cleanupTransliteration(text) {
+            return text
+                .replace(/क्a/g, 'का')
+                .replace(/ग्a/g, 'गा')
+                .replace(/च्a/g, 'चा')
+                .replace(/त्a/g, 'ता')
+                .replace(/न्a/g, 'ना')
+                .replace(/म्a/g, 'मा')
+                .replace(/र्a/g, 'रा')
+                .replace(/स्a/g, 'सा')
+                .replace(/्a/g, 'ा')
+                .replace(/अa/g, 'आ')
+                .replace(/ि/g, 'ि')
+                .replace(/ु/g, 'ु')
+                .replace(/े/g, 'े')
+                .replace(/ो/g, 'ो');
         }
 
         // Create a team member card dynamically
