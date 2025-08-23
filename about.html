@@ -572,15 +572,47 @@
             return 999; // Default for unknown roles
         }
 
-        // Translation function for designations
+        // Complete English to Hindi translation function
         function getHindiTranslation(englishText, isName = false) {
             if (isName) {
-                // For names, return as-is since they are proper nouns
-                return englishText;
+                // Name translations - Convert English names to Hindi Devanagari script
+                const nameTranslations = {
+                    // Common Indian names
+                    'aafreen bano': 'आफ्रीन बानो',
+                    'nirmala devi': 'निर्मला देवी',
+                    'saroj vandana': 'सरोज वंदना',
+                    'priya sharma': 'प्रिया शर्मा',
+                    'sunita kumari': 'सुनीता कुमारी',
+                    'kavita singh': 'कविता सिंह',
+                    'rashmi agarwal': 'रश्मि अग्रवाल',
+                    'mamta gupta': 'ममता गुप्ता',
+                    'rekha mathur': 'रेखा माथुर',
+                    'meera patel': 'मीरा पटेल',
+                    'anita verma': 'अनीता वर्मा',
+                    'geeta rani': 'गीता रानी',
+                    'sushma jain': 'सुष्मा जैन',
+                    'usha devi': 'उषा देवी',
+                    'rita kumari': 'रीता कुमारी',
+                    'radha krishna': 'राधा कृष्ण',
+                    'shanti devi': 'शांति देवी',
+                    'kiran bala': 'किरण बाला',
+                    'deepika yadav': 'दीपिका यादव',
+                    'pooja mittal': 'पूजा मित्तल',
+                    'asha sharma': 'आशा शर्मा',
+                    'lata mangeshkar': 'लता मंगेशकर',
+                    'sunita williams': 'सुनीता विलियम्स',
+                    'manisha koirala': 'मनीषा कोइराला',
+                    'shreya ghoshal': 'श्रेया घोषाल',
+                    // Add more names as they appear in your team
+                    'team member': 'टीम सदस्य'
+                };
+                
+                const lowerName = englishText.toLowerCase().trim();
+                return nameTranslations[lowerName] || transliterateToHindi(englishText);
             }
             
             // Designation translations
-            const translations = {
+            const designationTranslations = {
                 'president': 'अध्यक्ष',
                 'vice president': 'उपाध्यक्ष', 
                 'secretary': 'सचिव',
@@ -595,11 +627,84 @@
                 'teacher': 'शिक्षक',
                 'yoga trainer': 'योग प्रशिक्षक',
                 'chairwoman': 'अध्यक्ष',
-                'chairman': 'अध्यक्ष'
+                'chairman': 'अध्यक्ष',
+                'position': 'पद'
             };
             
             const lowerText = englishText.toLowerCase().trim();
-            return translations[lowerText] || englishText;
+            return designationTranslations[lowerText] || englishText;
+        }
+
+        // Basic transliteration function for names not in the dictionary
+        function transliterateToHindi(englishName) {
+            // Simple phonetic mapping for common sounds
+            const transliterationMap = {
+                'a': 'अ', 'aa': 'आ', 'i': 'इ', 'ii': 'ई', 'u': 'उ', 'uu': 'ऊ',
+                'e': 'ए', 'ai': 'ऐ', 'o': 'ओ', 'au': 'औ',
+                'ka': 'क', 'kha': 'ख', 'ga': 'ग', 'gha': 'घ', 'nga': 'ङ',
+                'cha': 'च', 'chha': 'छ', 'ja': 'ज', 'jha': 'झ', 'nja': 'ञ',
+                'ta': 'ट', 'tha': 'ठ', 'da': 'ड', 'dha': 'ढ', 'na': 'ण',
+                'pa': 'प', 'pha': 'फ', 'ba': 'ब', 'bha': 'भ', 'ma': 'म',
+                'ya': 'य', 'ra': 'र', 'la': 'ल', 'va': 'व', 'wa': 'व',
+                'sha': 'श', 'sa': 'स', 'ha': 'ह'
+            };
+            
+            // For now, return a basic transliteration or the original name
+            // This is a simplified approach - for better results, use a proper transliteration library
+            const words = englishName.split(' ');
+            const transliteratedWords = words.map(word => {
+                // Try to find pattern matches
+                const lowerWord = word.toLowerCase();
+                
+                // Common name patterns
+                if (lowerWord.includes('kumar')) return word.replace(/kumar/i, 'कुमार');
+                if (lowerWord.includes('singh')) return word.replace(/singh/i, 'सिंह');
+                if (lowerWord.includes('sharma')) return word.replace(/sharma/i, 'शर्मा');
+                if (lowerWord.includes('gupta')) return word.replace(/gupta/i, 'गुप्ता');
+                if (lowerWord.includes('verma')) return word.replace(/verma/i, 'वर्मा');
+                if (lowerWord.includes('agarwal')) return word.replace(/agarwal/i, 'अग्रवाल');
+                if (lowerWord.includes('jain')) return word.replace(/jain/i, 'जैन');
+                if (lowerWord.includes('patel')) return word.replace(/patel/i, 'पटेल');
+                if (lowerWord.includes('devi')) return word.replace(/devi/i, 'देवी');
+                if (lowerWord.includes('bano')) return word.replace(/bano/i, 'बानो');
+                
+                // For other names, try basic phonetic conversion
+                return basicPhoneticConversion(word);
+            });
+            
+            return transliteratedWords.join(' ');
+        }
+
+        // Basic phonetic conversion for individual words
+        function basicPhoneticConversion(word) {
+            const phoneticMap = {
+                'aafreen': 'आफ्रीन',
+                'nirmala': 'निर्मला', 
+                'saroj': 'सरोज',
+                'vandana': 'वंदना',
+                'priya': 'प्रिया',
+                'sunita': 'सुनीता',
+                'kavita': 'कविता',
+                'rashmi': 'रश्मि',
+                'mamta': 'ममता',
+                'rekha': 'रेखा',
+                'meera': 'मीरा',
+                'anita': 'अनीता',
+                'geeta': 'गीता',
+                'sushma': 'सुष्मा',
+                'usha': 'उषा',
+                'rita': 'रीता',
+                'radha': 'राधा',
+                'krishna': 'कृष्ण',
+                'shanti': 'शांति',
+                'kiran': 'किरण',
+                'deepika': 'दीपिका',
+                'pooja': 'पूजा',
+                'asha': 'आशा'
+            };
+            
+            const lowerWord = word.toLowerCase();
+            return phoneticMap[lowerWord] || word; // Return original if no translation found
         }
 
         // Create a team member card dynamically
