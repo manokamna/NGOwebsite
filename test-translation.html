@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Translation Test</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 2rem; }
+        .test-result { margin: 1rem 0; padding: 1rem; border: 1px solid #ddd; border-radius: 5px; }
+        .hindi { font-size: 1.5rem; color: #2563eb; }
+    </style>
+</head>
+<body>
+    <h1>English to Hindi Translation Test</h1>
+    
+    <div id="results"></div>
+    
+    <script>
+        // Comprehensive predefined name translations
+        function getPredefinedTranslation(lowerWord) {
+            const translations = {
+                // Names starting with A
+                'ashish': 'आशीष', 'aafreen': 'आफ्रीन',
+                // Names starting with S
+                'saroj': 'सरोज', 'sunita': 'सुनीता', 'sushma': 'सुष्मा', 'shanti': 'शांति',
+                'santara': 'संतरा', 'sanjay': 'संजय', 'sangeeta': 'संगीता', 'savita': 'सविता',
+                'suresh': 'सुरेश', 'sita': 'सीता', 'shyam': 'श्याम',
+                // Names starting with M
+                'meena': 'मीणा',
+                // Common names and surnames
+                'bano': 'बानो', 'nirmala': 'निर्मला', 'sharma': 'शर्मा', 'kumar': 'कुमार',
+                'team': 'टीम', 'member': 'सदस्य'
+            };
+            
+            return translations[lowerWord];
+        }
+
+        // Advanced phonetic rules for automatic transliteration
+        function applyPhoneticRules(word) {
+            const phoneticRules = [
+                { pattern: /san/g, replacement: 'सन्' },
+                { pattern: /ta/g, replacement: 'त' },
+                { pattern: /ra/g, replacement: 'र' },
+                { pattern: /a$/g, replacement: 'ा' }
+            ];
+            
+            let transliterated = word;
+            phoneticRules.forEach(rule => {
+                transliterated = transliterated.replace(rule.pattern, rule.replacement);
+            });
+            
+            return transliterated.replace(/न्त/g, 'ंत');
+        }
+
+        // Robust transliteration function
+        function robustTransliterate(word) {
+            if (!word) return '';
+            
+            const predefined = getPredefinedTranslation(word.toLowerCase());
+            if (predefined) return predefined;
+            
+            return applyPhoneticRules(word.toLowerCase());
+        }
+
+        // Test cases
+        const testNames = [
+            'Santara',
+            'Ashish Kumar Meena',
+            'Aafreen Bano', 
+            'Nirmala Sharma',
+            'Saroj Vandana',
+            'Team Member'
+        ];
+
+        // Run tests
+        const resultsDiv = document.getElementById('results');
+        testNames.forEach(name => {
+            const words = name.split(' ');
+            const transliterated = words.map(word => robustTransliterate(word)).join(' ');
+            
+            resultsDiv.innerHTML += `
+                <div class="test-result">
+                    <strong>English:</strong> ${name}<br>
+                    <strong>Hindi:</strong> <span class="hindi">${transliterated}</span>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>

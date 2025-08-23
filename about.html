@@ -663,6 +663,7 @@
                 // Names starting with A
                 'aafreen': 'आफ्रीन', 'anita': 'अनीता', 'asha': 'आशा', 'arun': 'अरुण',
                 'amit': 'अमित', 'arjun': 'अर्जुन', 'anjali': 'अंजली', 'alok': 'आलोक',
+                'ashish': 'आशीष', 'akash': 'आकाश', 'ajay': 'अजय', 'anil': 'अनिल',
                 
                 // Names starting with B
                 'bano': 'बानो', 'bharat': 'भरत', 'bhavna': 'भावना', 'bindu': 'बिंदू',
@@ -691,7 +692,8 @@
                 
                 // Names starting with M
                 'mamta': 'ममता', 'meera': 'मीरा', 'mohan': 'मोहन', 'maya': 'माया',
-                'manish': 'मनीष', 'mukesh': 'मुकेश',
+                'manish': 'मनीष', 'mukesh': 'मुकेश', 'meena': 'मीना', 'manoj': 'मनोज',
+                'mahesh': 'महेश', 'manju': 'मंजू', 'madhu': 'मधु',
                 
                 // Names starting with N
                 'nirmala': 'निर्मला', 'neha': 'नेहा', 'nita': 'नीता', 'naresh': 'नरेश',
@@ -724,6 +726,8 @@
                 'gupta': 'गुप्ता', 'verma': 'वर्मा', 'agarwal': 'अग्रवाल', 'jain': 'जैन',
                 'patel': 'पटेल', 'yadav': 'यादव', 'mishra': 'मिश्रा', 'tiwari': 'तिवारी',
                 'pandey': 'पांडेय', 'shukla': 'शुक्ला', 'mathur': 'माथुर', 'mittal': 'मित्तल',
+                'meena': 'मीणा', 'chaudhary': 'चौधरी', 'choudhary': 'चौधरी', 'rajput': 'राजपूत',
+                'bansal': 'बंसल', 'goel': 'गोयल', 'goyal': 'गोयल', 'khandelwal': 'खंडेलवाल',
                 
                 // Titles
                 'ji': 'जी', 'sahab': 'साहब', 'madam': 'मैडम'
@@ -739,6 +743,12 @@
             
             // Comprehensive phonetic mapping rules
             const phoneticRules = [
+                // Handle common name patterns first
+                { pattern: /^ash/g, replacement: 'आश्' },
+                { pattern: /ish$/g, replacement: 'ीष' },
+                { pattern: /een$/g, replacement: 'ीन' },
+                { pattern: /^meen/g, replacement: 'मीन' },
+                
                 // Vowels
                 { pattern: /^a(?![aeiou])/g, replacement: 'अ' },
                 { pattern: /aa|a(?=r$|h$)/g, replacement: 'आ' },
