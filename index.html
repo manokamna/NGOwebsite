@@ -911,6 +911,23 @@
 
         // Load QR code image from S3
         async function loadQRCodeImage() {
+            // For now, directly use the specific QR code URL you provided
+            const qrContainer = document.getElementById('qrCodeContainer');
+            if (qrContainer) {
+                console.log('🎯 Loading specific QR code directly');
+                const qrCodeURL = 'https://sarojvandana-images.s3.amazonaws.com/ngo-images/about/1755898950420-q8k73fw3fu.jpeg';
+                qrContainer.innerHTML = `
+                    <img src="${qrCodeURL}" 
+                         alt="Donation QR Code" 
+                         style="max-width: 250px; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
+                         onload="console.log('✅ Direct QR code loaded successfully')"
+                         onerror="console.error('❌ Failed to load QR code:', this.src)">
+                `;
+                console.log('🎉 QR code set directly');
+                return;
+            }
+            
+            // Original API-based logic as backup
             try {
                 console.log('🔍 Loading QR code image from S3...');
                 
